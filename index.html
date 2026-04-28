@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>ERP MASTER PRO 2026 - FULL EDITION</title>
+    <title>ERP MASTER PRO 2026 - TITANIUM</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -19,76 +19,58 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        
-        body { 
-            margin: 0; background: var(--bg); color: var(--text); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
-        }
-
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         .hidden { display: none !important; }
 
-        /* FUNDO DA TELA DE LOGIN (LOGÍSTICA) */
+        /* FUNDO E ANIMAÇÃO DA ESTEIRA */
         #screenAuth {
-            background: linear-gradient(rgba(2, 6, 23, 0.7), rgba(2, 6, 23, 0.85)), 
+            background: linear-gradient(rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.9)), 
                         url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1600');
-            background-size: cover; background-position: center; flex: 1; display: flex; flex-direction: column;
+            background-size: cover; background-position: center; flex: 1; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* RELÓGIO NEON DIGITAL */
-        .neon-container { text-align: center; padding: 50px 20px 20px; }
-        #neonClock { 
-            font-size: 60px; font-weight: 900; font-family: 'Courier New', monospace;
-            color: var(--accent); text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
-            margin: 0;
+        .conveyor-belt {
+            width: 200px; height: 100px; position: relative; margin: 20px 0;
+            border-bottom: 8px solid #334155; overflow: hidden;
         }
-        #neonDate { font-size: 14px; text-transform: uppercase; letter-spacing: 3px; color: #fff; margin-top: 10px; }
-
-        /* MODO DEMONSTRAÇÃO HEADER */
-        .demo-bar { background: var(--neon-pink); color: #000; text-align: center; padding: 10px; font-size: 11px; font-weight: 900; position: sticky; top: 0; z-index: 2000; }
-
-        /* UI GERAL */
-        header { 
-            padding: 15px 20px; background: rgba(15, 23, 42, 0.9); border-bottom: 1px solid var(--accent);
-            display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px);
+        .box-3d {
+            width: 40px; height: 40px; background: #fbbf24; position: absolute; bottom: 8px;
+            left: -50px; animation: moveBox 4s linear infinite;
+            box-shadow: inset -5px -5px 0 rgba(0,0,0,0.2), 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        @keyframes moveBox { 
+            0% { left: -50px; transform: rotate(0deg); }
+            100% { left: 250px; transform: rotate(0deg); }
         }
 
-        .app-card { background: var(--card); width: 100%; max-width: 400px; padding: 30px; border-radius: 25px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        
-        input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.4); color: #fff; margin-bottom: 15px; font-size: 16px; }
-        
-        /* CHECKBOX STYLE */
-        .show-pass-area { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 13px; color: var(--text); opacity: 0.8; cursor: pointer; }
-        .show-pass-area input { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); }
+        /* RELÓGIO NEON */
+        .neon-container { text-align: center; padding: 30px 20px 10px; }
+        #neonClock { font-size: 50px; font-weight: 900; font-family: monospace; color: var(--accent); text-shadow: 0 0 15px var(--accent); margin: 0; }
 
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 15px; font-weight: 800; font-size: 13px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
+        /* UI COMPONENTS */
+        header { padding: 15px 20px; background: rgba(15, 23, 42, 0.9); border-bottom: 1px solid var(--accent); display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .app-card { background: var(--card); width: 95%; max-width: 450px; padding: 25px; border-radius: 25px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.4); color: #fff; margin-bottom: 12px; font-size: 16px; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-weight: 800; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; margin-bottom: 10px; }
         .btn-blue { background: var(--accent); color: #000; }
         .btn-green { background: var(--neon-green); color: #000; }
         .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
-        .btn-forgot { background: none; border: none; color: var(--accent); font-size: 12px; text-decoration: underline; margin-bottom: 15px; cursor: pointer; display: block; text-align: center; width: 100%; }
 
         /* MENU GRID */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
-        .menu-item { background: var(--card); padding: 30px 10px; border-radius: 25px; border: 1px solid var(--border); text-align: center; }
-        
-        /* CALC */
-        .calc-display { background: #000; color: var(--neon-green); padding: 25px; text-align: right; font-size: 28px; border-radius: 15px; margin-bottom: 10px; font-family: monospace; border: 1px solid var(--border); }
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .calc-btn { padding: 18px; border: none; border-radius: 12px; background: #1e293b; color: #fff; font-weight: bold; font-size: 18px; }
+        .menu-item { background: var(--card); padding: 20px 10px; border-radius: 20px; border: 1px solid var(--border); text-align: center; cursor: pointer; }
+        .menu-item span { font-size: 30px; display: block; margin-bottom: 8px; }
 
-        /* TABLES */
-        .table-wrap { overflow-x: auto; width: 100%; }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
-        th { text-align: left; padding: 15px; color: var(--accent); border-bottom: 2px solid var(--accent); }
-        td { padding: 15px; border-bottom: 1px solid var(--border); }
+        /* SCANNER AREA */
+        #scanner-ui { width: 100%; min-height: 200px; background: #000; border-radius: 15px; margin-bottom: 15px; overflow: hidden; border: 2px solid var(--accent); }
 
-        /* FOOTER & INTRANET */
-        footer { padding: 25px; text-align: center; font-size: 11px; opacity: 0.6; border-top: 1px solid var(--border); margin-top: auto; }
-        .intranet-box { padding: 20px; background: rgba(56, 189, 248, 0.05); text-align: center; border-top: 1px solid var(--border); }
+        /* ROTAS STYLING */
+        .route-input-group { display: flex; gap: 5px; margin-bottom: 10px; }
+        .test-badge { background: #ef4444; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle; }
 
-        .tab-content { display: none; animation: slideUp 0.3s ease; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body onload="initApp()">
@@ -96,292 +78,254 @@
 <div id="screenAuth">
     <div class="neon-container">
         <h1 id="neonClock">00:00:00</h1>
-        <div id="neonDate">CARREGANDO...</div>
+        <div style="font-size: 12px; letter-spacing: 2px; color: #fff;">ESTOQUE MASTER 2026</div>
     </div>
 
-    <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px;">
-        <div class="app-card" id="loginBox">
-            <h2 style="text-align: center; margin-bottom: 25px; letter-spacing: 2px;">LOGIN ERP</h2>
-            <input type="text" id="lUser" placeholder="Usuário">
-            <input type="password" id="lPass" placeholder="Senha">
-            
-            <label class="show-pass-area">
-                <input type="checkbox" onchange="togglePassVisibility('lPass')"> Mostrar Senha
-            </label>
+    <div class="conveyor-belt">
+        <div class="box-3d"></div>
+        <div class="box-3d" style="animation-delay: 2s;"></div>
+    </div>
 
-            <button class="btn-forgot" onclick="forgotPass()">Esqueci minha senha</button>
-            
-            <button class="btn btn-blue" onclick="handleLogin()">ENTRAR NO SISTEMA</button>
-            <button class="btn btn-green" style="margin-top: 10px;" onclick="startDemo()">MODO TESTE (10 MINUTOS)</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="toggleAuth(false)">ADQUIRIR ACESSO VITALÍCIO</button>
-        </div>
-
-        <div class="app-card hidden" id="regBox">
-            <h2 style="text-align: center;">CADASTRO PREMIUM</h2>
-            <input type="text" id="rNome" placeholder="Nome Completo">
-            <input type="email" id="rEmail" placeholder="E-mail">
-            <input type="text" id="rUser" placeholder="Usuário">
-            <input type="password" id="rPass" placeholder="Senha">
-            
-            <label class="show-pass-area">
-                <input type="checkbox" onchange="togglePassVisibility('rPass')"> Mostrar Senha
-            </label>
-
-            <button class="btn btn-green" onclick="buyPremium()">PAGAR E ATIVAR AGORA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="toggleAuth(true)">VOLTAR</button>
-        </div>
+    <div class="app-card" id="loginBox">
+        <input type="text" id="lUser" placeholder="Usuário">
+        <input type="password" id="lPass" placeholder="Senha">
+        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-size: 14px;">
+            <input type="checkbox" style="width: 20px; margin: 0;" onchange="document.getElementById('lPass').type = this.checked ? 'text' : 'password'"> Mostrar Senha
+        </label>
+        <button class="btn btn-blue" onclick="handleLogin()">ACESSAR ERP</button>
+        <button class="btn btn-green" onclick="startDemo()">MODO TESTE (10 MIN)</button>
+        <button style="background:none; border:none; color:var(--accent); width:100%; text-decoration:underline; cursor:pointer;" onclick="forgotPass()">Esqueci minha senha</button>
     </div>
 </div>
 
-<main id="screenDash" class="hidden" style="flex: 1; display: flex; flex-direction: column;">
-    <div id="demoBar" class="demo-bar hidden">MODO DEMONSTRAÇÃO TESTE - <span id="timerDemo">10:00</span> RESTANTES</div>
+<main id="screenDash" class="hidden">
+    <div id="demoBar" class="hidden" style="background:var(--neon-pink); color:#000; text-align:center; padding:5px; font-weight:bold; font-size:12px;">MODO TESTE: <span id="timerDemo">10:00</span></div>
     
     <header>
-        <div>
-            <div style="font-size: 9px; opacity: 0.6; font-weight: 800;">OPERADOR:</div>
-            <b id="userLabel" style="font-size: 14px;">USUÁRIO</b>
-        </div>
-        <div id="headerTime" style="font-family: monospace; color: var(--neon-green); font-weight: bold; font-size: 18px;">00:00</div>
+        <div><small>OPERADOR:</small><br><b id="userLabel">ADMIN</b></div>
+        <div id="headerTime" style="color:var(--neon-green); font-family:monospace; font-weight:bold;">00:00</div>
     </header>
 
     <div id="tabHome" class="tab-content active">
         <div class="menu-grid">
-            <div class="menu-item" onclick="nav('tabEntrada')"><i>📥</i><b>Entrada NF</b></div>
-            <div class="menu-item" onclick="nav('tabSaida')"><i>📋</i><b>Requisição</b></div>
-            <div class="menu-item" onclick="nav('tabEstoque')"><i>📦</i><b>Estoque</b></div>
-            <div class="menu-item" onclick="nav('tabCalc')"><i>🧮</i><b>Calculadora</b></div>
-            <div class="menu-item" onclick="nav('tabHist')"><i>🔍</i><b>Auditoria</b></div>
-            <div class="menu-item" onclick="exitApp()"><i>🚪</i><b>Sair</b></div>
+            <div class="menu-item" onclick="openScannerTab('in')"><span>📦</span><b>Entrada NF</b></div>
+            <div class="menu-item" onclick="openScannerTab('out')"><span>📋</span><b>Baixa Mat.</b></div>
+            <div class="menu-item" onclick="nav('tabEstoque')"><span>📊</span><b>Estoque</b></div>
+            <div class="menu-item" onclick="nav('tabRotas')"><span>📍</span><b>Rotas <small class="test-badge">TESTE</small></b></div>
+            <div class="menu-item" onclick="nav('tabCotacao')"><span>🔍</span><b>Cotações</b></div>
+            <div class="menu-item" onclick="nav('tabAudit')"><span>📝</span><b>Auditoria</b></div>
         </div>
-        <div style="padding: 10px 20px;">
-            <button class="btn btn-outline" onclick="exportPDF()">📄 EXPORTAR ESTOQUE (PDF)</button>
-        </div>
-    </div>
-
-    <div id="tabEntrada" class="tab-content" style="padding: 15px;">
-        <div class="app-card" style="max-width: 100%;">
-            <h3>🚚 ENTRADA DE MATERIAL</h3>
-            <input type="text" id="inSku" placeholder="SKU / Código">
-            <input type="text" id="inNome" placeholder="Descrição do Produto">
-            <input type="number" id="inQtd" placeholder="Quantidade">
-            <button class="btn btn-blue" onclick="doIn()">REGISTRAR ENTRADA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">CANCELAR</button>
+        <div style="padding: 15px;"><button class="btn btn-outline" onclick="location.reload()">SAIR DO SISTEMA</button></div>
+        <div id="intraLink" class="hidden" style="text-align:center; padding: 10px; border-top:1px solid #334155;">
+            <a href="https://github.com" style="color:var(--accent); font-size:12px;">ACESSAR INTRANET</a>
         </div>
     </div>
 
-    <div id="tabSaida" class="tab-content" style="padding: 15px;">
-        <div class="app-card" style="max-width: 100%;">
-            <h3>📋 SAÍDA / BAIXA</h3>
-            <input type="text" id="outSku" oninput="sync(this.value)" placeholder="Bipar SKU">
-            <div id="outPre" style="padding: 10px; background: rgba(56, 189, 248, 0.1); border-radius: 10px; margin-bottom: 10px; font-size: 12px;">Aguardando SKU...</div>
-            <input type="number" id="outQtd" placeholder="Qtd para Baixa">
-            <button class="btn btn-blue" onclick="doOut()">CONFIRMAR BAIXA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">CANCELAR</button>
+    <div id="tabScanner" class="tab-content" style="padding:15px;">
+        <div class="app-card" style="max-width:100%;">
+            <h3 id="scannerTitle">BIPAGEM</h3>
+            <div id="scanner-ui"></div>
+            <input type="text" id="scanResult" placeholder="SKU Detectado" oninput="syncProduct(this.value)">
+            <div id="scanPreview" style="font-size:12px; margin-bottom:10px; color:var(--accent);">Aguardando...</div>
+            <input type="number" id="scanQtd" placeholder="Quantidade">
+            <button class="btn btn-blue" onclick="processScan()">CONFIRMAR OPERAÇÃO</button>
+            <button class="btn btn-outline" onclick="closeScanner()">VOLTAR</button>
         </div>
     </div>
 
-    <div id="tabEstoque" class="tab-content" style="padding: 15px;">
-        <div class="app-card" style="max-width: 100%;">
-            <h3>📦 POSIÇÃO DE ESTOQUE</h3>
-            <div class="table-wrap">
-                <table id="tblS">
-                    <thead><tr><th>SKU</th><th>PRODUTO</th><th>SALDO</th></tr></thead>
-                    <tbody></tbody>
+    <div id="tabRotas" class="tab-content" style="padding:15px;">
+        <div class="app-card" style="max-width:100%;">
+            <h3>📍 CIRCUITO DE ROTAS <small class="test-badge">BETA</small></h3>
+            <p style="font-size:11px; opacity:0.7;">O sistema utiliza sua localização para traçar o melhor caminho entre múltiplos pontos.</p>
+            <div id="routeFields">
+                <input type="text" class="route-addr" placeholder="Endereço de Origem">
+                <input type="text" class="route-addr" placeholder="Destino 1">
+            </div>
+            <button class="btn btn-outline" style="font-size:11px;" onclick="addRouteField()">+ ADICIONAR PARADA</button>
+            <button class="btn btn-blue" onclick="launchMaps()">ABRIR NO GOOGLE MAPAS</button>
+            <button class="btn btn-outline" onclick="nav('tabHome')">VOLTAR</button>
+        </div>
+    </div>
+
+    <div id="tabCotacao" class="tab-content" style="padding:15px;">
+        <div class="app-card" style="max-width:100%;">
+            <h3>🔍 COTAÇÃO DE MATERIAIS</h3>
+            <input type="text" id="queryCot" placeholder="Nome do material ou ferramenta...">
+            <button class="btn btn-blue" onclick="searchMarket()">PESQUISAR PREÇOS</button>
+            <button class="btn btn-outline" onclick="nav('tabHome')">VOLTAR</button>
+        </div>
+    </div>
+
+    <div id="tabEstoque" class="tab-content" style="padding:15px;">
+        <div class="app-card" style="max-width:100%;">
+            <h3>📦 INVENTÁRIO ATUAL</h3>
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; font-size:12px;">
+                    <thead style="border-bottom:2px solid var(--accent);"><tr><th align="left">SKU</th><th align="left">NOME</th><th align="left">QTD</th></tr></thead>
+                    <tbody id="stockTableBody"></tbody>
                 </table>
             </div>
-            <button class="btn btn-outline" style="margin-top: 15px;" onclick="nav('tabHome')">VOLTAR</button>
+            <button class="btn btn-outline" style="margin-top:15px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
     </div>
 
-    <div id="tabCalc" class="tab-content" style="padding: 15px;">
-        <div class="app-card">
-            <div class="calc-display" id="disp">0</div>
-            <div class="calc-grid">
-                <button class="calc-btn" onclick="c('7')">7</button><button class="calc-btn" onclick="c('8')">8</button><button class="calc-btn" onclick="c('9')">9</button><button class="calc-btn" style="background:var(--accent);color:#000" onclick="c('/')">/</button>
-                <button class="calc-btn" onclick="c('4')">4</button><button class="calc-btn" onclick="c('5')">5</button><button class="calc-btn" onclick="c('6')">6</button><button class="calc-btn" style="background:var(--accent);color:#000" onclick="c('*')">x</button>
-                <button class="calc-btn" onclick="c('1')">1</button><button class="calc-btn" onclick="c('2')">2</button><button class="calc-btn" onclick="c('3')">3</button><button class="calc-btn" style="background:var(--accent);color:#000" onclick="c('-')">-</button>
-                <button class="calc-btn" style="background:#ef4444" onclick="cc()">C</button><button class="calc-btn" onclick="c('0')">0</button><button class="calc-btn" onclick="ce()">=</button><button class="calc-btn" style="background:var(--accent);color:#000" onclick="c('+')">+</button>
-            </div>
-            <button class="btn btn-outline" style="margin-top: 15px;" onclick="nav('tabHome')">FECHAR</button>
+    <div id="tabAudit" class="tab-content" style="padding:15px;">
+        <div class="app-card" style="max-width:100%;">
+            <h3>📝 LOGS DO SISTEMA</h3>
+            <div id="logArea" style="font-size:10px; max-height:300px; overflow-y:auto; background:#000; padding:10px; border-radius:10px;"></div>
+            <button class="btn btn-outline" style="margin-top:15px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
-    </div>
-
-    <div id="tabHist" class="tab-content" style="padding: 15px;">
-        <div class="app-card" style="max-width: 100%;">
-            <h3>🔍 AUDITORIA</h3>
-            <div id="logArea" style="font-size: 11px; max-height: 300px; overflow-y: auto;"></div>
-            <button class="btn btn-outline" style="margin-top: 15px;" onclick="nav('tabHome')">VOLTAR</button>
-        </div>
-    </div>
-
-    <div id="intraBox" class="intranet-box hidden">
-        <button class="btn btn-outline" onclick="window.open('https://github.com/', '_blank')">🌐 ACESSAR INTRANET (GITHUB)</button>
     </div>
 </main>
 
-<footer>
-    Aplicativo criado por ©Italo N. Dos Anjos em 2026. Todos os direitos reservados.
-</footer>
-
 <script>
-    let db = JSON.parse(localStorage.getItem('erp_gold_2026')) || { users: [], stock: [], logs: [], usedDemo: false };
+    let db = JSON.parse(localStorage.getItem('erp_v2026_final')) || { stock: [], users: [], logs: [], usedDemo: false };
     let user = null;
-    let timer = 600;
-    let tInt;
+    let scanMode = 'in';
+    let html5QrCode = null;
+    let timerVal = 600;
 
-    function save() { localStorage.setItem('erp_gold_2026', JSON.stringify(db)); }
+    function save() { localStorage.setItem('erp_v2026_final', JSON.stringify(db)); }
 
     function initApp() {
         setInterval(() => {
-            const now = new Date();
-            const time = now.toLocaleTimeString('pt-BR');
-            const date = now.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
-            if(document.getElementById('neonClock')) document.getElementById('neonClock').innerText = time;
-            if(document.getElementById('neonDate')) document.getElementById('neonDate').innerText = date.toUpperCase();
-            document.getElementById('headerTime').innerText = time.substring(0, 5);
+            const n = new Date();
+            document.getElementById('neonClock').innerText = n.toLocaleTimeString();
+            document.getElementById('headerTime').innerText = n.toLocaleTimeString().substring(0,5);
         }, 1000);
     }
 
-    // --- VISIBILIDADE DA SENHA ---
-    function togglePassVisibility(inputId) {
-        const input = document.getElementById(inputId);
-        input.type = input.type === 'password' ? 'text' : 'password';
-    }
-
-    // --- AUTH & DEMO ---
+    // --- AUTENTICAÇÃO ---
     function handleLogin() {
         const u = document.getElementById('lUser').value;
         const p = document.getElementById('lPass').value;
-
         if(u === "admin" && p === "adm2026@aB") {
-            user = { nome: "ADMINISTRADOR", role: "admin" };
-            return start();
+            user = { nome: "GESTOR ADMIN", role: "admin" };
+            document.getElementById('intraLink').classList.remove('hidden');
+            return dashboard();
         }
-
-        const found = db.users.find(x => x.user === u && x.pass === p);
-        if(found) {
-            user = { ...found, role: "user" };
-            start();
-        } else alert("Acesso negado.");
+        const f = db.users.find(x => x.user === u && x.pass === p);
+        if(f) { user = f; dashboard(); } else alert("Credenciais incorretas.");
     }
 
     function startDemo() {
-        if(db.usedDemo) {
-            alert("Você já testou o aplicativo, para continuar clique em voltar e realize a compra do aplicativo e tenha acesso total e vitalício!");
-            return;
-        }
-        user = { nome: "VISITANTE (TESTE)", role: "demo" };
+        if(db.usedDemo) return alert("Você já utilizou o teste grátis. Adquira a versão vitalícia!");
+        user = { nome: "VISITANTE TESTE", role: "demo" };
         db.usedDemo = true; save();
-        start();
+        dashboard();
         document.getElementById('demoBar').classList.remove('hidden');
-        tInt = setInterval(() => {
-            timer--;
-            let m = Math.floor(timer / 60);
-            let s = timer % 60;
-            document.getElementById('timerDemo').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if(timer <= 0) { clearInterval(tInt); alert("Tempo esgotado!"); exitApp(); }
+        let t = setInterval(() => {
+            timerVal--;
+            let m = Math.floor(timerVal/60), s = timerVal%60;
+            document.getElementById('timerDemo').innerText = `${m}:${s<10?'0':''}${s}`;
+            if(timerVal <= 0) { clearInterval(t); alert("Tempo expirado!"); location.reload(); }
         }, 1000);
     }
 
-    function start() {
+    function dashboard() {
         document.getElementById('screenAuth').classList.add('hidden');
         document.getElementById('screenDash').classList.remove('hidden');
         document.getElementById('userLabel').innerText = user.nome;
-        if(user.role === 'admin') document.getElementById('intraBox').classList.remove('hidden');
-        nav('tabHome');
     }
 
-    // --- ERP FUNCTIONS ---
+    // --- ERP CORE & SCANNER ---
+    function openScannerTab(mode) {
+        scanMode = mode;
+        document.getElementById('scannerTitle').innerText = mode === 'in' ? 'RECEBIMENTO (NF)' : 'BAIXA DE REQUISIÇÃO';
+        nav('tabScanner');
+        html5QrCode = new Html5Qrcode("scanner-ui");
+        html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
+            document.getElementById('scanResult').value = text;
+            syncProduct(text);
+        });
+    }
+
+    function closeScanner() {
+        if(html5QrCode) html5QrCode.stop().then(() => nav('tabHome'));
+        else nav('tabHome');
+    }
+
+    function syncProduct(sku) {
+        const item = db.stock.find(x => x.sku === sku);
+        document.getElementById('scanPreview').innerText = item ? `${item.nome} | Saldo: ${item.qtd}` : "Item Novo / Não encontrado";
+    }
+
+    function processScan() {
+        const sku = document.getElementById('scanResult').value;
+        const qtd = parseInt(document.getElementById('scanQtd').value);
+        if(!sku || !qtd) return alert("Dados incompletos");
+
+        let item = db.stock.find(x => x.sku === sku);
+        if(scanMode === 'in') {
+            if(item) item.qtd += qtd;
+            else {
+                const nome = prompt("Novo item detectado. Digite o nome:");
+                db.stock.push({ sku, nome, qtd });
+            }
+            addLog(`ENTRADA NF: SKU ${sku} (+${qtd})`);
+        } else {
+            if(item && item.qtd >= qtd) {
+                item.qtd -= qtd;
+                addLog(`BAIXA REQ: SKU ${sku} (-${qtd})`);
+            } else return alert("Saldo insuficiente!");
+        }
+        save(); alert("Operação realizada!"); closeScanner();
+    }
+
+    // --- ROTAS (GOOGLE MAPS API) ---
+    function addRouteField() {
+        const input = document.createElement('input');
+        input.type = "text";
+        input.className = "route-addr";
+        input.placeholder = `Parada ${document.querySelectorAll('.route-addr').length}`;
+        document.getElementById('routeFields').appendChild(input);
+    }
+
+    function launchMaps() {
+        const addrs = Array.from(document.querySelectorAll('.route-addr')).map(i => encodeURIComponent(i.value)).filter(v => v !== "");
+        if(addrs.length < 2) return alert("Informe pelo menos origem e destino.");
+        const origin = addrs.shift();
+        const dest = addrs.pop();
+        const waypoints = addrs.join('|');
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}&waypoints=${waypoints}&travelmode=driving`;
+        window.open(url, '_blank');
+    }
+
+    // --- COTAÇÃO ---
+    function searchMarket() {
+        const q = document.getElementById('queryCot').value;
+        if(!q) return;
+        window.open(`https://www.google.com/search?q=preço+de+${encodeURIComponent(q)}&tbm=shop`, '_blank');
+    }
+
+    // --- UTILS ---
     function nav(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         if(id === 'tabEstoque') renderStock();
-        if(id === 'tabHist') renderLogs();
-    }
-
-    function doIn() {
-        const sku = document.getElementById('inSku').value;
-        const qtd = parseInt(document.getElementById('inQtd').value);
-        if(!sku || isNaN(qtd)) return alert("Preencha SKU e Qtd!");
-        let item = db.stock.find(x => x.sku === sku);
-        if(item) item.qtd += qtd;
-        else db.stock.push({ sku, nome: document.getElementById('inNome').value, qtd });
-        addLog(`ENTRADA: ${sku} (+${qtd})`);
-        save(); alert("Sucesso!"); nav('tabHome');
-    }
-
-    function sync(sku) {
-        const item = db.stock.find(x => x.sku === sku);
-        document.getElementById('outPre').innerText = item ? `${item.nome} | Saldo: ${item.qtd}` : "Não encontrado";
-    }
-
-    function doOut() {
-        const sku = document.getElementById('outSku').value;
-        const qtd = parseInt(document.getElementById('outQtd').value);
-        let item = db.stock.find(x => x.sku === sku);
-        if(item && item.qtd >= qtd) {
-            item.qtd -= qtd;
-            addLog(`SAÍDA: ${sku} (-${qtd})`);
-            save(); alert("Baixa realizada!"); nav('tabHome');
-        } else alert("Estoque insuficiente!");
+        if(id === 'tabAudit') renderLogs();
     }
 
     function renderStock() {
-        const b = document.querySelector('#tblS tbody');
-        b.innerHTML = db.stock.map(i => `<tr><td>${i.sku}</td><td>${i.nome}</td><td>${i.qtd}</td></tr>`).join('');
+        document.getElementById('stockTableBody').innerHTML = db.stock.map(i => `<tr><td style="padding:10px">${i.sku}</td><td>${i.nome}</td><td>${i.qtd}</td></tr>`).join('');
     }
 
-    function addLog(m) { db.logs.unshift(`${new Date().toLocaleString()} - ${m} por ${user.nome}`); }
+    function addLog(msg) {
+        db.logs.unshift(`${new Date().toLocaleString()} - ${msg} por ${user.nome}`);
+    }
 
     function renderLogs() {
-        document.getElementById('logArea').innerHTML = db.logs.map(l => `<div style="padding:5px; border-bottom:1px solid #334155">${l}</div>`).join('');
+        document.getElementById('logArea').innerHTML = db.logs.map(l => `<div style="border-bottom:1px solid #222; padding:5px">${l}</div>`).join('');
     }
 
-    // --- PASSWORD RECOVERY ---
     function forgotPass() {
-        const email = prompt("Digite seu e-mail cadastrado:");
-        const u = db.users.find(x => x.email === email);
+        const e = prompt("Digite seu e-mail cadastrado:");
+        const u = db.users.find(x => x.email === e);
         if(u) {
-            const nova = prompt("Verificação enviada! Digite sua nova senha:");
-            if(nova) { u.pass = nova; save(); alert("Senha alterada com sucesso!"); }
-        } else alert("E-mail não localizado.");
+            const n = prompt("E-mail verificado! Digite a nova senha:");
+            if(n) { u.pass = n; save(); alert("Senha atualizada!"); }
+        } else alert("E-mail não encontrado.");
     }
-
-    // --- CALC ---
-    let cv = "";
-    function c(v) { cv += v; document.getElementById('disp').innerText = cv; }
-    function cc() { cv = ""; document.getElementById('disp').innerText = "0"; }
-    function ce() { try { cv = eval(cv).toString(); document.getElementById('disp').innerText = cv; } catch { cc(); } }
-
-    function toggleAuth(show) {
-        document.getElementById('loginBox').classList.toggle('hidden', !show);
-        document.getElementById('regBox').classList.toggle('hidden', show);
-    }
-
-    function buyPremium() {
-        window.open('https://mpago.li/1Qt8hoV', '_blank');
-        setTimeout(() => {
-            const u = document.getElementById('rUser').value;
-            if(!u) return;
-            db.users.push({ 
-                user: u, 
-                pass: document.getElementById('rPass').value, 
-                email: document.getElementById('rEmail').value,
-                nome: document.getElementById('rNome').value
-            });
-            save(); alert("Pagamento Confirmado!"); toggleAuth(true);
-        }, 2000);
-    }
-
-    function exportPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("RELATÓRIO DE ESTOQUE - ERP 2026", 15, 15);
-        doc.autoTable({ head: [['SKU', 'ITEM', 'QTD']], body: db.stock.map(i => [i.sku, i.nome, i.qtd]), startY: 25 });
-        doc.save("Estoque.pdf");
-    }
-
-    function exitApp() { location.reload(); }
 </script>
 </body>
 </html>
