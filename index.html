@@ -13,72 +13,39 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
     <style>
-        :root {
-            --bg: #020617; --card: #0f172a; --accent: #38bdf8;
-            --text: #f1f5f9; --neon-pink: #f472b6; --neon-green: #22c55e;
-        }
-
+        :root { --bg: #020617; --card: #0f172a; --accent: #38bdf8; --text: #f1f5f9; --neon-pink: #f472b6; --neon-green: #22c55e; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-        /* HEADER DINÂMICO */
-        header { 
-            padding: 15px; background: #000; border-bottom: 2px solid var(--accent);
-            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
-        }
+        header { padding: 15px; background: #000; border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .header-brand { display: flex; flex-direction: column; }
-        .destaque-empresa { color: var(--neon-pink); font-weight: 900; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .destaque-empresa { color: var(--neon-pink); font-weight: 900; font-size: 14px; text-transform: uppercase; }
 
-        /* MODAIS E POPUPS */
-        .modal { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; 
-            display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(10px);
-        }
-        .alert-popup { 
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px;
-            background: #ef4444; color: white; padding: 20px; border-radius: 12px; font-weight: bold;
-            z-index: 5000; display: none; text-align: center; border: 2px solid white; box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+        .alert-popup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: #ef4444; color: white; padding: 20px; border-radius: 12px; font-weight: bold; z-index: 5000; display: none; text-align: center; border: 2px solid white; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
 
-        /* FORMULÁRIOS E BOTÕES */
-        .card-auth { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid var(--accent); width: 100%; max-width: 400px; }
-        .input-group { margin-bottom: 15px; }
+        .card-auth { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--accent); width: 100%; max-width: 400px; margin: 0 auto; max-height: 90vh; overflow-y: auto;}
+        .input-group { margin-bottom: 12px; }
         label { display: block; font-size: 11px; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
-        input, select { 
-            width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #334155; 
-            background: #1e293b; color: white; font-size: 16px; 
-        }
-        .btn-main { 
-            width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer;
-            text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px;
-        }
+        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #1e293b; color: white; font-size: 14px; }
+        
+        .btn-main { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; font-size: 12px;}
         .btn-blue { background: var(--accent); color: #000; }
         .btn-green { background: var(--neon-green); color: #000; }
         .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+        .btn-danger { background: #ef4444; color: white; }
 
-        /* MENU GRADE */
-        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
-        .menu-item { 
-            background: var(--card); padding: 20px; border-radius: 15px; display: flex; flex-direction: column;
-            align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,0.05); text-decoration: none; color: white;
-            font-size: 12px; font-weight: bold; text-align: center; transition: 0.2s;
-        }
-        .menu-item:active { background: var(--accent); color: #000; }
-        .menu-item i { font-size: 24px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 15px; }
+        .menu-item { background: var(--card); padding: 15px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.05); color: white; font-size: 11px; font-weight: bold; text-align: center; text-decoration: none;}
+        .menu-item i { font-size: 22px; }
 
-        /* TABELAS */
         .tab-content { padding: 15px; display: none; }
         .active-tab { display: block; }
-        .table-res { overflow-x: auto; background: var(--card); border-radius: 15px; margin-top: 15px; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { background: #1e293b; padding: 12px; text-align: left; color: var(--accent); }
-        td { padding: 12px; border-bottom: 1px solid #334155; }
-
-        /* CALCULADORA */
-        .calc-box { background: #000; padding: 15px; border-radius: 15px; margin-top: 10px; }
-        .calc-screen { width: 100%; height: 60px; background: #1e293b; border-radius: 10px; margin-bottom: 10px; text-align: right; padding: 15px; font-size: 24px; font-family: monospace; color: var(--neon-green); }
-        .calc-btns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-        .calc-btns button { padding: 15px; border-radius: 5px; border: none; background: #334155; color: white; font-weight: bold; }
+        .table-res { overflow-x: auto; background: var(--card); border-radius: 10px; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #1e293b; padding: 10px; text-align: left; color: var(--accent); }
+        td { padding: 10px; border-bottom: 1px solid #334155; }
+        td a { color: var(--neon-pink); font-weight: bold; text-decoration: none; }
 
         .hidden { display: none !important; }
     </style>
@@ -86,63 +53,42 @@
 <body>
 
 <div id="timeoutAlert" class="alert-popup">
-    ⚠️ SESSÃO EXPIRADA!<br>
-    Devido a falta de interação no app, você foi deslogado por motivos de segurança! Faça o login novamente.
+    ⏳ ATENÇÃO!<br><br>Devido a falta de interação no app, você foi deslogado por motivos de segurança! Faça o login novamente.
 </div>
 
 <header id="mainHeader" class="hidden">
     <div class="header-brand">
-        <span style="font-size: 10px; opacity: 0.7;">SISTEMA OPERACIONAL</span>
-        <span id="topoEmpresaNome" class="destaque-empresa"></span>
+        <span style="font-size: 10px; opacity: 0.7;">🛡️ ERP OPERACIONAL</span>
+        <span id="topoEmpresaNome" class="destaque-empresa hidden"></span>
     </div>
-    <div style="text-align: right;">
-        <span id="topoUsuario" style="font-size: 12px; font-weight: bold;"></span><br>
-        <button onclick="toggleConfig()" style="background:none; border:none; color:var(--accent); font-size:18px;">⚙️</button>
+    <div style="text-align: right; display:flex; align-items:center; gap:10px;">
+        <span id="topoUsuario" style="font-size: 12px; font-weight: bold; color: var(--accent);"></span>
+        <button onclick="toggleConfig()" style="background:none; border:none; color:white; font-size:18px;">⚙️</button>
     </div>
 </header>
 
-<div id="loginSection" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+<div id="loginSection" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh; padding: 20px;">
     <div class="card-auth">
-        <h2 style="text-align: center; margin-top: 0;">🔐 Acesso Restrito</h2>
-        <div class="input-group">
-            <label>👤 CPF de Acesso</label>
-            <input type="text" id="loginCpf" placeholder="000.000.000-00">
-        </div>
-        <div class="input-group">
-            <label>🔑 Senha</label>
-            <input type="password" id="loginPass" placeholder="••••••••">
-        </div>
-        <button class="btn-main btn-blue" onclick="tryLogin()">🔓 Entrar no Sistema</button>
+        <h2 style="text-align: center; margin-top: 0;">🔐 Login Seguro</h2>
+        <div class="input-group"><label>👤 CPF (Apenas Números)</label><input type="text" id="loginCpf" inputmode="numeric"></div>
+        <div class="input-group"><label>🔑 Senha</label><input type="password" id="loginPass"></div>
+        <button class="btn-main btn-blue" onclick="tryLogin()">🔓 Acessar Sistema</button>
         <hr style="margin: 20px 0; border: 0.5px solid #334155;">
-        <button class="btn-main btn-outline" onclick="payRedirect()">💳 Registrar Novo Usuário</button>
+        <button class="btn-main btn-green" onclick="iniciarCadastro()">💳 Registrar Novo Usuário</button>
     </div>
 </div>
 
 <div id="registerSection" class="modal">
     <div class="card-auth">
-        <h3 style="margin-top: 0;">📋 Cadastro Completo</h3>
-        <div class="input-group">
-            <label>👤 Nome Completo</label>
-            <input type="text" id="regNome">
-        </div>
-        <div class="input-group">
-            <label>🆔 CPF (Login Único)</label>
-            <input type="text" id="regCpf" placeholder="Apenas números">
-        </div>
-        <div class="input-group">
-            <label>📱 Celular (WhatsApp)</label>
-            <input type="tel" id="regCel">
-        </div>
-        <div class="input-group">
-            <label>🏢 Nome da Empresa</label>
-            <input type="text" id="regEmpresa">
-        </div>
-        <div class="input-group">
-            <label>🔑 Criar Senha</label>
-            <input type="password" id="regPass">
-        </div>
-        <button class="btn-main btn-green" onclick="finalizeRegister()">💾 Finalizar Cadastro</button>
-        <button class="btn-main" onclick="location.reload()">❌ Cancelar</button>
+        <h3 style="margin-top: 0; color: var(--neon-green);">📋 Cadastro Completo</h3>
+        <p style="font-size: 11px; opacity:0.8;">Apenas um CPF por conta permitido.</p>
+        <div class="input-group"><label>👤 Nome Completo</label><input type="text" id="regNome"></div>
+        <div class="input-group"><label>🆔 CPF</label><input type="text" id="regCpf" inputmode="numeric"></div>
+        <div class="input-group"><label>📱 Celular</label><input type="tel" id="regCel"></div>
+        <div class="input-group"><label>🏢 Nome da Empresa</label><input type="text" id="regEmpresa"></div>
+        <div class="input-group"><label>🔑 Senha</label><input type="password" id="regPass"></div>
+        <button class="btn-main btn-green" onclick="finalizeRegister()">💾 Salvar e Criar Conta</button>
+        <button class="btn-main btn-danger" onclick="location.reload()">❌ Cancelar</button>
     </div>
 </div>
 
@@ -150,102 +96,92 @@
     <div id="menuPrincipal">
         <div class="menu-grid">
             <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaEstoque')"><i>📦</i>Estoque</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaScanner')"><i>🖨️</i>Escanear NF</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaSolicitacao')"><i>🤖</i>Solicitações</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaProtocolo')"><i>📥</i>Protocolo</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaScanner')"><i>🖨️</i>Escanear automaticamente NF</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaSolicitacao')"><i>🤖</i>Solicitações (Cotação IA)</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaProtocolo')"><i>📥</i>Protocolo de recebimento</a>
             <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaRequisicao')"><i>📝</i>Requisições</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaRelatorio')"><i>📄</i>Relatórios</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="gerarRelatorioCompleto()"><i>📊</i>Gerar relatório mensal</a>
             <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaVenda')"><i>💰</i>PDV Venda</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaCalc')"><i>🧮</i>Calculadora</a>
         </div>
         <div style="padding: 15px;">
-            <button class="btn-main btn-outline" style="border-color: #ef4444; color: #ef4444;" onclick="logout()">🚪 Sair do Aplicativo</button>
+            <button class="btn-main btn-danger" onclick="logout()">🚪 Sair</button>
         </div>
     </div>
 
     <div id="abaEstoque" class="tab-content">
-        <h3>📦 Gestão de Itens</h3>
-        <button class="btn-main btn-blue" onclick="novoItemEstoque()">➕ Novo Item</button>
-        <div class="table-res">
-            <table id="tabelaEstoque">
-                <thead><tr><th>Item</th><th>Qtd</th><th>Mín</th></tr></thead>
-                <tbody></tbody>
-            </table>
-        </div>
-        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+        <h3>📦 Gestão de Estoque</h3>
+        <div class="card-auth" style="max-width:none;"><div class="input-group"><label>Nome</label><input id="estNome"></div><div class="input-group"><label>Qtd Inicial</label><input type="number" id="estQtd"></div><div class="input-group"><label>Mínimo</label><input type="number" id="estMin"></div><button class="btn-main btn-green" onclick="addEstoque()">➕ Adicionar</button></div>
+        <div class="table-res"><table id="tabEstoque"><thead><tr><th>Item</th><th>Qtd</th><th>Mín</th></tr></thead><tbody></tbody></table></div>
+        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
     </div>
 
     <div id="abaScanner" class="tab-content">
-        <h3>🖨️ Scanner Automático de NF</h3>
+        <h3>🖨️ Escanear NF pelo Celular/Impressora</h3>
         <div class="card-auth" style="max-width: none;">
-            <label>📁 Selecionar Arquivo (Celular/Scanner)</label>
+            <label>📁 Selecione o arquivo PDF ou Imagem</label>
             <input type="file" id="inputPdf" accept="application/pdf,image/*">
-            <button class="btn-main btn-green" onclick="processarNF()">💾 Salvar NF em PDF</button>
+            <button class="btn-main btn-green" onclick="salvarNFPDF()">💾 Salvar NF em PDF</button>
         </div>
         <div class="table-res">
-            <table id="tabelaNF">
-                <thead><tr><th>Nome do Arquivo</th><th>Data</th><th>Ação</th></tr></thead>
+            <table id="tabNFs">
+                <thead><tr><th>Nome do Arquivo</th><th>Data</th><th>Download</th></tr></thead>
                 <tbody></tbody>
             </table>
         </div>
-        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
     </div>
 
     <div id="abaSolicitacao" class="tab-content">
-        <h3>🤖 Cotação IA & Solicitações</h3>
-        <div class="card-auth" style="max-width: none; margin-bottom: 20px;">
-            <label>🔍 Pesquisar Material para Cotação IA</label>
-            <input type="text" id="iaSearch" placeholder="Ex: Cimento CP II">
-            <button class="btn-main btn-blue" onclick="cotacaoIA()">🧠 Comparar Preços Agora</button>
-            <div id="iaResult" style="margin-top: 15px; font-size: 13px; color: var(--neon-green);"></div>
+        <h3>🤖 Solicitações e Cotação IA</h3>
+        <div class="card-auth" style="max-width: none; border-color: var(--neon-pink); margin-bottom: 15px;">
+            <label>🧠 IA Cotação - Comparar Preços</label>
+            <input type="text" id="iaSearch" placeholder="Qual material deseja cotar?">
+            <button class="btn-main" style="background:var(--neon-pink); color:white;" onclick="cotacaoIA()">Consultar Mercado IA</button>
+            <div id="iaResult" style="margin-top: 10px; font-size: 12px; color: var(--neon-green);"></div>
         </div>
         <div class="card-auth" style="max-width: none;">
-            <label>Item Solicitado</label>
-            <input id="solItem">
-            <label>Quantidade</label>
-            <input type="number" id="solQtd">
-            <button class="btn-main btn-green" onclick="addSolicitacao('pendente')">➕ Criar Solicitação</button>
-            <button class="btn-main btn-blue" onclick="addSolicitacao('recebido')">✅ Marcar como Recebido</button>
+            <label>📝 Lançar Solicitação</label>
+            <input id="solItem" placeholder="Nome do item">
+            <button class="btn-main btn-blue" onclick="addSolicitacao('pendente')">➕ Criar Solicitação</button>
+            <button class="btn-main btn-green" onclick="addSolicitacao('recebido')">✅ Material Recebido</button>
         </div>
-        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
     </div>
 
     <div id="abaProtocolo" class="tab-content">
         <h3>📥 Protocolo de Recebimento</h3>
-        <p style="color: #ef4444; font-weight: bold; font-size: 12px;">🚩 NF PENDENTE DE ENTRADA</p>
+        <p style="color: #ef4444; font-weight: bold; font-size: 12px; text-transform:uppercase;">🚩 NF pendente de entrada em destaque</p>
         <div class="table-res">
-            <table id="tabelaProtocolo">
-                <thead><tr><th>Data</th><th>Item</th><th>Status</th></tr></thead>
+            <table id="tabProtocolo">
+                <thead><tr><th>Data</th><th>Material</th><th>Status NF</th></tr></thead>
                 <tbody></tbody>
             </table>
         </div>
-        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
     </div>
 
     <div id="abaRequisicao" class="tab-content">
-        <h3>📝 Requisição de Material</h3>
+        <h3>📝 Requisições</h3>
         <div class="card-auth" style="max-width: none;">
-            <label>📦 Selecionar Material</label>
-            <select id="reqSelect"></select>
-            <label>🔢 Quantidade</label>
-            <input type="number" id="reqQtd">
-            <label>👤 Funcionário Solicitante</label>
-            <input type="text" id="reqFunc">
-            <label>👨‍💼 Almoxarife Responsável</label>
-            <input type="text" id="reqAlmo">
-            <button class="btn-main btn-green" onclick="salvarRequisicaoBaixa()">💾 Salvar e Dar Baixa</button>
-            <button class="btn-main btn-blue" onclick="gerarPdfRequisicao()">🖨️ Gerar PDF Assinatura</button>
+            <label>👤 Funcionário Solicitante</label><input type="text" id="reqFunc">
+            <label>👨‍💼 Almoxarife</label><input type="text" id="reqAlmo">
+            <label>📦 Material</label><select id="reqSelect"></select>
+            <label>🔢 Qtd</label><input type="number" id="reqQtd">
+            
+            <button class="btn-main btn-green" onclick="salvarReqBaixa()">💾 Salvar e Dar Baixa</button>
+            <button class="btn-main btn-blue" onclick="gerarPdfReq()">🖨️ Gerar PDF para Assinatura</button>
         </div>
-        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
     </div>
 
-    <div id="abaRelatorio" class="tab-content">
-        <h3>📄 Relatórios Estratégicos</h3>
-        <button class="btn-main btn-blue" onclick="gerarRelatorioMensal()">📊 Gerar Relatório Completo Mensal</button>
-        <div style="margin-top: 20px; font-size: 12px; opacity: 0.7;">
-            * O relatório inclui fluxos de estoque, histórico de vendas e movimentações de NF.
+    <div id="abaVenda" class="tab-content">
+        <h3>💰 PDV (Saída Avulsa)</h3>
+        <div class="card-auth" style="max-width:none;">
+            <label>📦 Item</label><select id="vendaSelect"></select>
+            <label>🔢 Qtd</label><input type="number" id="vendaQtd">
+            <button class="btn-main btn-green" onclick="registrarVenda()">🛒 Registrar Saída</button>
         </div>
-        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
     </div>
 </div>
 
@@ -253,73 +189,68 @@
     <div class="card-auth">
         <h3>⚙️ Configurações</h3>
         <div class="input-group">
-            <label><input type="checkbox" id="cfgDestaque" onchange="updateDestaque()"> Destacar Nome da Empresa no Topo</label>
+            <label style="display:flex; align-items:center; gap:10px;">
+                <input type="checkbox" id="cfgDestaque" onchange="updateConfig()" style="width:20px; height:20px;">
+                Exibir Nome da Empresa no Topo
+            </label>
         </div>
         <button class="btn-main btn-blue" onclick="toggleConfig()">Fechar</button>
     </div>
 </div>
 
 <script>
-    // BANCO DE DADOS LOCAL (Simulação persistente)
-    let db = JSON.parse(localStorage.getItem('ultra_erp_db')) || {
-        users: [],
-        estoque: [],
-        vendas: [],
-        nfs: [],
-        solicitacoes: [],
-        protocolos: [],
-        config: { destaque: false }
+    // --- 1. BANCO DE DADOS LOCAL E PWA SERVICE WORKER ---
+    let db = JSON.parse(localStorage.getItem('ultra_erp_final')) || {
+        users: [], estoque: [], vendas: [], nfs: [], solicitacoes: [], protocolos: [], config: { destaque: false }
     };
-
     let currentUser = null;
     let timerInatividade;
 
-    // SISTEMA DE SEGURANÇA E INATIVIDADE
+    if ('serviceWorker' in navigator) {
+        const swCode = `
+            self.addEventListener('install', (e) => self.skipWaiting());
+            self.addEventListener('activate', (e) => self.clients.claim());
+            self.addEventListener('fetch', (e) => { e.respondWith(fetch(e.request).catch(() => new Response('Offline'))); });
+        `;
+        const blob = new Blob([swCode], {type: 'application/javascript'});
+        navigator.serviceWorker.register(URL.createObjectURL(blob));
+    }
+
+    function saveDB() { localStorage.setItem('ultra_erp_final', JSON.stringify(db)); renderUI(); }
+
+    // --- 2. SISTEMA DE SEGURANÇA E INATIVIDADE ---
     function resetTimer() {
         clearTimeout(timerInatividade);
         if (currentUser) {
             timerInatividade = setTimeout(() => {
                 document.getElementById('timeoutAlert').style.display = 'block';
-                setTimeout(() => {
-                    logout(true);
-                    document.getElementById('timeoutAlert').style.display = 'none';
-                }, 4000);
-            }, 300000); // 5 minutos
+                localStorage.removeItem('erp_session');
+                setTimeout(() => location.reload(), 5000); // Recarrega após 5s
+            }, 300000); // 300000ms = 5 minutos
         }
     }
+    window.onclick = resetTimer; window.onkeypress = resetTimer; window.ontouchstart = resetTimer;
 
-    document.onmousedown = resetTimer;
-    document.onkeypress = resetTimer;
-    document.ontouchstart = resetTimer;
-
-    // LOGIN E CADASTRO
-    function payRedirect() {
-        window.open('https://mpago.li/1Qt8hoV', '_blank');
-        setTimeout(() => {
-            if (confirm("Pagamento confirmado no Mercado Pago?")) {
-                document.getElementById('registerSection').style.display = 'flex';
-            }
-        }, 2000);
+    // --- 3. LOGIN E MERCADO PAGO ---
+    function iniciarCadastro() {
+        if(confirm("Você será redirecionado para o Mercado Pago. Após o pagamento, retorne para concluir o cadastro. Continuar?")) {
+            window.open('https://mpago.li/1Qt8hoV', '_blank');
+            setTimeout(() => { document.getElementById('registerSection').style.display = 'flex'; }, 3000);
+        }
     }
 
     function finalizeRegister() {
         const cpf = document.getElementById('regCpf').value.replace(/\D/g, '');
-        if (db.users.find(u => u.cpf === cpf)) {
-            alert("ERRO: Este CPF já possui um cadastro ativo!");
-            return;
-        }
+        if(!cpf || !document.getElementById('regNome').value || !document.getElementById('regPass').value) return alert("Preencha os campos obrigatórios!");
+        
+        if (db.users.find(u => u.cpf === cpf)) return alert("ERRO: Este CPF já possui um cadastro no sistema!");
 
-        const newUser = {
-            nome: document.getElementById('regNome').value,
-            cpf: cpf,
-            cel: document.getElementById('regCel').value,
-            empresa: document.getElementById('regEmpresa').value,
-            pass: document.getElementById('regPass').value
-        };
-
-        db.users.push(newUser);
+        db.users.push({
+            nome: document.getElementById('regNome').value, cpf: cpf, cel: document.getElementById('regCel').value,
+            empresa: document.getElementById('regEmpresa').value, pass: document.getElementById('regPass').value
+        });
         saveDB();
-        alert("Cadastro realizado com sucesso! Faça seu login.");
+        alert("Cadastro realizado com sucesso!");
         location.reload();
     }
 
@@ -329,216 +260,158 @@
         const user = db.users.find(u => u.cpf === cpf && u.pass === pass);
 
         if (user) {
-            currentUser = user;
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('appBody').classList.remove('hidden');
-            document.getElementById('mainHeader').classList.remove('hidden');
-            document.getElementById('topoUsuario').innerText = user.nome.split(' ')[0];
-            updateDestaque();
-            resetTimer();
-            renderEstoque();
-        } else {
-            alert("Dados inválidos ou usuário não pago.");
-        }
+            currentUser = user; localStorage.setItem('erp_session', user.cpf);
+            iniciarSessao();
+        } else alert("CPF ou Senha incorretos!");
     }
 
-    function logout(silent = false) {
-        if (!silent) {
-            const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-37.mp3'); 
-            audio.play().catch(() => {});
-            alert("Obrigado por utilizar o ULTRA ERP PRO!");
-        }
-        location.reload();
-    }
-
-    // GESTÃO DE ESTOQUE
-    function novoItemEstoque() {
-        const nome = prompt("Nome do Item:");
-        const qtd = prompt("Quantidade Inicial:");
-        const min = prompt("Estoque Mínimo:");
-        if(nome) {
-            db.estoque.push({ nome, qtd: parseInt(qtd), min: parseInt(min) });
-            saveDB();
-            renderEstoque();
-        }
-    }
-
-    function renderEstoque() {
-        const tbody = document.querySelector('#tabelaEstoque tbody');
-        const reqSelect = document.getElementById('reqSelect');
-        tbody.innerHTML = '';
-        reqSelect.innerHTML = '';
+    function iniciarSessao() {
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('appBody').classList.remove('hidden');
+        document.getElementById('mainHeader').classList.remove('hidden');
+        document.getElementById('topoUsuario').innerText = `👤 ${currentUser.nome.split(' ')[0]}`;
         
-        db.estoque.forEach(item => {
-            const row = `<tr><td>${item.nome}</td><td>${item.qtd}</td><td>${item.min}</td></tr>`;
-            tbody.innerHTML += row;
-            reqSelect.innerHTML += `<option value="${item.nome}">${item.nome}</option>`;
-        });
+        document.getElementById('cfgDestaque').checked = db.config.destaque;
+        updateConfig(true); renderUI(); resetTimer();
     }
 
-    // SCANNER E NF
-    function processarNF() {
-        const file = document.getElementById('inputPdf').files[0];
-        if (!file) return alert("Selecione um arquivo!");
-        
-        const novoNome = prompt("Renomeie o arquivo para salvar:");
-        if (novoNome) {
-            const data = new Date().toLocaleDateString();
-            db.nfs.push({ nome: novoNome, data: data, url: URL.createObjectURL(file) });
-            saveDB();
-            renderNFs();
-        }
-    }
-
-    function renderNFs() {
-        const tbody = document.querySelector('#tabelaNF tbody');
-        tbody.innerHTML = '';
-        db.nfs.forEach((nf, idx) => {
-            tbody.innerHTML += `<tr><td>${nf.nome}</td><td>${nf.data}</td><td><a href="${nf.url}" download="${nf.nome}.pdf" style="color:var(--accent)">Download</a></td></tr>`;
-        });
-    }
-
-    // REQUISIÇÃO E PDF
-    function salvarRequisicaoBaixa() {
-        const itemNome = document.getElementById('reqSelect').value;
-        const qtd = parseInt(document.getElementById('reqQtd').value);
-        const item = db.estoque.find(i => i.nome === itemNome);
-
-        if (item && item.qtd >= qtd) {
-            item.qtd -= qtd;
-            db.vendas.push({ item: itemNome, qtd, tipo: 'Requisição', data: new Date() });
-            saveDB();
-            renderEstoque();
-            alert("Baixa efetuada no estoque!");
-        } else {
-            alert("Saldo insuficiente!");
-        }
-    }
-
-    function gerarPdfRequisicao() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        const func = document.getElementById('reqFunc').value;
-        const almo = document.getElementById('reqAlmo').value;
-        const item = document.getElementById('reqSelect').value;
-        const qtd = document.getElementById('reqQtd').value;
-
-        doc.text("COMPROVANTE DE REQUISIÇÃO DE MATERIAL", 10, 10);
-        doc.text(`Material: ${item} | Qtd: ${qtd}`, 10, 30);
-        doc.text(`Solicitante: ${func}`, 10, 40);
-        doc.text(`Data: ${new Date().toLocaleString()}`, 10, 50);
-        doc.text("--------------------------------------------------", 10, 70);
-        doc.text(`Ass. Funcionário: ________________________`, 10, 90);
-        doc.text(`Ass. Almoxarife (${almo}): ________________________`, 10, 110);
-        
-        doc.save(`Requisicao_${item}.pdf`);
-    }
-
-    // COTAÇÃO IA
-    function cotacaoIA() {
-        const search = document.getElementById('iaSearch').value;
-        const res = document.getElementById('iaResult');
-        res.innerHTML = "⏳ Inteligência Artificial pesquisando melhores preços em tempo real...";
+    function logout() {
+        // Som agradável de encerramento
+        const audio = new Audio('https://actions.google.com/sounds/v1/water/water_drop.ogg');
+        audio.play().catch(e => console.log(e));
         
         setTimeout(() => {
-            const preco1 = (Math.random() * 100).toFixed(2);
-            const preco2 = (Math.random() * 100).toFixed(2);
-            res.innerHTML = `
-                🤖 <b>Análise IA para: ${search}</b><br>
-                📉 Menor Preço Encontrado: R$ ${preco1} (Distribuidora A)<br>
-                🏪 Preço Local Médio: R$ ${preco2}<br>
-                💡 Recomendação: O momento é ideal para compra em larga escala.
-            `;
+            localStorage.removeItem('erp_session');
+            location.reload();
+        }, 800);
+    }
+
+    // --- 4. FUNCIONALIDADES DOS MENUS ---
+    function openTab(id) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-tab'));
+        document.getElementById('menuPrincipal').style.display = id === 'menuPrincipal' ? 'block' : 'none';
+        if(id !== 'menuPrincipal') document.getElementById(id).classList.add('active-tab');
+    }
+
+    function addEstoque() {
+        db.estoque.push({ nome: document.getElementById('estNome').value, qtd: +document.getElementById('estQtd').value, min: +document.getElementById('estMin').value });
+        saveDB(); document.getElementById('estNome').value = '';
+    }
+
+    // Scanner PDF
+    function salvarNFPDF() {
+        const file = document.getElementById('inputPdf').files[0];
+        if(!file) return alert("Selecione um arquivo!");
+        const nomeNF = prompt("Renomeie o arquivo da NF antes de salvar:", file.name);
+        if(!nomeNF) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            db.nfs.push({ nome: nomeNF, data: new Date().toLocaleDateString(), pdf: e.target.result });
+            saveDB(); alert("NF Salva com sucesso!");
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // IA Cotação
+    function cotacaoIA() {
+        const search = document.getElementById('iaSearch').value;
+        if(!search) return;
+        document.getElementById('iaResult').innerHTML = "⏳ Analisando fornecedores via IA...";
+        setTimeout(() => {
+            document.getElementById('iaResult').innerHTML = `🤖 <b>Análise: ${search}</b><br>💰 Menor preço online: R$ ${(Math.random()*100).toFixed(2)}<br>Tendência: Compra favorável hoje.`;
         }, 2000);
     }
 
-    // PROTOCOLO
+    // Protocolo e Solicitações
     function addSolicitacao(status) {
         const item = document.getElementById('solItem').value;
-        const data = new Date().toLocaleDateString();
-        db.solicitacoes.push({ item, status, data });
+        if(!item) return;
+        db.solicitacoes.push({ item, status, data: new Date().toLocaleDateString() });
         if(status === 'recebido') {
-            db.protocolos.push({ item, data, status: 'NF PENDENTE DE ENTRADA' });
+            db.protocolos.push({ data: new Date().toLocaleDateString(), item, status: "⚠️ NF PENDENTE" });
         }
-        saveDB();
-        alert("Solicitação registrada!");
-        renderProtocolo();
+        saveDB(); alert("Registrado!");
     }
 
-    function renderProtocolo() {
-        const tbody = document.querySelector('#tabelaProtocolo tbody');
-        tbody.innerHTML = '';
+    // Requisições
+    function salvarReqBaixa() {
+        const item = db.estoque.find(i => i.nome === document.getElementById('reqSelect').value);
+        const qtd = +document.getElementById('reqQtd').value;
+        if(item && item.qtd >= qtd) {
+            item.qtd -= qtd; saveDB(); alert("Baixa efetuada no estoque!");
+        } else alert("Saldo insuficiente!");
+    }
+
+    function gerarPdfReq() {
+        const { jsPDF } = window.jspdf; const doc = new jsPDF();
+        doc.text("TERMO DE RETIRADA DE MATERIAL", 10, 20);
+        doc.text(`Material: ${document.getElementById('reqSelect').value} - Qtd: ${document.getElementById('reqQtd').value}`, 10, 40);
+        doc.text(`Data: ${new Date().toLocaleString()}`, 10, 50);
+        doc.text(`Ass. Solicitante (${document.getElementById('reqFunc').value}): _____________________`, 10, 80);
+        doc.text(`Ass. Almoxarife (${document.getElementById('reqAlmo').value}): _____________________`, 10, 100);
+        doc.save("Requisicao.pdf");
+    }
+
+    // Relatório Mensal
+    function gerarRelatorioCompleto() {
+        const { jsPDF } = window.jspdf; const doc = new jsPDF();
+        doc.text(`RELATORIO COMPLETO - ${currentUser.empresa}`, 10, 10);
+        doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, 10, 20);
+        doc.autoTable({ head: [['Item', 'Qtd Atual', 'Estoque Mín']], body: db.estoque.map(i => [i.nome, i.qtd, i.min]), startY: 30 });
+        doc.save("Relatorio_Mensal.pdf");
+    }
+
+    // Venda Extra
+    function registrarVenda() {
+        const item = db.estoque.find(i => i.nome === document.getElementById('vendaSelect').value);
+        if(item && item.qtd >= +document.getElementById('vendaQtd').value) {
+            item.qtd -= +document.getElementById('vendaQtd').value; saveDB(); alert("Saída Registrada!");
+        } else alert("Erro no saldo!");
+    }
+
+    // --- 5. RENDERIZAÇÃO E UI ---
+    function renderUI() {
+        // Estoque & Selects
+        const tbEst = document.querySelector('#tabEstoque tbody'); tbEst.innerHTML = '';
+        const selReq = document.getElementById('reqSelect'); selReq.innerHTML = '';
+        const selVen = document.getElementById('vendaSelect'); selVen.innerHTML = '';
+        
+        db.estoque.forEach(i => {
+            tbEst.innerHTML += `<tr><td>${i.nome}</td><td style="${i.qtd<=i.min?'color:red;font-weight:bold':''}">${i.qtd}</td><td>${i.min}</td></tr>`;
+            selReq.innerHTML += `<option>${i.nome}</option>`; selVen.innerHTML += `<option>${i.nome}</option>`;
+        });
+
+        // NFs Escaneadas
+        const tbNF = document.querySelector('#tabNFs tbody'); tbNF.innerHTML = '';
+        db.nfs.forEach(nf => {
+            tbNF.innerHTML += `<tr><td>${nf.nome}</td><td>${nf.data}</td><td><a href="${nf.pdf}" download="${nf.nome}.pdf">⬇️ Baixar</a></td></tr>`;
+        });
+
+        // Protocolos
+        const tbProt = document.querySelector('#tabProtocolo tbody'); tbProt.innerHTML = '';
         db.protocolos.forEach(p => {
-            tbody.innerHTML += `<tr><td>${p.data}</td><td>${p.item}</td><td style="color:var(--neon-pink)">${p.status}</td></tr>`;
+            tbProt.innerHTML += `<tr><td>${p.data}</td><td>${p.item}</td><td style="color:#ef4444; font-weight:bold;">${p.status}</td></tr>`;
         });
     }
 
-    // RELATÓRIO MENSAL
-    function gerarRelatorioMensal() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text(`RELATÓRIO MENSAL - ${currentUser.empresa}`, 10, 10);
-        
-        const dataRel = db.estoque.map(i => [i.nome, i.qtd, i.min]);
-        doc.autoTable({
-            head: [['Item', 'Qtd Atual', 'Mínimo']],
-            body: dataRel,
-            startY: 20
-        });
-        
-        doc.save("Relatorio_Mensal_Estoque.pdf");
+    function toggleConfig() { document.getElementById('configModal').style.display = document.getElementById('configModal').style.display === 'flex' ? 'none' : 'flex'; }
+    
+    function updateConfig(init = false) {
+        if(!init) { db.config.destaque = document.getElementById('cfgDestaque').checked; saveDB(); }
+        const empEl = document.getElementById('topoEmpresaNome');
+        if(db.config.destaque) { empEl.innerText = currentUser.empresa; empEl.classList.remove('hidden'); }
+        else { empEl.classList.add('hidden'); }
     }
 
-    // UTILITÁRIOS
-    function openTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active-tab'));
-        document.getElementById('menuPrincipal').style.display = (tabId === 'menuPrincipal') ? 'block' : 'none';
-        document.getElementById(tabId).classList.add('active-tab');
-        if(tabId === 'abaScanner') renderNFs();
-        if(tabId === 'abaProtocolo') renderProtocolo();
-    }
-
-    function saveDB() { localStorage.setItem('ultra_erp_db', JSON.stringify(db)); }
-
-    function toggleConfig() {
-        const modal = document.getElementById('configModal');
-        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-    }
-
-    function updateDestaque() {
-        const check = document.getElementById('cfgDestaque');
-        const topo = document.getElementById('topoEmpresaNome');
-        if(currentUser) {
-            topo.innerText = currentUser.empresa;
-            topo.style.display = db.config.destaque ? 'block' : 'none';
+    // Inicialização
+    window.onload = () => {
+        const sessionCpf = localStorage.getItem('erp_session');
+        if(sessionCpf) {
+            const user = db.users.find(u => u.cpf === sessionCpf);
+            if(user) { currentUser = user; iniciarSessao(); }
         }
-    }
-
-    // CALCULADORA
-    let calcVal = "";
-    function calc(v) { 
-        if(v === '=') { calcVal = eval(calcVal); }
-        else if(v === 'C') { calcVal = ""; }
-        else { calcVal += v; }
-        document.getElementById('calcScreen').innerText = calcVal || "0";
-    }
-
+    };
 </script>
-
-<script>
-    document.getElementById('abaCalc').innerHTML += `
-        <div class="calc-box">
-            <div id="calcScreen" class="calc-screen">0</div>
-            <div class="calc-btns">
-                <button onclick="calc('7')">7</button><button onclick="calc('8')">8</button><button onclick="calc('9')">9</button><button onclick="calc('/')">/</button>
-                <button onclick="calc('4')">4</button><button onclick="calc('5')">5</button><button onclick="calc('6')">6</button><button onclick="calc('*')">*</button>
-                <button onclick="calc('1')">1</button><button onclick="calc('2')">2</button><button onclick="calc('3')">3</button><button onclick="calc('-')">-</button>
-                <button onclick="calc('0')">0</button><button onclick="calc('C')">C</button><button onclick="calc('=')" style="background:var(--neon-green)">=</button><button onclick="calc('+')">+</button>
-            </div>
-        </div>
-        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
-    `;
-</script>
-
 </body>
 </html>
