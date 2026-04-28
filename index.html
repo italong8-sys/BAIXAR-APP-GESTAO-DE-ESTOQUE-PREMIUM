@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#020617">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>ERP ULTRA MASTER PRO - V2026</title>
 
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVSUCBVbHRyYSBNYXN0ZXIiLAogICJzaG9ydF9uYW1lIjogIkVSUCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDIwNjE3IiwKICAidGhlbWVfY29sb3IiIjogIiMwMjA2MTciLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yNjkzLzI2OTM1MDcucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
@@ -15,341 +14,338 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
     <style>
-        :root { --bg: #0f172a; --card: #020617; --text: #e2e8f0; --accent: #38bdf8; --neon-pink: #ff00ff; --neon-green: #39ff14; }
-        .light-mode { --bg: #f1f5f9; --card: #ffffff; --text: #1e293b; --accent: #0284c7; }
+        :root { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --accent: #38bdf8; --neon-pink: #f472b6; --neon-green: #4ade80; --danger: #f87171; }
+        .light-mode { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #0284c7; }
         
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; font-family: 'Segoe UI', system-ui; background: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', system-ui, sans-serif; }
+        body { margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; min-height: 100vh; display: flex; flex-direction: column; }
         
-        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #020617; border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 1000; }
-        .empresa-destaque { color: var(--neon-pink); font-weight: 900; font-size: 14px; text-transform: uppercase; text-shadow: 0 0 5px var(--neon-pink); }
-        .user-area { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+        /* Header e Títulos */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #020617; border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 1000; }
+        .logo-box { display: flex; flex-direction: column; }
+        .empresa-destaque { color: var(--neon-pink); font-weight: 800; font-size: 13px; letter-spacing: 1px; }
         
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 5000; padding: 15px; }
+        /* Modais */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 5000; padding: 15px; backdrop-filter: blur(5px); }
+        .card-panel { width: 100%; max-width: 450px; background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .hidden { display: none !important; }
-        .alert-popup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #ef4444; color: white; padding: 15px; border-radius: 8px; font-weight: bold; z-index: 9999; box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); display: none; text-align: center; width: 90%; }
+
+        /* Menu Grade */
+        .menu-geral { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; background: rgba(0,0,0,0.2); }
+        .menu-geral button { padding: 15px 5px; border: none; border-radius: 12px; background: #334155; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
+        .menu-geral button:active { transform: scale(0.95); background: var(--accent); }
+        .menu-geral button i-emoji { font-size: 20px; }
+
+        /* Estilos de Formulário */
+        .container { padding: 15px; flex-grow: 1; }
+        .section-title { font-size: 16px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+        .input-group { margin-bottom: 12px; }
+        label { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-left: 2px; }
+        input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 15px; }
+        .action-btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; }
         
-        #loginArea { display: flex; justify-content: center; align-items: center; flex-grow: 1; padding: 20px; }
-        .card-panel { width: 100%; max-width: 420px; background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--accent); max-height: 90vh; overflow-y: auto;}
-        
-        .menu-geral { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; background: rgba(0,0,0,0.4); }
-        .menu-geral button { padding: 12px 5px; border: none; border-radius: 8px; background: var(--accent); color: white; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; font-size: 10px; transition: 0.2s; text-align: center;}
-        
-        .container { display: grid; grid-template-columns: 1fr; gap: 15px; padding: 15px; }
-        .card { background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-        
-        label { font-size: 10px; font-weight: bold; margin-top: 10px; display: block; color: var(--accent); text-transform: uppercase; }
-        input, select { width: 100%; padding: 12px; margin-top: 4px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 16px; } /* 16px evita zoom no iOS */
-        
-        .action { width: 100%; padding: 14px; margin-top: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 12px; }
-        .btn-save { background: var(--neon-green); color: #020617; }
-        .btn-pay { background: #009ee3; color: white; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 10px; }
-        th { background: #1e293b; color: var(--accent); padding: 6px; border-bottom: 2px solid var(--accent); }
-        td { padding: 8px 6px; border-bottom: 1px solid #1e293b; }
-        
-        #relogio { font-family: monospace; font-size: 12px; color: var(--neon-green); }
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 10px; }
-        .calc-btn { padding: 18px; font-weight: bold; border-radius: 8px; border: none; background: #334155; color: white; font-size: 18px;}
+        /* Cores de Botão */
+        .bg-green { background: var(--neon-green); color: #064e3b; }
+        .bg-blue { background: var(--accent); color: white; }
+        .bg-pink { background: var(--neon-pink); color: white; }
+        .bg-danger { background: var(--danger); color: white; }
+
+        /* Tabelas */
+        .table-responsive { overflow-x: auto; background: rgba(0,0,0,0.1); border-radius: 10px; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid #334155; color: var(--accent); }
+        td { padding: 12px; border-bottom: 1px solid #334155; }
+
+        /* Calculadora */
+        .calc-display { background: #000; color: var(--neon-green); padding: 20px; text-align: right; font-size: 30px; font-family: monospace; border-radius: 10px; margin-bottom: 10px; }
+        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .btn-calc { padding: 20px; font-size: 18px; border-radius: 10px; border: none; background: #475569; color: white; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div id="timeoutAlert" class="alert-popup">
-    ⏳ Devido a falta de interação no app, você foi deslogado por motivos de segurança!
-</div>
-
 <header>
-    <div>
-        <span style="font-size:12px;">🚀 <strong>GESTÃO DE ESTOQUE E VENDAS PREMIUM</strong></span>
-        <div id="empresaTopo" class="empresa-destaque hidden"></div>
+    <div class="logo-box">
+        <span style="font-size: 14px; font-weight: 900;">🛡️ ULTRA ERP</span>
+        <span id="empresaTopo" class="empresa-destaque hidden"></span>
     </div>
-    <div id="relogioContainer"></div>
-    <div class="user-area">
-        <span id="usuarioTopo"></span>
-        <span id="btnConfigGlobal" class="hidden" onclick="abrirConfig()">⚙️</span>
+    <div id="relogioContainer" style="font-family: monospace; font-size: 11px; color: var(--neon-green);"></div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span id="usuarioTopo" style="font-size: 11px; font-weight: bold;"></span>
+        <button onclick="abrirConfig()" style="background:none; border:none; font-size:18px; cursor:pointer;">⚙️</button>
     </div>
 </header>
 
-<div id="loginArea">
+<div id="loginArea" style="display: flex; justify-content: center; align-items: center; flex-grow: 1; padding: 20px;">
     <div class="card-panel">
-        <h3>🔐 Acesso Restrito</h3>
-        <label>👤 CPF / Usuário</label>
-        <input id="userLogin" type="text" inputmode="numeric">
-        <label>🔑 Senha</label>
-        <input id="passLogin" type="password">
-        <button class="action btn-save" onclick="autenticar()">🔓 ENTRAR NO SISTEMA</button>
-        <hr style="opacity:0.1; margin:20px 0;">
-        <button class="action btn-pay" onclick="abrirPgto()">💳 NOVO USUÁRIO (MERCADO PAGO)</button>
+        <h2 style="text-align: center; margin-bottom: 20px;">🔐 Autenticação</h2>
+        <div class="input-group">
+            <label>👤 CPF do Usuário</label>
+            <input id="userLogin" type="text" placeholder="000.000.000-00">
+        </div>
+        <div class="input-group">
+            <label>🔑 Senha de Acesso</label>
+            <input id="passLogin" type="password" placeholder="••••••••">
+        </div>
+        <button class="action-btn bg-green" onclick="autenticar()">🔓 ACESSAR PORTAL</button>
+        <div style="margin: 20px 0; text-align: center; font-size: 12px; opacity: 0.5;">OU</div>
+        <button class="action-btn bg-blue" onclick="abrirPgto()">💳 REGISTRAR NOVA CONTA</button>
     </div>
 </div>
 
 <div id="modalPgto" class="modal">
-    <div class="card-panel" style="text-align:center;">
-        <h3>💳 Validação de Acesso</h3>
-        <p style="font-size:12px; color:#aaa;">O cadastro requer pagamento de taxa única via Mercado Pago.</p>
-        <a href="https://mpago.li/1Qt8hoV" target="_blank" style="display:block; padding:15px; background:#009ee3; color:white; text-decoration:none; border-radius:8px; font-weight:bold; margin:20px 0;">PAGAR AGORA</a>
-        <button class="action btn-save" onclick="validarPgto()">JÁ PAGUEI / LIBERAR FORMULÁRIO</button>
-        <button class="action" onclick="document.getElementById('modalPgto').style.display='none'">VOLTAR</button>
+    <div class="card-panel">
+        <h3 style="text-align: center;">🤝 Taxa de Ativação</h3>
+        <p style="font-size: 12px; text-align: center; margin-bottom: 20px;">Para garantir a segurança dos dados, realize o pagamento único para liberar seu CPF.</p>
+        <button class="action-btn bg-blue" onclick="window.open('https://mpago.li/1Qt8hoV')">🔗 PAGAR VIA MERCADO PAGO</button>
+        <button class="action-btn bg-green" onclick="validarPgto()">✅ JÁ REALIZEI O PAGAMENTO</button>
+        <button class="action-btn" onclick="document.getElementById('modalPgto').style.display='none'">❌ CANCELAR</button>
     </div>
 </div>
 
 <div id="modalReg" class="modal">
     <div class="card-panel">
-        <h3>📝 Registro de Conta</h3>
-        <label>Nome Completo</label><input id="regNome">
-        <label>CPF (Unicidade por Conta)</label><input id="regCpf" maxlength="11" inputmode="numeric">
-        <label>Celular</label><input id="regTel" inputmode="tel">
-        <label>Nome da Empresa</label><input id="regEmpresa">
-        <label>Senha</label><input id="regPass" type="password">
-        <button class="action btn-save" onclick="registrarUsuario()">💾 SALVAR E FINALIZAR</button>
+        <h3>📝 Cadastro Detalhado</h3>
+        <div class="input-group"><label>👤 Nome Completo</label><input id="regNome"></div>
+        <div class="input-group"><label>🆔 CPF (Apenas Números)</label><input id="regCpf" maxlength="11"></div>
+        <div class="input-group"><label>📞 WhatsApp/Celular</label><input id="regTel"></div>
+        <div class="input-group"><label>🏢 Nome da Empresa</label><input id="regEmpresa"></div>
+        <div class="input-group"><label>🔑 Criar Senha</label><input id="regPass" type="password"></div>
+        <button class="action-btn bg-green" onclick="registrarUsuario()">💾 SALVAR E ATIVAR</button>
     </div>
 </div>
 
 <div id="app" class="hidden">
     <nav class="menu-geral">
-        <button onclick="mostrar('estoque')">📦<span>Estoque</span></button>
-        <button onclick="mostrar('escanear_nf')">🖨️<span>Escanear NF</span></button>
-        <button onclick="mostrar('requisicao')">📝<span>Requisições</span></button>
-        <button onclick="mostrar('solicitacao')">🛍️<span>Cotação IA</span></button>
-        <button onclick="mostrar('protocolo')">📥<span>Protocolos</span></button>
-        <button onclick="mostrar('venda')">💰<span>PDV Venda</span></button>
-        <button onclick="mostrar('calculadora')">🧮<span>Calc</span></button>
-        <button onclick="gerarRelatorioMensal()" style="background:#8b5cf6;">📄<span>Relatório</span></button>
-        <button onclick="logout()" style="background:#ef4444; grid-column: span 2;">🚪<span>Sair do Sistema</span></button>
+        <button onclick="mostrar('estoque')"><span>📦</span>Estoque</button>
+        <button onclick="mostrar('venda')"><span>💰</span>PDV Venda</button>
+        <button onclick="mostrar('escanear_nf')"><span>🖨️</span>NF PDF</button>
+        <button onclick="mostrar('requisicao')"><span>📝</span>Requisição</button>
+        <button onclick="mostrar('solicitacao')"><span>🤖</span>IA Cotação</button>
+        <button onclick="mostrar('protocolo')"><span>📥</span>Protocolo</button>
+        <button onclick="mostrar('calculadora')"><span>🧮</span>Calc</button>
+        <button onclick="gerarRelatorioMensal()" class="bg-blue"><span>📄</span>Relatório</button>
+        <button onclick="logout()" class="bg-danger"><span>🚪</span>Sair</button>
     </nav>
 
-    <div id="escanear_nf" class="container section hidden">
-        <div class="card">
-            <h3>🖨️ Salvar NF em PDF</h3>
-            <label>📎 Arquivo (Celular/Impressora)</label>
-            <input type="file" id="nfFile" accept="application/pdf, image/*">
-            <label>✏️ Renomear Arquivo</label>
-            <input id="nfFileName" placeholder="Ex: NF-Fornecedor-01">
-            <button class="action btn-save" onclick="salvarPdfNf()">💾 SALVAR NF EM PDF</button>
-        </div>
-        <div class="card">
-            <h3>📂 Histórico de PDF</h3>
-            <table id="listaNfPdf"></table>
-        </div>
-    </div>
-
-    <div id="requisicao" class="container section hidden">
-        <div class="card">
-            <h3>📝 Retirada de Material</h3>
-            <label>Funcionário</label><input id="reqFunc">
-            <label>Material</label><select id="reqItem"></select>
-            <label>Quantidade</label><input id="reqQtd" type="number">
-            <button class="action btn-save" onclick="salvarRequisicaoBaixa()">💾 SALVAR E DAR BAIXA</button>
-            <button class="action" style="background:#3b82f6; color:white;" onclick="gerarPdfRequisicao()">🖨️ PDF ASSINATURA</button>
-        </div>
-    </div>
-
-    <div id="solicitacao" class="container section hidden">
-        <div class="card">
-            <h3>🤖 Cotação com I.A.</h3>
-            <input id="iaBusca" placeholder="Item para pesquisar...">
-            <button class="action btn-ai" onclick="cotarIA()">🧠 COMPARAR PREÇOS</button>
-            <div id="iaResultado" style="margin-top:10px; font-size:12px; display:none;"></div>
-        </div>
-        <div class="card">
-            <h3>🛍️ Solicitação</h3>
-            <label>Item</label><input id="solNome">
-            <label>Qtd</label><input id="solQtd" type="number">
-            <label>Status</label>
-            <select id="solStatus">
-                <option value="pendente">Pendente</option>
-                <option value="recebido">Material Recebido</option>
-            </select>
-            <button class="action btn-save" onclick="addSolicitacao()">➕ LANÇAR</button>
-        </div>
-    </div>
-
-    <div id="protocolo" class="container section hidden">
-        <div class="card">
-            <h3>📥 Protocolo de Recebimento</h3>
-            <p style="font-size:10px; color:red; font-weight:bold;">NF PENDENTE DE ENTRADA EM DESTAQUE</p>
-            <table id="tabProtocolos"></table>
-        </div>
-    </div>
-
-    <div id="calculadora" class="container section hidden">
-        <div class="card">
-            <input id="calcDisplay" style="text-align:right; font-size:24px;" readonly>
-            <div class="calc-grid">
-                <button class="calc-btn" onclick="calc('7')">7</button><button class="calc-btn" onclick="calc('8')">8</button><button class="calc-btn" onclick="calc('9')">9</button><button class="calc-btn" onclick="calc('/')">/</button>
-                <button class="calc-btn" onclick="calc('4')">4</button><button class="calc-btn" onclick="calc('5')">5</button><button class="calc-btn" onclick="calc('6')">6</button><button class="calc-btn" onclick="calc('*')">*</button>
-                <button class="calc-btn" onclick="calc('1')">1</button><button class="calc-btn" onclick="calc('2')">2</button><button class="calc-btn" onclick="calc('3')">3</button><button class="calc-btn" onclick="calc('-')">-</button>
-                <button class="calc-btn" onclick="calc('0')">0</button><button class="calc-btn" onclick="calc('.')">.</button><button class="calc-btn" style="background:var(--neon-green); color:#000;" onclick="calcRes()">=</button><button class="calc-btn" onclick="calc('+')">+</button>
+    <div class="container">
+        
+        <div id="estoque" class="section">
+            <div class="section-title">📦 Gestão de Inventário</div>
+            <div class="card-panel" style="max-width: none; margin-bottom: 20px;">
+                <div class="input-group"><label>🏷️ Nome do Material</label><input id="estNome"></div>
+                <div class="input-group"><label>⚠️ Alerta de Estoque Mínimo</label><input id="estMin" type="number"></div>
+                <button class="action-btn bg-green" onclick="addEstoque()">➕ ADICIONAR AO ESTOQUE</button>
+            </div>
+            <div class="table-responsive">
+                <table id="tabEstoque">
+                    <thead><tr><th>📦 Produto</th><th>🔢 Saldo</th><th>⚠️ Mín</th></tr></thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
-    </div>
 
-    <div id="estoque" class="container section hidden">
-        <div class="card">
-            <h3>📦 Cadastro Material</h3>
-            <label>Nome</label><input id="estNome">
-            <label>Mínimo</label><input id="estMin" type="number">
-            <button class="action btn-save" onclick="addEstoque()">💾 SALVAR</button>
+        <div id="venda" class="section hidden">
+            <div class="section-title">💰 Frente de Caixa (PDV)</div>
+            <div class="card-panel" style="max-width: none;">
+                <div class="input-group"><label>🔍 Selecionar Item</label><select id="vendaItem"></select></div>
+                <div class="input-group"><label>🔢 Quantidade de Saída</label><input id="vendaQtd" type="number" value="1"></div>
+                <button class="action-btn bg-green" onclick="processarVenda()">🛒 FINALIZAR SAÍDA</button>
+            </div>
         </div>
-        <div class="card">
-            <table id="tabEstoque"><thead><tr><th>Item</th><th>Qtd</th><th>Min</th></tr></thead><tbody></tbody></table>
+
+        <div id="escanear_nf" class="section hidden">
+            <div class="section-title">🖨️ Digitalização de Notas</div>
+            <div class="card-panel" style="max-width: none;">
+                <label>📎 Upload da NF (PDF/Imagem)</label>
+                <input type="file" id="nfFile" accept="application/pdf, image/*">
+                <label>✏️ Identificação do Documento</label>
+                <input id="nfFileName" placeholder="Ex: NF 450 - Fornecedor X">
+                <button class="action-btn bg-blue" onclick="salvarPdfNf()">💾 ARQUIVAR NF</button>
+            </div>
+            <div class="table-responsive">
+                <table id="listaNfPdf">
+                    <thead><tr><th>📅 Data</th><th>📄 Identificação</th><th>📥 Ação</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
+
+        <div id="requisicao" class="section hidden">
+            <div class="section-title">📝 Requisição de Materiais</div>
+            <div class="card-panel" style="max-width: none;">
+                <div class="input-group"><label>👤 Funcionário Solicitante</label><input id="reqFunc"></div>
+                <div class="input-group"><label>📦 Material</label><select id="reqItem"></select></div>
+                <div class="input-group"><label>🔢 Qtd</label><input id="reqQtd" type="number"></div>
+                <button class="action-btn bg-blue" onclick="salvarRequisicaoBaixa()">💾 REGISTRAR E BAIXAR</button>
+                <button class="action-btn bg-pink" onclick="gerarPdfRequisicao()">🖨️ GERAR TERMO PDF</button>
+            </div>
+        </div>
+
+        <div id="solicitacao" class="section hidden">
+            <div class="section-title">🤖 Inteligência de Mercado</div>
+            <div class="input-group"><input id="iaBusca" placeholder="O que deseja cotar hoje?"></div>
+            <button class="action-btn bg-pink" onclick="cotarIA()">🧠 CONSULTAR PREÇOS IA</button>
+            <div id="iaResultado" class="card-panel hidden" style="max-width:none; margin-top:15px; border-style:dashed;"></div>
+        </div>
+
+        <div id="protocolo" class="section hidden">
+            <div class="section-title">📥 Protocolo de Entrada</div>
+            <div class="table-responsive">
+                <table id="tabProtocolos">
+                    <thead><tr><th>📅 Data</th><th>📦 Item</th><th>🔢 Qtd</th><th>🚩 Status NF</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="calculadora" class="section hidden">
+            <div class="calc-display" id="calcDisp">0</div>
+            <div class="calc-keys">
+                <button class="btn-calc" onclick="calc('7')">7</button><button class="btn-calc" onclick="calc('8')">8</button><button class="btn-calc" onclick="calc('9')">9</button><button class="btn-calc" style="background:var(--accent)" onclick="calc('/')">÷</button>
+                <button class="btn-calc" onclick="calc('4')">4</button><button class="btn-calc" onclick="calc('5')">5</button><button class="btn-calc" onclick="calc('6')">6</button><button class="btn-calc" style="background:var(--accent)" onclick="calc('*')">×</button>
+                <button class="btn-calc" onclick="calc('1')">1</button><button class="btn-calc" onclick="calc('2')">2</button><button class="btn-calc" onclick="calc('3')">3</button><button class="btn-calc" style="background:var(--accent)" onclick="calc('-')">-</button>
+                <button class="btn-calc" onclick="calc('C')" style="background:var(--danger)">C</button><button class="btn-calc" onclick="calc('0')">0</button><button class="calc-btn bg-green" onclick="calcRes()" style="grid-column: span 2; font-size:24px;">=</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <div id="modalConfig" class="modal">
     <div class="card-panel">
-        <h3>⚙️ Configurações</h3>
-        <label><input type="checkbox" id="checkEmpresa" onchange="toggleConf('empresaTopo', this.checked)"> Destacar Empresa no Topo</label>
-        <button class="action" onclick="document.body.classList.toggle('light-mode')">🌓 TROCAR TEMA</button>
-        <button class="action" onclick="document.getElementById('modalConfig').style.display='none'">FECHAR</button>
+        <h3>⚙️ Ajustes do Sistema</h3>
+        <label><input type="checkbox" id="checkEmpresa" onchange="toggleConf('empresaTopo', this.checked)"> Exibir Nome da Empresa</label>
+        <hr style="opacity:0.1; margin:15px 0;">
+        <button class="action-btn bg-blue" onclick="document.body.classList.toggle('light-mode')">🌓 ALTERAR TEMA</button>
+        <button class="action-btn" onclick="document.getElementById('modalConfig').style.display='none'">❌ FECHAR</button>
     </div>
 </div>
 
 <script>
-    // --- LÓGICA DE BANCO E SEGURANÇA ---
-    let db = JSON.parse(localStorage.getItem('erp_full_db')) || {
-        usuarios: [], estoque: [], requisicoes: [], solicitacoes: [], protocolos: [], arquivosPdf: [], conf: {empresaTopo: false}
+    let db = JSON.parse(localStorage.getItem('ultra_erp_v2')) || {
+        usuarios: [], estoque: [], requisicoes: [], protocolos: [], arquivosPdf: [], conf: {empresaTopo: false}
     };
 
     function salvarDB() {
-        localStorage.setItem('erp_full_db', JSON.stringify(db));
+        localStorage.setItem('ultra_erp_v2', JSON.stringify(db));
         render();
     }
 
-    // --- TIMER 5 MIN INATIVIDADE ---
-    let tInativo;
-    function resetTimer() {
-        clearTimeout(tInativo);
-        if(localStorage.getItem('sessao')) {
-            tInativo = setTimeout(() => {
-                localStorage.removeItem('sessao');
-                document.getElementById('timeoutAlert').style.display = 'block';
-                setTimeout(() => location.reload(), 3000);
-            }, 300000); // 5 min
-        }
-    }
-    window.onclick = resetTimer;
-
-    // --- CADASTRO E PAGAMENTO ---
-    function abrirPgto() { document.getElementById('modalPgto').style.display='flex'; }
-    function validarPgto() { document.getElementById('modalPgto').style.display='none'; document.getElementById('modalReg').style.display='flex'; }
-    
-    function registrarUsuario() {
-        const cpf = regCpf.value;
-        if(db.usuarios.some(u => u.cpf === cpf)) return alert("CPF já cadastrado!");
-        db.usuarios.push({nome: regNome.value, cpf, tel: regTel.value, empresa: regEmpresa.value, pass: regPass.value});
-        salvarDB();
-        alert("Cadastrado!");
-        location.reload();
-    }
-
+    // --- SEGURANÇA E LOGIN ---
     function autenticar() {
         const u = db.usuarios.find(x => x.cpf === userLogin.value && x.pass === passLogin.value);
         if(u) { localStorage.setItem('sessao', u.cpf); location.reload(); }
-        else alert("Acesso Negado!");
+        else alert("⚠️ Acesso Negado: Verifique CPF e Senha.");
     }
 
-    function logout() {
-        new Audio('https://actions.google.com/sounds/v1/water/water_drop.ogg').play();
-        localStorage.removeItem('sessao');
-        setTimeout(() => location.reload(), 500);
+    function validarPgto() { document.getElementById('modalPgto').style.display='none'; document.getElementById('modalReg').style.display='flex'; }
+
+    function registrarUsuario() {
+        const cpf = regCpf.value;
+        if(db.usuarios.some(u => u.cpf === cpf)) return alert("❌ Este CPF já possui conta ativa.");
+        db.usuarios.push({nome: regNome.value, cpf, tel: regTel.value, empresa: regEmpresa.value, pass: regPass.value});
+        salvarDB();
+        alert("✅ Conta Ativada! Faça o login.");
+        location.reload();
     }
 
-    // --- ESCANEAR NF PDF ---
+    // --- FUNCIONALIDADES ---
+    function addEstoque() {
+        db.estoque.push({nome: estNome.value, qtd: 0, min: +estMin.value});
+        salvarDB();
+        estNome.value = ''; estMin.value = '';
+    }
+
+    function processarVenda() {
+        const item = db.estoque.find(e => e.nome === vendaItem.value);
+        const qtd = +vendaQtd.value;
+        if(item.qtd < qtd) return alert("❌ Saldo Insuficiente!");
+        item.qtd -= qtd;
+        alert("🛒 Venda Realizada!");
+        salvarDB();
+    }
+
     function salvarPdfNf() {
         const file = nfFile.files[0];
         const reader = new FileReader();
         reader.onload = (e) => {
             db.arquivosPdf.push({nome: nfFileName.value, data: new Date().toLocaleDateString(), file: e.target.result});
+            db.protocolos.push({nome: nfFileName.value, qtd: 'Ver NF', data: new Date().toLocaleDateString(), status: '🚩 NF REGISTRADA'});
             salvarDB();
-            alert("NF Salva!");
+            alert("📄 Documento Arquivado!");
         };
         reader.readAsDataURL(file);
     }
 
-    // --- REQUISIÇÕES E PDF ---
+    function cotarIA() {
+        const res = document.getElementById('iaResultado');
+        res.classList.remove('hidden');
+        res.innerHTML = "⏳ <i>Analisando Big Data de fornecedores...</i>";
+        setTimeout(() => {
+            res.innerHTML = `<strong>🤖 Resultado IA:</strong><br>O item <b>${iaBusca.value}</b> possui melhor cotação em 12/05/2026 por <b>R$ ${(Math.random()*150).toFixed(2)}</b> na Distribuidora Master.`;
+        }, 1500);
+    }
+
     function salvarRequisicaoBaixa() {
         const item = db.estoque.find(e => e.nome === reqItem.value);
+        if(item.qtd < +reqQtd.value) return alert("❌ Saldo insuficiente!");
         item.qtd -= +reqQtd.value;
         db.requisicoes.push({func: reqFunc.value, item: reqItem.value, qtd: reqQtd.value, data: new Date().toLocaleDateString()});
         salvarDB();
+        alert("✅ Requisição Gravada!");
     }
 
     function gerarPdfRequisicao() {
         const { jsPDF } = window.jspdf; const doc = new jsPDF();
-        doc.text("REQUISIÇÃO DE MATERIAL", 10, 10);
-        doc.text(`Funcionário: ${reqFunc.value} | Item: ${reqItem.value}`, 10, 20);
-        doc.text("Assinatura Almoxarife: ________________", 10, 50);
-        doc.text("Assinatura Funcionário: ________________", 10, 70);
+        doc.setFontSize(20); doc.text("TERMO DE REQUISIÇÃO", 105, 20, {align: 'center'});
+        doc.setFontSize(12); doc.text(`Solicitante: ${reqFunc.value}`, 20, 40);
+        doc.text(`Material: ${reqItem.value} - Qtd: ${reqQtd.value}`, 20, 50);
+        doc.text("Assinatura: _________________________________", 20, 80);
         doc.save("requisicao.pdf");
     }
 
-    // --- PROTOCOLO E STATUS ---
-    function addSolicitacao() {
-        const s = {nome: solNome.value, qtd: solQtd.value, status: solStatus.value, data: new Date().toLocaleDateString()};
-        db.solicitacoes.push(s);
-        if(s.status === 'recebido') db.protocolos.push(s);
-        salvarDB();
+    // --- CALCULADORA ---
+    let calcVal = "";
+    function calc(v) { 
+        if(v === 'C') calcVal = ""; else calcVal += v;
+        document.getElementById('calcDisp').innerText = calcVal || "0";
     }
+    function calcRes() { try { calcVal = eval(calcVal).toString(); document.getElementById('calcDisp').innerText = calcVal; } catch { calcVal = ""; } }
 
-    // --- IA COTAÇÃO ---
-    function cotarIA() {
-        iaResultado.style.display = 'block'; iaResultado.innerHTML = "Processando IA...";
-        setTimeout(() => {
-            iaResultado.innerHTML = `🤖 Menor preço para ${iaBusca.value}: R$ ${(Math.random()*100).toFixed(2)}`;
-        }, 1500);
+    // --- CORE ---
+    function mostrar(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
     }
-
-    // --- RELATÓRIO MENSAL ---
-    function gerarRelatorioMensal() {
-        const { jsPDF } = window.jspdf; const doc = new jsPDF();
-        doc.text("RELATÓRIO MENSAL DE ESTOQUE E VENDAS", 10, 10);
-        doc.autoTable({ head: [['Item', 'Saldo']], body: db.estoque.map(e => [e.nome, e.qtd]) });
-        doc.save("relatorio_mensal.pdf");
-    }
-
-    // --- AUXILIARES ---
-    function mostrar(id) { document.querySelectorAll('.section').forEach(s => s.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
-    function calc(v) { calcDisplay.value += v; }
-    function calcRes() { try { calcDisplay.value = eval(calcDisplay.value); } catch { calcDisplay.value = "Erro"; } }
-    function abrirConfig() { document.getElementById('modalConfig').style.display='flex'; }
-    function toggleConf(k, v) { db.conf[k] = v; salvarDB(); }
 
     function render() {
-        tabEstoque.querySelector('tbody').innerHTML = db.estoque.map(e => `<tr><td>${e.nome}</td><td>${e.qtd}</td><td>${e.min}</td></tr>`).join('');
-        reqItem.innerHTML = db.estoque.map(e => `<option>${e.nome}</option>`).join('');
-        tabProtocolos.innerHTML = db.protocolos.map(p => `<tr><td>${p.data}</td><td>${p.nome}</td><td>${p.qtd}</td></tr>`).join('');
-        listaNfPdf.innerHTML = db.arquivosPdf.map(a => `<tr><td>${a.nome}</td><td><button onclick="baixar('${a.file}')">⬇️</button></td></tr>`).join('');
-        
-        const userLog = db.usuarios.find(u => u.cpf === localStorage.getItem('sessao'));
-        if(userLog) {
-            empresaTopo.innerText = userLog.empresa;
-            empresaTopo.style.display = db.conf.empresaTopo ? 'block' : 'none';
-            usuarioTopo.innerText = userLog.nome;
-        }
+        tabEstoque.querySelector('tbody').innerHTML = db.estoque.map(e => `<tr><td>${e.nome}</td><td style="${e.qtd<=e.min?'color:red;font-weight:bold':''}">${e.qtd}</td><td>${e.min}</td></tr>`).join('');
+        vendaItem.innerHTML = reqItem.innerHTML = db.estoque.map(e => `<option>${e.nome}</option>`).join('');
+        tabProtocolos.querySelector('tbody').innerHTML = db.protocolos.map(p => `<tr><td>${p.data}</td><td>${p.nome}</td><td>${p.qtd}</td><td>${p.status}</td></tr>`).join('');
+        listaNfPdf.querySelector('tbody').innerHTML = db.arquivosPdf.map(a => `<tr><td>${a.data}</td><td>${a.nome}</td><td><button onclick="baixar('${a.file}')">📥</button></td></tr>`).join('');
     }
 
-    function addEstoque() { db.estoque.push({nome: estNome.value, qtd: 0, min: estMin.value}); salvarDB(); }
-    function baixar(f) { const a = document.createElement('a'); a.href=f; a.download="nf.pdf"; a.click(); }
+    function baixar(f) { const a = document.createElement('a'); a.href=f; a.download="documento.pdf"; a.click(); }
+
+    function abrirConfig() { document.getElementById('modalConfig').style.display='flex'; }
+    function toggleConf(k, v) { db.conf[k] = v; salvarDB(); location.reload(); }
 
     window.onload = () => {
-        if(localStorage.getItem('sessao')) {
+        const sessao = localStorage.getItem('sessao');
+        if(sessao) {
+            const user = db.usuarios.find(u => u.cpf === sessao);
             document.getElementById('loginArea').classList.add('hidden');
             document.getElementById('app').classList.remove('hidden');
-            document.getElementById('btnConfigGlobal').classList.remove('hidden');
+            usuarioTopo.innerText = `👤 ${user.nome.split(' ')[0]}`;
+            if(db.conf.empresaTopo) { 
+                empresaTopo.innerText = `| ${user.empresa}`; 
+                empresaTopo.classList.remove('hidden'); 
+            }
             render();
-            resetTimer();
+            setInterval(() => { relogioContainer.innerText = new Date().toLocaleString(); }, 1000);
         }
     };
-
-    // Service Worker para rodar Offline (Obrigatório para PWA)
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ZW50ID0+IHsgZXZlbnQucmVzcG9uZFdpdGgoZmV0Y2goZXZlbnQucmVxdWVzdCkpOyB9KTs=');
-    }
 </script>
-
 </body>
 </html>
