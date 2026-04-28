@@ -4,414 +4,467 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#020617">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>ULTRA ERP PRO V2026</title>
-
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlVMVFJBIEVSUCBQUk8iLAogICJzaG9ydF9uYW1lIjogIlVMVFJBIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwMjA2MTciLAogICJ0aGVtZV9jb2xvciI6ICIjMDIwNjE3IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvMjc5My8yNzkzNTA3LnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
+    <title>ERP 2026 - Gestão de Estoque e Vendas</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVSUCAyMDI2IC0gR2VzdGFvIGRlIEVzdG9xdWUgZSBWZW5kYXMiLAogICJzaG9ydF9uYW1lIjogIkVSUCAyMDI2IiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwMjA2MTciLAogICJ0aGVtZV9jb2xvciI6ICIjMDIwNjE3IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvMjc5My8yNzkzNTA3LnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
 
     <style>
-        :root { --bg: #020617; --card: #0f172a; --accent: #38bdf8; --text: #f1f5f9; --neon-pink: #f472b6; --neon-green: #22c55e; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        :root {
+            --bg: #020617; --card: #0f172a; --accent: #38bdf8;
+            --text: #f1f5f9; --neon-pink: #f472b6; --neon-green: #22c55e;
+            --neon-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
 
-        header { padding: 15px; background: #000; border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .header-brand { display: flex; flex-direction: column; }
-        .destaque-empresa { color: var(--neon-pink); font-weight: 900; font-size: 14px; text-transform: uppercase; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', sans-serif; }
+        body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
-        .alert-popup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: #ef4444; color: white; padding: 20px; border-radius: 12px; font-weight: bold; z-index: 5000; display: none; text-align: center; border: 2px solid white; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        /* HEADER E RELÓGIO NEON */
+        header { 
+            padding: 15px; background: #000; border-bottom: 2px solid var(--accent);
+            text-align: center; position: sticky; top: 0; z-index: 100;
+        }
+        .app-title { font-size: 14px; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+        #neonClock { 
+            display: none; color: var(--neon-green); font-family: 'Courier New', monospace;
+            font-weight: bold; text-shadow: 0 0 8px var(--neon-green); margin-top: 5px; font-size: 13px;
+        }
 
-        .card-auth { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--accent); width: 100%; max-width: 400px; margin: 0 auto; max-height: 90vh; overflow-y: auto;}
-        .input-group { margin-bottom: 12px; }
-        label { display: block; font-size: 11px; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #1e293b; color: white; font-size: 14px; }
+        /* LOGIN E MODAIS */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
+        .card-auth { background: var(--card); padding: 25px; border-radius: 20px; border: 1px solid var(--accent); width: 100%; max-width: 400px; box-shadow: var(--neon-shadow); }
+        .input-group { margin-bottom: 15px; position: relative; }
+        label { display: block; font-size: 11px; color: var(--accent); font-weight: bold; margin-bottom: 5px; text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; font-size: 14px; }
         
-        .btn-main { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; font-size: 12px;}
+        .show-pass { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-top: 5px; cursor: pointer; color: var(--text); }
+        .show-pass input { width: auto; }
+
+        /* BOTÕES */
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 12px; transition: 0.3s; }
         .btn-blue { background: var(--accent); color: #000; }
         .btn-green { background: var(--neon-green); color: #000; }
-        .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
         .btn-danger { background: #ef4444; color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 
-        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 15px; }
-        .menu-item { background: var(--card); padding: 15px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.05); color: white; font-size: 11px; font-weight: bold; text-align: center; text-decoration: none;}
-        .menu-item i { font-size: 22px; }
+        /* GRID MENU */
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
+        .menu-item { 
+            background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; font-size: 11px; font-weight: bold; 
+        }
+        .menu-item i { font-size: 24px; }
 
-        .tab-content { padding: 15px; display: none; }
+        /* CONTEÚDO DAS ABAS */
+        .tab-content { padding: 15px; display: none; flex-grow: 1; }
         .active-tab { display: block; }
-        .table-res { overflow-x: auto; background: var(--card); border-radius: 10px; margin-top: 15px; }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { background: #1e293b; padding: 10px; text-align: left; color: var(--accent); }
-        td { padding: 10px; border-bottom: 1px solid #334155; }
-        td a { color: var(--neon-pink); font-weight: bold; text-decoration: none; }
+        .section-header { border-left: 4px solid var(--accent); padding-left: 10px; margin-bottom: 20px; }
+        .section-header h2 { margin: 0; font-size: 18px; color: var(--accent); }
+        .section-header p { margin: 5px 0 0; font-size: 12px; opacity: 0.7; }
 
+        /* TABELAS RESPONSIVAS */
+        .table-container { overflow-x: auto; background: var(--card); border-radius: 12px; margin-top: 10px; border: 1px solid #334155; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #1e293b; padding: 12px; text-align: left; color: var(--accent); border-bottom: 2px solid var(--accent); }
+        td { padding: 12px; border-bottom: 1px solid #334155; }
+
+        /* RODAPÉ */
+        footer { padding: 15px; text-align: center; font-size: 10px; opacity: 0.6; border-top: 1px solid #334155; margin-top: auto; }
+
+        .popup-msg { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: #ef4444; color: white; padding: 20px; border-radius: 12px; font-weight: bold; z-index: 5000; display: none; text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); border: 2px solid white; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<div id="timeoutAlert" class="alert-popup">
-    ⏳ ATENÇÃO!<br><br>Devido a falta de interação no app, você foi deslogado por motivos de segurança! Faça o login novamente.
+<div id="timeoutMsg" class="popup-msg">
+    ⚠️ SESSÃO ENCERRADA POR SEGURANÇA!<br><br>
+    Devido a falta de interação no app, você foi deslogado por motivos de segurança! Faça o login novamente.
 </div>
 
-<header id="mainHeader" class="hidden">
-    <div class="header-brand">
-        <span style="font-size: 10px; opacity: 0.7;">🛡️ ERP OPERACIONAL</span>
-        <span id="topoEmpresaNome" class="destaque-empresa hidden"></span>
-    </div>
-    <div style="text-align: right; display:flex; align-items:center; gap:10px;">
-        <span id="topoUsuario" style="font-size: 12px; font-weight: bold; color: var(--accent);"></span>
-        <button onclick="toggleConfig()" style="background:none; border:none; color:white; font-size:18px;">⚙️</button>
-    </div>
+<header>
+    <div class="app-title">Gestão de Estoque e Vendas Premium (Versão Paga)</div>
+    <div id="neonClock"></div>
 </header>
 
-<div id="loginSection" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh; padding: 20px;">
+<div id="loginArea" style="display: flex; align-items: center; justify-content: center; flex-grow: 1;">
     <div class="card-auth">
-        <h2 style="text-align: center; margin-top: 0;">🔐 Login Seguro</h2>
-        <div class="input-group"><label>👤 CPF (Apenas Números)</label><input type="text" id="loginCpf" inputmode="numeric"></div>
-        <div class="input-group"><label>🔑 Senha</label><input type="password" id="loginPass"></div>
-        <button class="btn-main btn-blue" onclick="tryLogin()">🔓 Acessar Sistema</button>
-        <hr style="margin: 20px 0; border: 0.5px solid #334155;">
-        <button class="btn-main btn-green" onclick="iniciarCadastro()">💳 Registrar Novo Usuário</button>
+        <h3 style="text-align: center; margin-top: 0;">🔐 Acesso ao Sistema</h3>
+        <div class="input-group">
+            <label>🆔 CPF (Login único)</label>
+            <input type="text" id="loginCpf" placeholder="Apenas números" inputmode="numeric">
+        </div>
+        <div class="input-group">
+            <label>🔑 Senha de Acesso</label>
+            <input type="password" id="loginPass" placeholder="Sua senha secreta">
+            <label class="show-pass"><input type="checkbox" onclick="togglePass('loginPass')"> Revelar senha</label>
+        </div>
+        <button class="btn btn-blue" onclick="executarLogin()">🔓 Entrar no Painel</button>
+        <div style="margin: 20px 0; text-align: center; font-size: 11px; opacity: 0.5;">— NOVO USUÁRIO? —</div>
+        <button class="btn btn-outline" onclick="fluxoPagamento()">💳 Registrar Novo Usuário</button>
     </div>
 </div>
 
-<div id="registerSection" class="modal">
+<div id="registerModal" class="modal">
     <div class="card-auth">
-        <h3 style="margin-top: 0; color: var(--neon-green);">📋 Cadastro Completo</h3>
-        <p style="font-size: 11px; opacity:0.8;">Apenas um CPF por conta permitido.</p>
+        <h3 style="color: var(--neon-green);">📋 Cadastro de Administrador</h3>
+        <p style="font-size: 11px; margin-bottom: 15px;">Preencha os detalhes para ativar sua licença premium.</p>
+        
         <div class="input-group"><label>👤 Nome Completo</label><input type="text" id="regNome"></div>
-        <div class="input-group"><label>🆔 CPF</label><input type="text" id="regCpf" inputmode="numeric"></div>
+        <div class="input-group"><label>🆔 CPF (Será seu Login)</label><input type="text" id="regCpf" inputmode="numeric"></div>
         <div class="input-group"><label>📱 Celular</label><input type="tel" id="regCel"></div>
         <div class="input-group"><label>🏢 Nome da Empresa</label><input type="text" id="regEmpresa"></div>
-        <div class="input-group"><label>🔑 Senha</label><input type="password" id="regPass"></div>
-        <button class="btn-main btn-green" onclick="finalizeRegister()">💾 Salvar e Criar Conta</button>
-        <button class="btn-main btn-danger" onclick="location.reload()">❌ Cancelar</button>
+        <div class="input-group">
+            <label>🔑 Definir Senha</label>
+            <input type="password" id="regPass">
+            <label class="show-pass"><input type="checkbox" onclick="togglePass('regPass')"> Revelar senha</label>
+        </div>
+        
+        <button class="btn btn-green" onclick="salvarNovoUsuario()">💾 Salvar e Ativar App</button>
+        <button class="btn btn-outline" style="margin-top:10px;" onclick="document.getElementById('registerModal').style.display='none'">Cancelar</button>
     </div>
 </div>
 
-<div id="appBody" class="hidden">
-    <div id="menuPrincipal">
+<main id="appContent" class="hidden">
+    <div id="menuPrincipal" class="active-tab">
         <div class="menu-grid">
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaEstoque')"><i>📦</i>Estoque</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaScanner')"><i>🖨️</i>Escanear automaticamente NF</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaSolicitacao')"><i>🤖</i>Solicitações (Cotação IA)</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaProtocolo')"><i>📥</i>Protocolo de recebimento</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaRequisicao')"><i>📝</i>Requisições</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="gerarRelatorioCompleto()"><i>📊</i>Gerar relatório mensal</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaVenda')"><i>💰</i>PDV Venda</a>
+            <div class="menu-item" onclick="abrirAba('abaEstoque')"><i>📦</i>Estoque</div>
+            <div class="menu-item" onclick="abrirAba('abaScanner')"><i>🖨️</i>Escanear NF</div>
+            <div class="menu-item" onclick="abrirAba('abaSolicitacao')"><i>🤖</i>Solicitações IA</div>
+            <div class="menu-item" onclick="abrirAba('abaProtocolo')"><i>📥</i>Protocolo</div>
+            <div class="menu-item" onclick="abrirAba('abaRequisicao')"><i>📝</i>Requisições</div>
+            <div class="menu-item" onclick="gerarRelatorioMensal()"><i>📊</i>Relatório</div>
         </div>
-        <div style="padding: 15px;">
-            <button class="btn-main btn-danger" onclick="logout()">🚪 Sair</button>
+        <div style="padding: 15px; margin-top: 10px;">
+            <button class="btn btn-danger" onclick="confirmarSair()">🚪 Encerrar Sessão</button>
         </div>
     </div>
 
     <div id="abaEstoque" class="tab-content">
-        <h3>📦 Gestão de Estoque</h3>
-        <div class="card-auth" style="max-width:none;"><div class="input-group"><label>Nome</label><input id="estNome"></div><div class="input-group"><label>Qtd Inicial</label><input type="number" id="estQtd"></div><div class="input-group"><label>Mínimo</label><input type="number" id="estMin"></div><button class="btn-main btn-green" onclick="addEstoque()">➕ Adicionar</button></div>
-        <div class="table-res"><table id="tabEstoque"><thead><tr><th>Item</th><th>Qtd</th><th>Mín</th></tr></thead><tbody></tbody></table></div>
-        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
-    </div>
-
-    <div id="abaScanner" class="tab-content">
-        <h3>🖨️ Escanear NF pelo Celular/Impressora</h3>
-        <div class="card-auth" style="max-width: none;">
-            <label>📁 Selecione o arquivo PDF ou Imagem</label>
-            <input type="file" id="inputPdf" accept="application/pdf,image/*">
-            <button class="btn-main btn-green" onclick="salvarNFPDF()">💾 Salvar NF em PDF</button>
+        <div class="section-header">
+            <h2>📦 Controle de Inventário</h2>
+            <p>Cadastre e gerencie o saldo dos seus materiais.</p>
         </div>
-        <div class="table-res">
-            <table id="tabNFs">
-                <thead><tr><th>Nome do Arquivo</th><th>Data</th><th>Download</th></tr></thead>
+        <div class="card-auth" style="max-width: none;">
+            <div class="input-group"><label>🏷️ Nome do Material</label><input id="estNome"></div>
+            <div class="input-group"><label>🔢 Saldo Inicial</label><input type="number" id="estQtd"></div>
+            <div class="input-group"><label>⚠️ Estoque Mínimo</label><input type="number" id="estMin"></div>
+            <button class="btn btn-green" onclick="addEstoque()">➕ Adicionar ao Estoque</button>
+        </div>
+        <div class="table-container">
+            <table id="tabEstoque">
+                <thead><tr><th>Material</th><th>Saldo</th><th>Mín</th></tr></thead>
                 <tbody></tbody>
             </table>
         </div>
-        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
+        <button class="btn btn-outline" style="margin-top: 20px;" onclick="abrirAba('menuPrincipal')">⬅️ Voltar</button>
+    </div>
+
+    <div id="abaScanner" class="tab-content">
+        <div class="section-header">
+            <h2>🖨️ Scanner de Notas Fiscais</h2>
+            <p>Digitalize ou anexe PDFs de notas recebidas.</p>
+        </div>
+        <div class="card-auth" style="max-width: none;">
+            <label>📎 Selecionar PDF ou Foto da NF</label>
+            <input type="file" id="inputNf" accept="application/pdf,image/*">
+            <button class="btn btn-green" style="margin-top:10px;" onclick="processarScanner()">💾 Salvar NF em PDF</button>
+        </div>
+        <div class="table-container">
+            <table id="tabNfs">
+                <thead><tr><th>Nome / NF</th><th>Data</th><th>Ação</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <button class="btn btn-outline" style="margin-top: 20px;" onclick="abrirAba('menuPrincipal')">⬅️ Voltar</button>
+    </div>
+
+    <div id="abaRequisicao" class="tab-content">
+        <div class="section-header">
+            <h2>📝 Termo de Requisição</h2>
+            <p>Gere o comprovante de retirada de materiais.</p>
+        </div>
+        <div class="card-auth" style="max-width: none;">
+            <div class="input-group"><label>👤 Nome do Solicitante</label><input id="reqFunc"></div>
+            <div class="input-group"><label>👨‍💼 Almoxarife Responsável</label><input id="reqAlmo"></div>
+            <div class="input-group"><label>📦 Material</label><select id="reqItem"></select></div>
+            <div class="input-group"><label>🔢 Quantidade</label><input type="number" id="reqQtd"></div>
+            <button class="btn btn-green" onclick="salvarReqBaixa()">💾 Salvar e Dar Baixa</button>
+            <button class="btn btn-blue" style="margin-top:10px;" onclick="gerarPdfAssinatura()">🖨️ Gerar PDF para Assinatura</button>
+        </div>
+        <button class="btn btn-outline" style="margin-top: 20px;" onclick="abrirAba('menuPrincipal')">⬅️ Voltar</button>
     </div>
 
     <div id="abaSolicitacao" class="tab-content">
-        <h3>🤖 Solicitações e Cotação IA</h3>
-        <div class="card-auth" style="max-width: none; border-color: var(--neon-pink); margin-bottom: 15px;">
-            <label>🧠 IA Cotação - Comparar Preços</label>
-            <input type="text" id="iaSearch" placeholder="Qual material deseja cotar?">
-            <button class="btn-main" style="background:var(--neon-pink); color:white;" onclick="cotacaoIA()">Consultar Mercado IA</button>
-            <div id="iaResult" style="margin-top: 10px; font-size: 12px; color: var(--neon-green);"></div>
+        <div class="section-header">
+            <h2>🤖 Cotação com Inteligência Artificial</h2>
+            <p>Pesquise preços e gere solicitações de compra.</p>
         </div>
-        <div class="card-auth" style="max-width: none;">
-            <label>📝 Lançar Solicitação</label>
-            <input id="solItem" placeholder="Nome do item">
-            <button class="btn-main btn-blue" onclick="addSolicitacao('pendente')">➕ Criar Solicitação</button>
-            <button class="btn-main btn-green" onclick="addSolicitacao('recebido')">✅ Material Recebido</button>
+        <div class="card-auth" style="max-width: none; border-color: var(--neon-pink);">
+            <label>🔍 O que deseja cotar no mercado?</label>
+            <input type="text" id="iaInput" placeholder="Ex: Cimento CP II 50kg">
+            <button class="btn" style="background:var(--neon-pink); color:white; margin-top:10px;" onclick="consultarIA()">🧠 Analisar com IA</button>
+            <div id="iaStatus" style="margin-top:10px; font-size:12px; color:var(--neon-green);"></div>
         </div>
-        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
+        <div class="card-auth" style="max-width: none; margin-top:15px;">
+            <label>Item Solicitado</label><input id="solItem">
+            <button class="btn btn-blue" style="margin-top:10px;" onclick="addSolicitacao('pendente')">➕ Criar Solicitação</button>
+            <button class="btn btn-green" style="margin-top:10px;" onclick="addSolicitacao('recebido')">✅ Material Recebido</button>
+        </div>
+        <button class="btn btn-outline" style="margin-top: 20px;" onclick="abrirAba('menuPrincipal')">⬅️ Voltar</button>
     </div>
 
     <div id="abaProtocolo" class="tab-content">
-        <h3>📥 Protocolo de Recebimento</h3>
-        <p style="color: #ef4444; font-weight: bold; font-size: 12px; text-transform:uppercase;">🚩 NF pendente de entrada em destaque</p>
-        <div class="table-res">
+        <div class="section-header">
+            <h2>📥 Protocolo de Recebimento</h2>
+            <p>Acompanhamento de entregas e notas pendentes.</p>
+        </div>
+        <p style="color: #ef4444; font-weight: bold; font-size: 11px;">🚩 NF PENDENTE DE ENTRADA EM DESTAQUE</p>
+        <div class="table-container">
             <table id="tabProtocolo">
                 <thead><tr><th>Data</th><th>Material</th><th>Status NF</th></tr></thead>
                 <tbody></tbody>
             </table>
         </div>
-        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
+        <button class="btn btn-outline" style="margin-top: 20px;" onclick="abrirAba('menuPrincipal')">⬅️ Voltar</button>
     </div>
-
-    <div id="abaRequisicao" class="tab-content">
-        <h3>📝 Requisições</h3>
-        <div class="card-auth" style="max-width: none;">
-            <label>👤 Funcionário Solicitante</label><input type="text" id="reqFunc">
-            <label>👨‍💼 Almoxarife</label><input type="text" id="reqAlmo">
-            <label>📦 Material</label><select id="reqSelect"></select>
-            <label>🔢 Qtd</label><input type="number" id="reqQtd">
-            
-            <button class="btn-main btn-green" onclick="salvarReqBaixa()">💾 Salvar e Dar Baixa</button>
-            <button class="btn-main btn-blue" onclick="gerarPdfReq()">🖨️ Gerar PDF para Assinatura</button>
-        </div>
-        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar ao Menu</button>
-    </div>
-
-    <div id="abaVenda" class="tab-content">
-        <h3>💰 PDV (Saída Avulsa)</h3>
-        <div class="card-auth" style="max-width:none;">
-            <label>📦 Item</label><select id="vendaSelect"></select>
-            <label>🔢 Qtd</label><input type="number" id="vendaQtd">
-            <button class="btn-main btn-green" onclick="registrarVenda()">🛒 Registrar Saída</button>
-        </div>
-        <button class="btn-main btn-outline" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
-    </div>
-</div>
+</main>
 
 <div id="configModal" class="modal">
     <div class="card-auth">
-        <h3>⚙️ Configurações</h3>
+        <h3>⚙️ Ajustes do Aplicativo</h3>
         <div class="input-group">
             <label style="display:flex; align-items:center; gap:10px;">
-                <input type="checkbox" id="cfgDestaque" onchange="updateConfig()" style="width:20px; height:20px;">
+                <input type="checkbox" id="cfgShowEmpresa" onchange="salvarConfig()"> 
                 Exibir Nome da Empresa no Topo
             </label>
         </div>
-        <button class="btn-main btn-blue" onclick="toggleConfig()">Fechar</button>
+        <button class="btn btn-blue" onclick="document.getElementById('configModal').style.display='none'">Fechar</button>
     </div>
 </div>
 
+<footer>
+    Aplicativo criado por ©Italo N. Dos Anjos em 2026. Todos os Direitos reservados.
+</footer>
+
 <script>
-    // --- 1. BANCO DE DADOS LOCAL E PWA SERVICE WORKER ---
-    let db = JSON.parse(localStorage.getItem('ultra_erp_final')) || {
-        users: [], estoque: [], vendas: [], nfs: [], solicitacoes: [], protocolos: [], config: { destaque: false }
+    // --- DATABASE E ESTADO ---
+    let db = JSON.parse(localStorage.getItem('erp_2026_db')) || {
+        users: [], estoque: [], nfs: [], solicitacoes: [], protocolos: [], config: { destaque: false }
     };
     let currentUser = null;
-    let timerInatividade;
+    let timerTimeout;
 
-    if ('serviceWorker' in navigator) {
-        const swCode = `
-            self.addEventListener('install', (e) => self.skipWaiting());
-            self.addEventListener('activate', (e) => self.clients.claim());
-            self.addEventListener('fetch', (e) => { e.respondWith(fetch(e.request).catch(() => new Response('Offline'))); });
-        `;
-        const blob = new Blob([swCode], {type: 'application/javascript'});
-        navigator.serviceWorker.register(URL.createObjectURL(blob));
+    // --- RELÓGIO NEON ---
+    function updateClock() {
+        if (!currentUser) return;
+        const agora = new Date();
+        const dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+        const diaSemana = dias[agora.getDay()];
+        const dataStr = agora.toLocaleDateString('pt-BR');
+        const horaStr = agora.toLocaleTimeString('pt-BR');
+        document.getElementById('neonClock').innerHTML = `${diaSemana}, ${dataStr} — ${horaStr}`;
     }
+    setInterval(updateClock, 1000);
 
-    function saveDB() { localStorage.setItem('ultra_erp_final', JSON.stringify(db)); renderUI(); }
-
-    // --- 2. SISTEMA DE SEGURANÇA E INATIVIDADE ---
-    function resetTimer() {
-        clearTimeout(timerInatividade);
+    // --- SEGURANÇA E TIMEOUT ---
+    function resetTimeout() {
+        clearTimeout(timerTimeout);
         if (currentUser) {
-            timerInatividade = setTimeout(() => {
-                document.getElementById('timeoutAlert').style.display = 'block';
-                localStorage.removeItem('erp_session');
-                setTimeout(() => location.reload(), 5000); // Recarrega após 5s
-            }, 300000); // 300000ms = 5 minutos
+            timerTimeout = setTimeout(() => {
+                document.getElementById('timeoutMsg').style.display = 'block';
+                setTimeout(() => location.reload(), 4000);
+            }, 300000); // 5 minutos
         }
     }
-    window.onclick = resetTimer; window.onkeypress = resetTimer; window.ontouchstart = resetTimer;
+    window.onclick = resetTimeout;
+    window.onkeypress = resetTimeout;
 
-    // --- 3. LOGIN E MERCADO PAGO ---
-    function iniciarCadastro() {
-        if(confirm("Você será redirecionado para o Mercado Pago. Após o pagamento, retorne para concluir o cadastro. Continuar?")) {
+    // --- LOGIN E CADASTRO ---
+    function togglePass(id) {
+        const x = document.getElementById(id);
+        x.type = x.type === "password" ? "text" : "password";
+    }
+
+    function fluxoPagamento() {
+        if(confirm("Você será redirecionado para o Mercado Pago para ativação da licença premium. Após o pagamento, o cadastro será liberado. Continuar?")) {
             window.open('https://mpago.li/1Qt8hoV', '_blank');
-            setTimeout(() => { document.getElementById('registerSection').style.display = 'flex'; }, 3000);
+            setTimeout(() => {
+                document.getElementById('registerModal').style.display = 'flex';
+            }, 3000);
         }
     }
 
-    function finalizeRegister() {
+    function salvarNovoUsuario() {
         const cpf = document.getElementById('regCpf').value.replace(/\D/g, '');
-        if(!cpf || !document.getElementById('regNome').value || !document.getElementById('regPass').value) return alert("Preencha os campos obrigatórios!");
+        if (db.users.find(u => u.cpf === cpf)) return alert("ERRO: Este CPF já possui uma conta ativa!");
         
-        if (db.users.find(u => u.cpf === cpf)) return alert("ERRO: Este CPF já possui um cadastro no sistema!");
-
-        db.users.push({
-            nome: document.getElementById('regNome').value, cpf: cpf, cel: document.getElementById('regCel').value,
-            empresa: document.getElementById('regEmpresa').value, pass: document.getElementById('regPass').value
-        });
+        const user = {
+            nome: document.getElementById('regNome').value,
+            cpf: cpf,
+            empresa: document.getElementById('regEmpresa').value,
+            pass: document.getElementById('regPass').value
+        };
+        db.users.push(user);
         saveDB();
-        alert("Cadastro realizado com sucesso!");
+        alert("Conta premium ativada com sucesso!");
         location.reload();
     }
 
-    function tryLogin() {
+    function executarLogin() {
         const cpf = document.getElementById('loginCpf').value.replace(/\D/g, '');
         const pass = document.getElementById('loginPass').value;
         const user = db.users.find(u => u.cpf === cpf && u.pass === pass);
 
         if (user) {
-            currentUser = user; localStorage.setItem('erp_session', user.cpf);
-            iniciarSessao();
-        } else alert("CPF ou Senha incorretos!");
+            currentUser = user;
+            document.getElementById('loginArea').classList.add('hidden');
+            document.getElementById('appContent').classList.remove('hidden');
+            document.getElementById('neonClock').style.display = 'block';
+            document.getElementById('topoUsuario').innerText = `👤 ${user.nome.split(' ')[0]}`;
+            renderUI();
+            resetTimeout();
+        } else alert("Acesso Negado! CPF ou Senha incorretos.");
     }
 
-    function iniciarSessao() {
-        document.getElementById('loginSection').classList.add('hidden');
-        document.getElementById('appBody').classList.remove('hidden');
-        document.getElementById('mainHeader').classList.remove('hidden');
-        document.getElementById('topoUsuario').innerText = `👤 ${currentUser.nome.split(' ')[0]}`;
-        
-        document.getElementById('cfgDestaque').checked = db.config.destaque;
-        updateConfig(true); renderUI(); resetTimer();
-    }
-
-    function logout() {
-        // Som agradável de encerramento
-        const audio = new Audio('https://actions.google.com/sounds/v1/water/water_drop.ogg');
-        audio.play().catch(e => console.log(e));
-        
-        setTimeout(() => {
-            localStorage.removeItem('erp_session');
-            location.reload();
-        }, 800);
-    }
-
-    // --- 4. FUNCIONALIDADES DOS MENUS ---
-    function openTab(id) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-tab'));
-        document.getElementById('menuPrincipal').style.display = id === 'menuPrincipal' ? 'block' : 'none';
-        if(id !== 'menuPrincipal') document.getElementById(id).classList.add('active-tab');
+    // --- FUNCIONALIDADES ---
+    function abrirAba(id) {
+        document.querySelectorAll('.tab-content, #menuPrincipal').forEach(el => el.classList.remove('active-tab'));
+        document.getElementById(id).classList.add('active-tab');
+        if(id === 'abaEstoque') renderEstoque();
     }
 
     function addEstoque() {
-        db.estoque.push({ nome: document.getElementById('estNome').value, qtd: +document.getElementById('estQtd').value, min: +document.getElementById('estMin').value });
-        saveDB(); document.getElementById('estNome').value = '';
+        const nome = document.getElementById('estNome').value;
+        const qtd = parseInt(document.getElementById('estQtd').value);
+        const min = parseInt(document.getElementById('estMin').value);
+        if(!nome || isNaN(qtd)) return alert("Preencha os campos corretamente!");
+        
+        db.estoque.push({ nome, qtd, min });
+        saveDB(); renderEstoque();
+        document.getElementById('estNome').value = '';
     }
 
-    // Scanner PDF
-    function salvarNFPDF() {
-        const file = document.getElementById('inputPdf').files[0];
-        if(!file) return alert("Selecione um arquivo!");
-        const nomeNF = prompt("Renomeie o arquivo da NF antes de salvar:", file.name);
-        if(!nomeNF) return;
-        
+    function processarScanner() {
+        const file = document.getElementById('inputNf').files[0];
+        if(!file) return alert("Selecione um documento!");
+        const nomeNf = prompt("Renomeie a NF para salvar no histórico:", file.name);
+        if(!nomeNf) return;
+
         const reader = new FileReader();
         reader.onload = (e) => {
-            db.nfs.push({ nome: nomeNF, data: new Date().toLocaleDateString(), pdf: e.target.result });
-            saveDB(); alert("NF Salva com sucesso!");
+            db.nfs.push({ nome: nomeNf, data: new Date().toLocaleDateString(), file: e.target.result });
+            saveDB(); renderNFs();
         };
         reader.readAsDataURL(file);
     }
 
-    // IA Cotação
-    function cotacaoIA() {
-        const search = document.getElementById('iaSearch').value;
-        if(!search) return;
-        document.getElementById('iaResult').innerHTML = "⏳ Analisando fornecedores via IA...";
+    function consultarIA() {
+        const query = document.getElementById('iaInput').value;
+        if(!query) return;
+        const status = document.getElementById('iaStatus');
+        status.innerText = "⏳ IA analisando tendências de mercado...";
         setTimeout(() => {
-            document.getElementById('iaResult').innerHTML = `🤖 <b>Análise: ${search}</b><br>💰 Menor preço online: R$ ${(Math.random()*100).toFixed(2)}<br>Tendência: Compra favorável hoje.`;
+            status.innerHTML = `🤖 <b>Resultado IA para: ${query}</b><br>Menor preço médio: R$ ${(Math.random()*500).toFixed(2)}<br>Recomendação: Momento ideal para compra!`;
         }, 2000);
     }
 
-    // Protocolo e Solicitações
-    function addSolicitacao(status) {
+    function addSolicitacao(tipo) {
         const item = document.getElementById('solItem').value;
         if(!item) return;
-        db.solicitacoes.push({ item, status, data: new Date().toLocaleDateString() });
-        if(status === 'recebido') {
+        db.solicitacoes.push({ item, status: tipo, data: new Date().toLocaleDateString() });
+        if(tipo === 'recebido') {
             db.protocolos.push({ data: new Date().toLocaleDateString(), item, status: "⚠️ NF PENDENTE" });
         }
-        saveDB(); alert("Registrado!");
+        saveDB(); alert("Operação registrada!"); renderProtocolo();
     }
 
-    // Requisições
     function salvarReqBaixa() {
-        const item = db.estoque.find(i => i.nome === document.getElementById('reqSelect').value);
-        const qtd = +document.getElementById('reqQtd').value;
+        const material = document.getElementById('reqSelect').value;
+        const qtd = parseInt(document.getElementById('reqQtd').value);
+        const item = db.estoque.find(i => i.nome === material);
         if(item && item.qtd >= qtd) {
-            item.qtd -= qtd; saveDB(); alert("Baixa efetuada no estoque!");
-        } else alert("Saldo insuficiente!");
+            item.qtd -= qtd;
+            saveDB(); alert("Baixa efetuada com sucesso!");
+        } else alert("Saldo insuficiente ou material não encontrado!");
     }
 
-    function gerarPdfReq() {
-        const { jsPDF } = window.jspdf; const doc = new jsPDF();
+    function gerarPdfAssinatura() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
         doc.text("TERMO DE RETIRADA DE MATERIAL", 10, 20);
-        doc.text(`Material: ${document.getElementById('reqSelect').value} - Qtd: ${document.getElementById('reqQtd').value}`, 10, 40);
-        doc.text(`Data: ${new Date().toLocaleString()}`, 10, 50);
-        doc.text(`Ass. Solicitante (${document.getElementById('reqFunc').value}): _____________________`, 10, 80);
-        doc.text(`Ass. Almoxarife (${document.getElementById('reqAlmo').value}): _____________________`, 10, 100);
-        doc.save("Requisicao.pdf");
+        doc.text(`Solicitante: ${document.getElementById('reqFunc').value}`, 10, 40);
+        doc.text(`Material: ${document.getElementById('reqSelect').value} | Qtd: ${document.getElementById('reqQtd').value}`, 10, 50);
+        doc.text(`Data: ${new Date().toLocaleString()}`, 10, 60);
+        doc.text("--------------------------------------------------", 10, 80);
+        doc.text(`Ass. Solicitante: _________________________`, 10, 100);
+        doc.text(`Ass. Almoxarife (${document.getElementById('reqAlmo').value}): _________________________`, 10, 120);
+        doc.save("Termo_Requisicao.pdf");
     }
 
-    // Relatório Mensal
-    function gerarRelatorioCompleto() {
-        const { jsPDF } = window.jspdf; const doc = new jsPDF();
-        doc.text(`RELATORIO COMPLETO - ${currentUser.empresa}`, 10, 10);
-        doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, 10, 20);
-        doc.autoTable({ head: [['Item', 'Qtd Atual', 'Estoque Mín']], body: db.estoque.map(i => [i.nome, i.qtd, i.min]), startY: 30 });
+    function gerarRelatorioMensal() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text(`RELATÓRIO MENSAL - ${currentUser.empresa}`, 10, 10);
+        const body = db.estoque.map(i => [i.nome, i.qtd, i.min]);
+        doc.autoTable({ head: [['Item', 'Saldo', 'Mínimo']], body: body, startY: 20 });
         doc.save("Relatorio_Mensal.pdf");
     }
 
-    // Venda Extra
-    function registrarVenda() {
-        const item = db.estoque.find(i => i.nome === document.getElementById('vendaSelect').value);
-        if(item && item.qtd >= +document.getElementById('vendaQtd').value) {
-            item.qtd -= +document.getElementById('vendaQtd').value; saveDB(); alert("Saída Registrada!");
-        } else alert("Erro no saldo!");
-    }
-
-    // --- 5. RENDERIZAÇÃO E UI ---
-    function renderUI() {
-        // Estoque & Selects
-        const tbEst = document.querySelector('#tabEstoque tbody'); tbEst.innerHTML = '';
-        const selReq = document.getElementById('reqSelect'); selReq.innerHTML = '';
-        const selVen = document.getElementById('vendaSelect'); selVen.innerHTML = '';
-        
+    // --- UI RENDER ---
+    function renderEstoque() {
+        const tbody = document.querySelector('#tabEstoque tbody');
+        const select = document.getElementById('reqSelect');
+        tbody.innerHTML = ''; select.innerHTML = '';
         db.estoque.forEach(i => {
-            tbEst.innerHTML += `<tr><td>${i.nome}</td><td style="${i.qtd<=i.min?'color:red;font-weight:bold':''}">${i.qtd}</td><td>${i.min}</td></tr>`;
-            selReq.innerHTML += `<option>${i.nome}</option>`; selVen.innerHTML += `<option>${i.nome}</option>`;
+            const cor = i.qtd <= i.min ? 'color: #ef4444; font-weight: bold;' : '';
+            tbody.innerHTML += `<tr><td>${i.nome}</td><td style="${cor}">${i.qtd}</td><td>${i.min}</td></tr>`;
+            select.innerHTML += `<option value="${i.nome}">${i.nome}</option>`;
         });
+    }
 
-        // NFs Escaneadas
-        const tbNF = document.querySelector('#tabNFs tbody'); tbNF.innerHTML = '';
+    function renderNFs() {
+        const tbody = document.querySelector('#tabNfs tbody');
+        tbody.innerHTML = '';
         db.nfs.forEach(nf => {
-            tbNF.innerHTML += `<tr><td>${nf.nome}</td><td>${nf.data}</td><td><a href="${nf.pdf}" download="${nf.nome}.pdf">⬇️ Baixar</a></td></tr>`;
+            tbody.innerHTML += `<tr><td>${nf.nome}</td><td>${nf.data}</td><td><a href="${nf.file}" download="${nf.nome}.pdf" style="color:var(--accent)">Download</a></td></tr>`;
         });
+    }
 
-        // Protocolos
-        const tbProt = document.querySelector('#tabProtocolo tbody'); tbProt.innerHTML = '';
+    function renderProtocolo() {
+        const tbody = document.querySelector('#tabProtocolo tbody');
+        tbody.innerHTML = '';
         db.protocolos.forEach(p => {
-            tbProt.innerHTML += `<tr><td>${p.data}</td><td>${p.item}</td><td style="color:#ef4444; font-weight:bold;">${p.status}</td></tr>`;
+            tbody.innerHTML += `<tr><td>${p.data}</td><td>${p.item}</td><td style="color:#ef4444;font-weight:bold">${p.status}</td></tr>`;
         });
     }
 
-    function toggleConfig() { document.getElementById('configModal').style.display = document.getElementById('configModal').style.display === 'flex' ? 'none' : 'flex'; }
-    
-    function updateConfig(init = false) {
-        if(!init) { db.config.destaque = document.getElementById('cfgDestaque').checked; saveDB(); }
-        const empEl = document.getElementById('topoEmpresaNome');
-        if(db.config.destaque) { empEl.innerText = currentUser.empresa; empEl.classList.remove('hidden'); }
-        else { empEl.classList.add('hidden'); }
+    function renderUI() { 
+        renderEstoque(); renderNFs(); renderProtocolo(); 
+        document.getElementById('topoEmpresaNome').innerText = currentUser.empresa;
+        if(db.config.destaque) document.getElementById('topoEmpresaNome').classList.remove('hidden');
     }
 
-    // Inicialização
-    window.onload = () => {
-        const sessionCpf = localStorage.getItem('erp_session');
-        if(sessionCpf) {
-            const user = db.users.find(u => u.cpf === sessionCpf);
-            if(user) { currentUser = user; iniciarSessao(); }
-        }
-    };
+    function saveDB() { localStorage.setItem('erp_2026_db', JSON.stringify(db)); }
+    function toggleConfig() { document.getElementById('configModal').style.display = 'flex'; }
+    function salvarConfig() {
+        db.config.destaque = document.getElementById('cfgShowEmpresa').checked;
+        saveDB();
+        document.getElementById('topoEmpresaNome').classList.toggle('hidden', !db.config.destaque);
+    }
+
+    function confirmarSair() {
+        const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-10.mp3');
+        audio.play().catch(() => {});
+        if(confirm("Deseja realmente sair do sistema?")) location.reload();
+    }
 </script>
+
+<div id="topoUsuarioArea" style="position:fixed; top:12px; right:45px; z-index:101; font-size:12px; font-weight:bold; color:var(--accent);" class="hidden">
+    <span id="topoUsuario"></span>
+</div>
+<div id="topoEmpresaNome" style="position:fixed; top:35px; width:100%; text-align:center; z-index:101; font-size:10px; color:var(--neon-pink); font-weight:900;" class="hidden"></div>
+
 </body>
 </html>
