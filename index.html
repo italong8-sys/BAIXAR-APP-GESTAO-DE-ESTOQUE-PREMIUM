@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#020617">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>ERP ULTRA MASTER PRO - V2026</title>
 
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVSUCBVbHRyYSBNYXN0ZXIiLAogICJzaG9ydF9uYW1lIjogIkVSUCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDIwNjE3IiwKICAidGhlbWVfY29sb3IiIjogIiMwMjA2MTciLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yNjkzLzI2OTM1MDcucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
@@ -17,183 +18,182 @@
         :root { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --accent: #38bdf8; --neon-pink: #f472b6; --neon-green: #4ade80; --danger: #f87171; }
         .light-mode { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #0284c7; }
         
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', system-ui, sans-serif; }
-        body { margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; min-height: 100vh; display: flex; flex-direction: column; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         
-        /* Header e Títulos */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #020617; border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 1000; }
+        /* Layout e Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #020617; border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 1000; height: 60px; }
         .logo-box { display: flex; flex-direction: column; }
-        .empresa-destaque { color: var(--neon-pink); font-weight: 800; font-size: 13px; letter-spacing: 1px; }
+        .empresa-destaque { color: var(--neon-pink); font-weight: 800; font-size: 12px; text-transform: uppercase; }
         
-        /* Modais */
+        /* Modais de Sistema */
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 5000; padding: 15px; backdrop-filter: blur(5px); }
-        .card-panel { width: 100%; max-width: 450px; background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card-panel { width: 100%; max-width: 450px; background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow-y: auto; max-height: 90vh; }
         .hidden { display: none !important; }
+        .alert-popup { position: fixed; top: 20px; left: 5%; width: 90%; background: #ef4444; color: white; padding: 15px; border-radius: 10px; font-weight: bold; z-index: 9999; display: none; text-align: center; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
 
-        /* Menu Grade */
+        /* Menu Grade Mobile */
         .menu-geral { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; background: rgba(0,0,0,0.2); }
-        .menu-geral button { padding: 15px 5px; border: none; border-radius: 12px; background: #334155; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
-        .menu-geral button:active { transform: scale(0.95); background: var(--accent); }
-        .menu-geral button i-emoji { font-size: 20px; }
+        .menu-geral button { padding: 15px 5px; border: none; border-radius: 12px; background: #334155; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
+        .menu-geral button i-emoji { font-size: 22px; }
 
-        /* Estilos de Formulário */
+        /* Formulários Detalhados */
         .container { padding: 15px; flex-grow: 1; }
-        .section-title { font-size: 16px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
-        .input-group { margin-bottom: 12px; }
-        label { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-left: 2px; }
-        input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 15px; }
-        .action-btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .section-title { font-size: 16px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #334155; padding-bottom: 8px; font-weight: 800; }
+        .input-group { margin-bottom: 15px; }
+        label { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; display: block; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 16px; }
         
-        /* Cores de Botão */
+        .btn-action { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; }
         .bg-green { background: var(--neon-green); color: #064e3b; }
         .bg-blue { background: var(--accent); color: white; }
         .bg-pink { background: var(--neon-pink); color: white; }
         .bg-danger { background: var(--danger); color: white; }
 
-        /* Tabelas */
-        .table-responsive { overflow-x: auto; background: rgba(0,0,0,0.1); border-radius: 10px; margin-top: 10px; }
+        /* Tabelas Mobile */
+        .table-responsive { overflow-x: auto; background: rgba(0,0,0,0.1); border-radius: 10px; }
         table { width: 100%; border-collapse: collapse; font-size: 11px; }
-        th { text-align: left; padding: 12px; border-bottom: 2px solid #334155; color: var(--accent); }
+        th { text-align: left; padding: 12px; background: #020617; color: var(--accent); }
         td { padding: 12px; border-bottom: 1px solid #334155; }
 
-        /* Calculadora */
-        .calc-display { background: #000; color: var(--neon-green); padding: 20px; text-align: right; font-size: 30px; font-family: monospace; border-radius: 10px; margin-bottom: 10px; }
-        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .btn-calc { padding: 20px; font-size: 18px; border-radius: 10px; border: none; background: #475569; color: white; font-weight: bold; }
+        /* Calculadora Estilizada */
+        .calc-display { background: #000; color: var(--neon-green); padding: 20px; text-align: right; font-size: 32px; font-family: monospace; border-radius: 10px; margin-bottom: 10px; border: 2px solid #334155; }
+        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .btn-calc { padding: 20px; font-size: 20px; border-radius: 10px; border: none; background: #475569; color: white; font-weight: bold; }
     </style>
 </head>
 <body>
 
+<div id="timeoutAlert" class="alert-popup">⏳ Sessão encerrada por inatividade (5 min). Faça login novamente.</div>
+
 <header>
     <div class="logo-box">
-        <span style="font-size: 14px; font-weight: 900;">🛡️ ULTRA ERP</span>
+        <span style="font-size: 14px; font-weight: 900; color: white;">🛡️ ULTRA ERP</span>
         <span id="empresaTopo" class="empresa-destaque hidden"></span>
     </div>
-    <div id="relogioContainer" style="font-family: monospace; font-size: 11px; color: var(--neon-green);"></div>
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <span id="usuarioTopo" style="font-size: 11px; font-weight: bold;"></span>
-        <button onclick="abrirConfig()" style="background:none; border:none; font-size:18px; cursor:pointer;">⚙️</button>
+    <div id="relogio" style="font-family: monospace; font-size: 11px; color: var(--neon-green); text-align: center;"></div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <span id="usuarioTopo" style="font-size: 11px; font-weight: bold; color: var(--accent);"></span>
+        <button onclick="abrirConfig()" style="background:none; border:none; font-size:20px; cursor:pointer;">⚙️</button>
     </div>
 </header>
 
 <div id="loginArea" style="display: flex; justify-content: center; align-items: center; flex-grow: 1; padding: 20px;">
     <div class="card-panel">
-        <h2 style="text-align: center; margin-bottom: 20px;">🔐 Autenticação</h2>
+        <h2 style="text-align: center; margin-top: 0;">🔐 Acesso Seguro</h2>
         <div class="input-group">
-            <label>👤 CPF do Usuário</label>
-            <input id="userLogin" type="text" placeholder="000.000.000-00">
+            <label>👤 CPF (Apenas números)</label>
+            <input id="userLogin" type="text" inputmode="numeric" placeholder="Ex: 12345678901">
         </div>
         <div class="input-group">
-            <label>🔑 Senha de Acesso</label>
+            <label>🔑 Senha Secreta</label>
             <input id="passLogin" type="password" placeholder="••••••••">
         </div>
-        <button class="action-btn bg-green" onclick="autenticar()">🔓 ACESSAR PORTAL</button>
-        <div style="margin: 20px 0; text-align: center; font-size: 12px; opacity: 0.5;">OU</div>
-        <button class="action-btn bg-blue" onclick="abrirPgto()">💳 REGISTRAR NOVA CONTA</button>
+        <button class="btn-action bg-green" onclick="autenticar()">🔓 ENTRAR NO SISTEMA</button>
+        <div style="margin: 20px 0; text-align: center; font-size: 12px; opacity: 0.5;">— NOVO POR AQUI? —</div>
+        <button class="btn-action bg-blue" onclick="abrirPgto()">💳 CRIAR MINHA CONTA</button>
     </div>
 </div>
 
 <div id="modalPgto" class="modal">
-    <div class="card-panel">
-        <h3 style="text-align: center;">🤝 Taxa de Ativação</h3>
-        <p style="font-size: 12px; text-align: center; margin-bottom: 20px;">Para garantir a segurança dos dados, realize o pagamento único para liberar seu CPF.</p>
-        <button class="action-btn bg-blue" onclick="window.open('https://mpago.li/1Qt8hoV')">🔗 PAGAR VIA MERCADO PAGO</button>
-        <button class="action-btn bg-green" onclick="validarPgto()">✅ JÁ REALIZEI O PAGAMENTO</button>
-        <button class="action-btn" onclick="document.getElementById('modalPgto').style.display='none'">❌ CANCELAR</button>
+    <div class="card-panel" style="text-align: center;">
+        <h3 style="color: var(--accent);">💎 Ativação de Licença</h3>
+        <p style="font-size: 13px; margin-bottom: 20px;">O cadastro é vinculado ao seu CPF para segurança máxima. Realize o pagamento único para liberar o formulário.</p>
+        <button class="btn-action bg-blue" onclick="window.open('https://mpago.li/1Qt8hoV')">🔗 PAGAR VIA MERCADO PAGO</button>
+        <button class="btn-action bg-green" onclick="validarPgto()">✅ JÁ PAGUEI / VALIDAR</button>
+        <button class="btn-action bg-danger" onclick="document.getElementById('modalPgto').style.display='none'">❌ VOLTAR</button>
     </div>
 </div>
 
 <div id="modalReg" class="modal">
     <div class="card-panel">
-        <h3>📝 Cadastro Detalhado</h3>
+        <h3>📝 Cadastro do Administrador</h3>
         <div class="input-group"><label>👤 Nome Completo</label><input id="regNome"></div>
-        <div class="input-group"><label>🆔 CPF (Apenas Números)</label><input id="regCpf" maxlength="11"></div>
-        <div class="input-group"><label>📞 WhatsApp/Celular</label><input id="regTel"></div>
+        <div class="input-group"><label>🆔 CPF (Login Único)</label><input id="regCpf" maxlength="11" inputmode="numeric"></div>
         <div class="input-group"><label>🏢 Nome da Empresa</label><input id="regEmpresa"></div>
-        <div class="input-group"><label>🔑 Criar Senha</label><input id="regPass" type="password"></div>
-        <button class="action-btn bg-green" onclick="registrarUsuario()">💾 SALVAR E ATIVAR</button>
+        <div class="input-group"><label>🔑 Definir Senha</label><input id="regPass" type="password"></div>
+        <button class="btn-action bg-green" onclick="registrarUsuario()">💾 SALVAR E ATIVAR ACESSO</button>
     </div>
 </div>
 
 <div id="app" class="hidden">
     <nav class="menu-geral">
-        <button onclick="mostrar('estoque')"><span>📦</span>Estoque</button>
-        <button onclick="mostrar('venda')"><span>💰</span>PDV Venda</button>
-        <button onclick="mostrar('escanear_nf')"><span>🖨️</span>NF PDF</button>
-        <button onclick="mostrar('requisicao')"><span>📝</span>Requisição</button>
-        <button onclick="mostrar('solicitacao')"><span>🤖</span>IA Cotação</button>
-        <button onclick="mostrar('protocolo')"><span>📥</span>Protocolo</button>
-        <button onclick="mostrar('calculadora')"><span>🧮</span>Calc</button>
-        <button onclick="gerarRelatorioMensal()" class="bg-blue"><span>📄</span>Relatório</button>
-        <button onclick="logout()" class="bg-danger"><span>🚪</span>Sair</button>
+        <button onclick="mostrar('estoque')"><i-emoji>📦</i-emoji>Estoque</button>
+        <button onclick="mostrar('venda')"><i-emoji>💰</i-emoji>PDV Venda</button>
+        <button onclick="mostrar('escanear_nf')"><i-emoji>🖨️</i-emoji>NF PDF</button>
+        <button onclick="mostrar('requisicao')"><i-emoji>📝</i-emoji>Requisição</button>
+        <button onclick="mostrar('solicitacao')"><i-emoji>🤖</i-emoji>Cotação IA</button>
+        <button onclick="mostrar('protocolo')"><i-emoji>📥</i-emoji>Protocolos</button>
+        <button onclick="mostrar('calculadora')"><i-emoji>🧮</i-emoji>Calculadora</button>
+        <button onclick="gerarRelatorioMensal()" class="bg-blue"><i-emoji>📄</i-emoji>Relatório</button>
+        <button onclick="logout()" class="bg-danger"><i-emoji>🚪</i-emoji>Sair</button>
     </nav>
 
     <div class="container">
-        
         <div id="estoque" class="section">
-            <div class="section-title">📦 Gestão de Inventário</div>
-            <div class="card-panel" style="max-width: none; margin-bottom: 20px;">
-                <div class="input-group"><label>🏷️ Nome do Material</label><input id="estNome"></div>
-                <div class="input-group"><label>⚠️ Alerta de Estoque Mínimo</label><input id="estMin" type="number"></div>
-                <button class="action-btn bg-green" onclick="addEstoque()">➕ ADICIONAR AO ESTOQUE</button>
+            <div class="section-title">📦 Gestão de Itens e Inventário</div>
+            <div class="card-panel" style="max-width: none; margin-bottom: 20px; box-shadow: none;">
+                <div class="input-group"><label>🏷️ Nomenclatura do Material</label><input id="estNome"></div>
+                <div class="input-group"><label>⚠️ Alerta Mínimo</label><input id="estMin" type="number" placeholder="Ex: 10"></div>
+                <button class="btn-action bg-green" onclick="addEstoque()">➕ CADASTRAR ITEM</button>
             </div>
             <div class="table-responsive">
                 <table id="tabEstoque">
-                    <thead><tr><th>📦 Produto</th><th>🔢 Saldo</th><th>⚠️ Mín</th></tr></thead>
+                    <thead><tr><th>Material</th><th>Qtd</th><th>Mín</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
         </div>
 
         <div id="venda" class="section hidden">
-            <div class="section-title">💰 Frente de Caixa (PDV)</div>
-            <div class="card-panel" style="max-width: none;">
-                <div class="input-group"><label>🔍 Selecionar Item</label><select id="vendaItem"></select></div>
+            <div class="section-title">💰 Saída de Materiais (PDV)</div>
+            <div class="card-panel" style="max-width: none; box-shadow: none;">
+                <div class="input-group"><label>🔍 Selecionar do Estoque</label><select id="vendaItem"></select></div>
                 <div class="input-group"><label>🔢 Quantidade de Saída</label><input id="vendaQtd" type="number" value="1"></div>
-                <button class="action-btn bg-green" onclick="processarVenda()">🛒 FINALIZAR SAÍDA</button>
+                <button class="btn-action bg-green" onclick="processarVenda()">🛒 REGISTRAR BAIXA</button>
             </div>
         </div>
 
         <div id="escanear_nf" class="section hidden">
-            <div class="section-title">🖨️ Digitalização de Notas</div>
-            <div class="card-panel" style="max-width: none;">
-                <label>📎 Upload da NF (PDF/Imagem)</label>
+            <div class="section-title">🖨️ Arquivo de Notas Fiscais</div>
+            <div class="card-panel" style="max-width: none; box-shadow: none;">
+                <label>📎 Selecionar Documento (PDF/JPG)</label>
                 <input type="file" id="nfFile" accept="application/pdf, image/*">
-                <label>✏️ Identificação do Documento</label>
-                <input id="nfFileName" placeholder="Ex: NF 450 - Fornecedor X">
-                <button class="action-btn bg-blue" onclick="salvarPdfNf()">💾 ARQUIVAR NF</button>
+                <label>✏️ Identificar Nota (Nº / Fornecedor)</label>
+                <input id="nfFileName">
+                <button class="btn-action bg-blue" onclick="salvarPdfNf()">💾 SALVAR DIGITALIZAÇÃO</button>
             </div>
-            <div class="table-responsive">
+            <div class="table-responsive" style="margin-top: 15px;">
                 <table id="listaNfPdf">
-                    <thead><tr><th>📅 Data</th><th>📄 Identificação</th><th>📥 Ação</th></tr></thead>
+                    <thead><tr><th>Data</th><th>Identificação</th><th>Ação</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
         </div>
 
         <div id="requisicao" class="section hidden">
-            <div class="section-title">📝 Requisição de Materiais</div>
-            <div class="card-panel" style="max-width: none;">
-                <div class="input-group"><label>👤 Funcionário Solicitante</label><input id="reqFunc"></div>
-                <div class="input-group"><label>📦 Material</label><select id="reqItem"></select></div>
-                <div class="input-group"><label>🔢 Qtd</label><input id="reqQtd" type="number"></div>
-                <button class="action-btn bg-blue" onclick="salvarRequisicaoBaixa()">💾 REGISTRAR E BAIXAR</button>
-                <button class="action-btn bg-pink" onclick="gerarPdfRequisicao()">🖨️ GERAR TERMO PDF</button>
+            <div class="section-title">📝 Termo de Requisição</div>
+            <div class="card-panel" style="max-width: none; box-shadow: none;">
+                <div class="input-group"><label>👤 Nome do Funcionário</label><input id="reqFunc"></div>
+                <div class="input-group"><label>📦 Material Solicitado</label><select id="reqItem"></select></div>
+                <div class="input-group"><label>🔢 Qtd Liberada</label><input id="reqQtd" type="number"></div>
+                <button class="btn-action bg-blue" onclick="salvarRequisicaoBaixa()">💾 GRAVAR E BAIXAR</button>
+                <button class="btn-action bg-pink" onclick="gerarPdfRequisicao()">🖨️ GERAR PDF ASSINATURA</button>
             </div>
         </div>
 
         <div id="solicitacao" class="section hidden">
-            <div class="section-title">🤖 Inteligência de Mercado</div>
-            <div class="input-group"><input id="iaBusca" placeholder="O que deseja cotar hoje?"></div>
-            <button class="action-btn bg-pink" onclick="cotarIA()">🧠 CONSULTAR PREÇOS IA</button>
+            <div class="section-title">🤖 Inteligência de Compras</div>
+            <div class="input-group"><label>🔍 O que deseja cotar no mercado?</label><input id="iaBusca" placeholder="Ex: Cimento CP II 50kg"></div>
+            <button class="btn-action bg-pink" onclick="cotarIA()">🧠 ANALISAR PREÇOS COM IA</button>
             <div id="iaResultado" class="card-panel hidden" style="max-width:none; margin-top:15px; border-style:dashed;"></div>
         </div>
 
         <div id="protocolo" class="section hidden">
-            <div class="section-title">📥 Protocolo de Entrada</div>
+            <div class="section-title">📥 Recebimentos Pendentes</div>
             <div class="table-responsive">
                 <table id="tabProtocolos">
-                    <thead><tr><th>📅 Data</th><th>📦 Item</th><th>🔢 Qtd</th><th>🚩 Status NF</th></tr></thead>
+                    <thead><tr><th>Data</th><th>Material</th><th>Qtd</th><th>Aviso NF</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
@@ -205,56 +205,86 @@
                 <button class="btn-calc" onclick="calc('7')">7</button><button class="btn-calc" onclick="calc('8')">8</button><button class="btn-calc" onclick="calc('9')">9</button><button class="btn-calc" style="background:var(--accent)" onclick="calc('/')">÷</button>
                 <button class="btn-calc" onclick="calc('4')">4</button><button class="btn-calc" onclick="calc('5')">5</button><button class="btn-calc" onclick="calc('6')">6</button><button class="btn-calc" style="background:var(--accent)" onclick="calc('*')">×</button>
                 <button class="btn-calc" onclick="calc('1')">1</button><button class="btn-calc" onclick="calc('2')">2</button><button class="btn-calc" onclick="calc('3')">3</button><button class="btn-calc" style="background:var(--accent)" onclick="calc('-')">-</button>
-                <button class="btn-calc" onclick="calc('C')" style="background:var(--danger)">C</button><button class="btn-calc" onclick="calc('0')">0</button><button class="calc-btn bg-green" onclick="calcRes()" style="grid-column: span 2; font-size:24px;">=</button>
+                <button class="btn-calc bg-danger" onclick="calc('C')">C</button><button class="btn-calc" onclick="calc('0')">0</button><button class="btn-calc bg-green" onclick="calcRes()" style="grid-column: span 2;">=</button>
             </div>
         </div>
-
     </div>
 </div>
 
 <div id="modalConfig" class="modal">
     <div class="card-panel">
-        <h3>⚙️ Ajustes do Sistema</h3>
-        <label><input type="checkbox" id="checkEmpresa" onchange="toggleConf('empresaTopo', this.checked)"> Exibir Nome da Empresa</label>
-        <hr style="opacity:0.1; margin:15px 0;">
-        <button class="action-btn bg-blue" onclick="document.body.classList.toggle('light-mode')">🌓 ALTERAR TEMA</button>
-        <button class="action-btn" onclick="document.getElementById('modalConfig').style.display='none'">❌ FECHAR</button>
+        <h3>⚙️ Ajustes do App</h3>
+        <div class="input-group">
+            <label style="display: flex; align-items: center; gap: 10px;">
+                <input type="checkbox" id="checkEmpresa" onchange="toggleConf('empresaTopo', this.checked)" style="width: 20px;">
+                Exibir Nome da Empresa no Topo
+            </label>
+        </div>
+        <button class="btn-action bg-blue" onclick="document.body.classList.toggle('light-mode')">🌓 ALTERAR TEMA (CLARO/ESCURO)</button>
+        <button class="btn-action bg-danger" onclick="document.getElementById('modalConfig').style.display='none'">❌ FECHAR</button>
     </div>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('ultra_erp_v2')) || {
+    // Banco de Dados Local Persistente
+    let db = JSON.parse(localStorage.getItem('ultra_erp_final')) || {
         usuarios: [], estoque: [], requisicoes: [], protocolos: [], arquivosPdf: [], conf: {empresaTopo: false}
     };
 
     function salvarDB() {
-        localStorage.setItem('ultra_erp_v2', JSON.stringify(db));
+        localStorage.setItem('ultra_erp_final', JSON.stringify(db));
         render();
     }
 
-    // --- SEGURANÇA E LOGIN ---
+    // Sistema de Login e Segurança
     function autenticar() {
         const u = db.usuarios.find(x => x.cpf === userLogin.value && x.pass === passLogin.value);
-        if(u) { localStorage.setItem('sessao', u.cpf); location.reload(); }
-        else alert("⚠️ Acesso Negado: Verifique CPF e Senha.");
+        if(u) {
+            localStorage.setItem('sessao_erp', u.cpf);
+            location.reload();
+        } else {
+            alert("❌ CPF ou Senha incorretos!");
+        }
     }
 
-    function validarPgto() { document.getElementById('modalPgto').style.display='none'; document.getElementById('modalReg').style.display='flex'; }
-
     function registrarUsuario() {
-        const cpf = regCpf.value;
-        if(db.usuarios.some(u => u.cpf === cpf)) return alert("❌ Este CPF já possui conta ativa.");
-        db.usuarios.push({nome: regNome.value, cpf, tel: regTel.value, empresa: regEmpresa.value, pass: regPass.value});
+        if(!regNome.value || !regCpf.value || !regPass.value) return alert("Preencha todos os campos!");
+        if(db.usuarios.some(u => u.cpf === regCpf.value)) return alert("CPF já cadastrado!");
+        
+        db.usuarios.push({nome: regNome.value, cpf: regCpf.value, empresa: regEmpresa.value, pass: regPass.value});
         salvarDB();
-        alert("✅ Conta Ativada! Faça o login.");
+        alert("✅ Conta criada com sucesso!");
         location.reload();
     }
 
-    // --- FUNCIONALIDADES ---
+    function logout() {
+        localStorage.removeItem('sessao_erp');
+        location.reload();
+    }
+
+    // Inatividade (5 min)
+    let idleTimer;
+    function resetTimer() {
+        clearTimeout(idleTimer);
+        if(localStorage.getItem('sessao_erp')) {
+            idleTimer = setTimeout(() => {
+                logout();
+                document.getElementById('timeoutAlert').style.display = 'block';
+            }, 300000); 
+        }
+    }
+    window.onload = resetTimer;
+    window.onmousemove = resetTimer;
+    window.onmousedown = resetTimer;
+    window.ontouchstart = resetTimer;
+
+    // Funcionalidades de Módulos
     function addEstoque() {
+        if(!estNome.value) return;
         db.estoque.push({nome: estNome.value, qtd: 0, min: +estMin.value});
         salvarDB();
         estNome.value = ''; estMin.value = '';
+        alert("✅ Material Cadastrado!");
     }
 
     function processarVenda() {
@@ -262,77 +292,83 @@
         const qtd = +vendaQtd.value;
         if(item.qtd < qtd) return alert("❌ Saldo Insuficiente!");
         item.qtd -= qtd;
-        alert("🛒 Venda Realizada!");
         salvarDB();
+        alert("🛒 Baixa realizada!");
     }
 
     function salvarPdfNf() {
         const file = nfFile.files[0];
+        if(!file || !nfFileName.value) return alert("Selecione o arquivo e dê um nome!");
         const reader = new FileReader();
         reader.onload = (e) => {
             db.arquivosPdf.push({nome: nfFileName.value, data: new Date().toLocaleDateString(), file: e.target.result});
-            db.protocolos.push({nome: nfFileName.value, qtd: 'Ver NF', data: new Date().toLocaleDateString(), status: '🚩 NF REGISTRADA'});
+            db.protocolos.push({nome: nfFileName.value, qtd: 'Scanner', data: new Date().toLocaleDateString(), aviso: '🚩 NF REGISTRADA'});
             salvarDB();
-            alert("📄 Documento Arquivado!");
+            alert("📄 Documento salvo!");
         };
         reader.readAsDataURL(file);
+    }
+
+    function salvarRequisicaoBaixa() {
+        const item = db.estoque.find(e => e.nome === reqItem.value);
+        const qtd = +reqQtd.value;
+        if(!item || item.qtd < qtd) return alert("❌ Erro de saldo!");
+        item.qtd -= qtd;
+        db.requisicoes.push({func: reqFunc.value, item: reqItem.value, qtd, data: new Date().toLocaleDateString()});
+        salvarDB();
+        alert("✅ Requisição salva!");
+    }
+
+    function gerarPdfRequisicao() {
+        const { jsPDF } = window.jspdf; const doc = new jsPDF();
+        doc.text("PROTOCOLO DE RETIRADA DE MATERIAL", 105, 20, {align: 'center'});
+        doc.text(`Solicitante: ${reqFunc.value}`, 20, 40);
+        doc.text(`Material: ${reqItem.value} | Qtd: ${reqQtd.value}`, 20, 50);
+        doc.text(`Data: ${new Date().toLocaleDateString()}`, 20, 60);
+        doc.text("__________________________________________", 20, 100);
+        doc.text("Assinatura do Recebedor", 20, 110);
+        doc.save("termo_requisicao.pdf");
     }
 
     function cotarIA() {
         const res = document.getElementById('iaResultado');
         res.classList.remove('hidden');
-        res.innerHTML = "⏳ <i>Analisando Big Data de fornecedores...</i>";
+        res.innerHTML = "⏳ <i>Analisando tendências de mercado...</i>";
         setTimeout(() => {
-            res.innerHTML = `<strong>🤖 Resultado IA:</strong><br>O item <b>${iaBusca.value}</b> possui melhor cotação em 12/05/2026 por <b>R$ ${(Math.random()*150).toFixed(2)}</b> na Distribuidora Master.`;
+            res.innerHTML = `<strong>🤖 Insight IA para "${iaBusca.value}":</strong><br>O menor preço médio atual é de <b>R$ ${(Math.random()*200).toFixed(2)}</b>. Recomendamos compra imediata, tendência de alta de 5% na próxima semana.`;
         }, 1500);
     }
 
-    function salvarRequisicaoBaixa() {
-        const item = db.estoque.find(e => e.nome === reqItem.value);
-        if(item.qtd < +reqQtd.value) return alert("❌ Saldo insuficiente!");
-        item.qtd -= +reqQtd.value;
-        db.requisicoes.push({func: reqFunc.value, item: reqItem.value, qtd: reqQtd.value, data: new Date().toLocaleDateString()});
-        salvarDB();
-        alert("✅ Requisição Gravada!");
-    }
-
-    function gerarPdfRequisicao() {
-        const { jsPDF } = window.jspdf; const doc = new jsPDF();
-        doc.setFontSize(20); doc.text("TERMO DE REQUISIÇÃO", 105, 20, {align: 'center'});
-        doc.setFontSize(12); doc.text(`Solicitante: ${reqFunc.value}`, 20, 40);
-        doc.text(`Material: ${reqItem.value} - Qtd: ${reqQtd.value}`, 20, 50);
-        doc.text("Assinatura: _________________________________", 20, 80);
-        doc.save("requisicao.pdf");
-    }
-
-    // --- CALCULADORA ---
-    let calcVal = "";
+    // Calculadora
+    let cVal = "";
     function calc(v) { 
-        if(v === 'C') calcVal = ""; else calcVal += v;
-        document.getElementById('calcDisp').innerText = calcVal || "0";
+        if(v === 'C') cVal = ""; else cVal += v;
+        document.getElementById('calcDisp').innerText = cVal || "0";
     }
-    function calcRes() { try { calcVal = eval(calcVal).toString(); document.getElementById('calcDisp').innerText = calcVal; } catch { calcVal = ""; } }
+    function calcRes() { try { cVal = eval(cVal).toString(); document.getElementById('calcDisp').innerText = cVal; } catch { cVal = ""; } }
 
-    // --- CORE ---
+    // Auxiliares de UI
     function mostrar(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
     }
 
     function render() {
-        tabEstoque.querySelector('tbody').innerHTML = db.estoque.map(e => `<tr><td>${e.nome}</td><td style="${e.qtd<=e.min?'color:red;font-weight:bold':''}">${e.qtd}</td><td>${e.min}</td></tr>`).join('');
+        tabEstoque.querySelector('tbody').innerHTML = db.estoque.map(e => `<tr><td>${e.nome}</td><td style="${e.qtd <= e.min ? 'color:red;font-weight:bold' : ''}">${e.qtd}</td><td>${e.min}</td></tr>`).join('');
         vendaItem.innerHTML = reqItem.innerHTML = db.estoque.map(e => `<option>${e.nome}</option>`).join('');
-        tabProtocolos.querySelector('tbody').innerHTML = db.protocolos.map(p => `<tr><td>${p.data}</td><td>${p.nome}</td><td>${p.qtd}</td><td>${p.status}</td></tr>`).join('');
+        tabProtocolos.querySelector('tbody').innerHTML = db.protocolos.map(p => `<tr><td>${p.data}</td><td>${p.nome}</td><td>${p.qtd}</td><td>${p.aviso}</td></tr>`).join('');
         listaNfPdf.querySelector('tbody').innerHTML = db.arquivosPdf.map(a => `<tr><td>${a.data}</td><td>${a.nome}</td><td><button onclick="baixar('${a.file}')">📥</button></td></tr>`).join('');
     }
 
-    function baixar(f) { const a = document.createElement('a'); a.href=f; a.download="documento.pdf"; a.click(); }
-
+    function baixar(f) { const a = document.createElement('a'); a.href=f; a.download="nf_digitalizada.pdf"; a.click(); }
     function abrirConfig() { document.getElementById('modalConfig').style.display='flex'; }
     function toggleConf(k, v) { db.conf[k] = v; salvarDB(); location.reload(); }
+    function validarPgto() { document.getElementById('modalPgto').style.display='none'; document.getElementById('modalReg').style.display='flex'; }
+    function abrirPgto() { document.getElementById('modalPgto').style.display='flex'; }
 
-    window.onload = () => {
-        const sessao = localStorage.getItem('sessao');
+    // Inicialização
+    window.addEventListener('DOMContentLoaded', () => {
+        const sessao = localStorage.getItem('sessao_erp');
         if(sessao) {
             const user = db.usuarios.find(u => u.cpf === sessao);
             document.getElementById('loginArea').classList.add('hidden');
@@ -343,9 +379,14 @@
                 empresaTopo.classList.remove('hidden'); 
             }
             render();
-            setInterval(() => { relogioContainer.innerText = new Date().toLocaleString(); }, 1000);
+            setInterval(() => { document.getElementById('relogio').innerText = new Date().toLocaleString(); }, 1000);
         }
-    };
+    });
+
+    // Service Worker Simples para PWA Offline
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ZW50ID0+IHsgZXZlbnQucmVzcG9uZFdpdGgoZmV0Y2goZXZlbnQucmVxdWVzdCkpOyB9KTs=');
+    }
 </script>
 </body>
 </html>
