@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>ERP MASTER ENTERPRISE 2026</title>
+    <title>ERP MASTER ENTERPRISE v12</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -13,17 +13,16 @@
     <style>
         :root {
             --bg: #0f172a; --card: #1e293b; --accent: #38bdf8;
-            --text: #f1f5f9; --border: #334155; --danger: #ef4444; --success: #22c55e;
-            --warning: #f59e0b;
+            --text: #f1f5f9; --border: #334155; --danger: #ef4444; 
+            --success: #22c55e; --warning: #f59e0b;
         }
 
         .light-theme {
             --bg: #f8fafc; --card: #ffffff; --accent: #0284c7;
-            --text: #1e293b; --border: #e2e8f0; --warning: #d97706;
+            --text: #1e293b; --border: #e2e8f0;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        
         body { 
             margin: 0; background: var(--bg); color: var(--text); 
             font-family: 'Segoe UI', system-ui, sans-serif; transition: 0.3s;
@@ -35,15 +34,14 @@
         /* --- LOGIN --- */
         #screenAuth {
             height: 100vh; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #020617 0%, #1e293b 100%);
         }
-        .auth-card { background: var(--card); padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text); font-size: 16px; }
+        .auth-card { background: var(--card); padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; border: 1px solid var(--border); box-shadow: 0 25px 60px rgba(0,0,0,0.7); }
+        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.3); color: var(--text); font-size: 16px; }
 
         /* --- DASHBOARD --- */
         header { padding: 15px 20px; background: var(--card); border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .config-btn { font-size: 24px; cursor: pointer; transition: 0.3s; }
-        .config-btn:hover { transform: rotate(45deg); }
+        .config-btn { font-size: 24px; cursor: pointer; }
 
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
         .menu-item { 
@@ -53,56 +51,61 @@
         .menu-item:active { transform: scale(0.95); }
         .menu-item i { font-size: 32px; display: block; margin-bottom: 8px; font-style: normal; }
 
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; text-transform: uppercase; font-size: 14px; }
+        /* --- BOTÕES --- */
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; text-transform: uppercase; }
         .btn-primary { background: var(--accent); color: #000; }
+        .btn-success { background: var(--success); color: #000; }
         .btn-danger { background: var(--danger); color: #fff; }
         .btn-secondary { background: var(--border); color: var(--text); }
+        .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 
-        /* --- ALERTAS ESTOQUE --- */
-        .stock-alert { border: 2px solid var(--danger) !important; background: rgba(239, 68, 68, 0.1) !important; animation: blink 2s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        /* --- ALERTAS --- */
+        .stock-alert { border: 2px solid var(--danger) !important; animation: blink 2s infinite; }
+        @keyframes blink { 50% { opacity: 0.6; } }
 
         /* --- MODAIS --- */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--card); width: 100%; max-width: 500px; padding: 25px; border-radius: 20px; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border); }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
+        .modal-content { background: var(--card); width: 100%; max-width: 500px; padding: 25px; border-radius: 20px; border: 1px solid var(--border); max-height: 90vh; overflow-y: auto; }
+
+        .legal-text { font-size: 11px; color: #94a3b8; line-height: 1.4; text-align: justify; margin: 15px 0; }
+        .highlight-box { background: rgba(56, 189, 248, 0.1); padding: 15px; border-radius: 10px; border-left: 4px solid var(--accent); margin: 10px 0; }
 
         #reader { width: 100%; border-radius: 15px; overflow: hidden; background: #000; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-        th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: var(--accent); }
-        td { padding: 12px 10px; border-bottom: 1px solid var(--border); }
 
-        footer { margin-top: auto; padding: 20px; text-align: center; font-size: 12px; opacity: 0.6; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--border); }
+        td { padding: 12px; border-bottom: 1px solid var(--border); }
+
+        footer { padding: 30px; text-align: center; font-size: 12px; opacity: 0.6; margin-top: auto; }
     </style>
 </head>
-<body class="dark-theme">
+<body>
 
 <div id="screenAuth">
     <div class="auth-card">
-        <h2 style="text-align: center; color: var(--accent); margin-bottom: 25px;">ERP ENTERPRISE</h2>
+        <h2 style="text-align: center; color: var(--accent);">ERP v12 ENTERPRISE</h2>
         <input type="text" id="loginUser" placeholder="Usuário">
         <div style="position: relative;">
             <input type="password" id="loginPass" placeholder="Senha">
-            <span style="position: absolute; right: 15px; top: 22px; cursor: pointer; font-size: 18px;" onclick="togglePass()">👁️</span>
+            <span style="position: absolute; right: 15px; top: 22px; cursor: pointer;" onclick="togglePass()">👁️</span>
         </div>
-        <button class="btn btn-primary" onclick="doLogin()">🔓 ACESSAR SISTEMA</button>
-        <button class="btn btn-secondary" onclick="startDemo()">⏱️ MODO TESTE (10 MIN)</button>
-        <p id="demoNotice" style="font-size: 11px; text-align: center; color: #94a3b8; margin-top: 20px;">
-            Acesso administrativo exclusivo.<br>Teste limitado a uma vez por dispositivo.
-        </p>
+        <button class="btn btn-primary" onclick="doLogin()">🔓 ENTRAR</button>
+        <button class="btn btn-outline" style="margin-top: 10px;" onclick="startDemo()">⏱️ TESTAR 10 MINUTOS</button>
+        
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+        
+        <button class="btn btn-success" onclick="toggleModal('modalPayment', true)">💳 VALIDAR ACESSO VITALÍCIO</button>
+        <p style="font-size: 10px; text-align: center; margin-top: 10px; opacity: 0.7;">Liberação imediata após aprovação admin.</p>
     </div>
 </div>
 
 <div id="screenMain" class="hidden">
-    <div id="demoHeader" class="hidden" style="background: var(--danger); text-align: center; padding: 6px; font-weight: bold; font-size: 12px; color: white;">
-        ⚠️ CONTA TESTE ATIVA | SAÍDA EM: <span id="demoTimer">10:00</span>
+    <div id="demoHeader" class="hidden" style="background: var(--danger); text-align: center; padding: 6px; font-weight: bold; font-size: 12px;">
+        CONTA TESTE | EXPIRA EM: <span id="demoTimer">10:00</span>
     </div>
 
     <header>
-        <div>
-            <span id="userName" style="font-weight: bold; color: var(--accent);">Admin</span><br>
-            <small id="clockDisplay">28/04/2026 - 12:00</small>
-        </div>
+        <div><b id="displayUser">Admin</b><br><small id="clockDisplay">28/04/2026 - 12:00</small></div>
         <div class="config-btn" onclick="toggleModal('modalSettings', true)">⚙️</div>
     </header>
 
@@ -114,103 +117,131 @@
             <div class="menu-item" onclick="openView('viewStock')"><i>📦</i>Estoque</div>
             <div class="menu-item" onclick="openView('viewLoc')"><i>📍</i>Localização</div>
             <div class="menu-item" onclick="openView('viewQuotes')"><i>🔍</i>Cotações</div>
+        </div>
+        
+        <div style="padding: 0 20px;" id="adminTools" class="hidden">
+            <button class="btn btn-primary" onclick="openView('viewAccess')">👥 CONTROLE DE ACESSOS</button>
+            <button class="btn btn-secondary" style="margin-top: 10px;" onclick="window.open('https://github.com')">🐙 INTRANET GITHUB</button>
+        </div>
+
+        <div class="menu-grid">
             <div class="menu-item" onclick="generateInventoryPDF()"><i>📝</i>Inventário</div>
             <div class="menu-item" onclick="generateReportPDF()"><i>📊</i>Relatório</div>
         </div>
-        <button id="btnIntranet" class="btn hidden" style="background: #24292e; color: white; width: 90%; margin: 10px auto;" onclick="window.open('https://github.com')">🐙 INTRANET GITHUB</button>
-        <button class="btn btn-secondary" style="width: 90%; margin: 10px auto;" onclick="location.reload()">SAIR</button>
+        <button class="btn btn-danger" style="width: 90%; margin: 10px auto;" onclick="location.reload()">SAIR DO SISTEMA</button>
+    </div>
+
+    <div id="viewAccess" class="view hidden" style="padding: 20px;">
+        <h3>👥 Gestão de Logins</h3>
+        <p style="font-size: 12px; color: var(--accent);">Libere novos usuários após confirmação do pagamento de R$99,90.</p>
+        <div id="accessList">
+            <table id="tableAccess">
+                <thead><tr><th>Usuário</th><th>Status</th><th>Ação</th></tr></thead>
+                <tbody id="accessRows"></tbody>
+            </table>
+        </div>
+        <button class="btn btn-secondary" onclick="openView('viewHome')" style="margin-top: 20px;">VOLTAR</button>
     </div>
 
     <div id="viewReg" class="view hidden" style="padding: 20px;">
-        <h3>🏷️ Cadastro de Materiais</h3>
-        <button class="btn btn-secondary" onclick="openScanner('regSku')">📷 BIPAR CÓDIGO DE BARRAS</button>
-        <input type="text" id="regSku" placeholder="Código SKU / Barcode">
+        <h3>🏷️ Novo Material</h3>
+        <button class="btn btn-secondary" onclick="openScanner('regSku')">📷 BIPAR CÓDIGO</button>
+        <input type="text" id="regSku" placeholder="Código SKU">
         <input type="text" id="regName" placeholder="Nome do Material">
-        <textarea id="regDesc" placeholder="Descrição Técnica"></textarea>
-        <input type="number" id="regMin" placeholder="Qtd. Mínima para Alerta">
-        <p style="font-size: 11px; color: var(--warning);">* O saldo inicial é zero. Adicione via Entrada NF.</p>
-        <button class="btn btn-primary" onclick="saveNewMaterial()">💾 SALVAR CADASTRO</button>
+        <textarea id="regDesc" placeholder="Descrição"></textarea>
+        <input type="number" id="regMin" placeholder="Qtd. Mínima">
+        <button class="btn btn-primary" onclick="saveNewMaterial()">SALVAR NOVO MATERIAL</button>
         <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
 
     <div id="viewNF" class="view hidden" style="padding: 20px;">
-        <h3>📥 Entrada de Nota Fiscal</h3>
+        <h3>📥 Entrada NF</h3>
         <button class="btn btn-secondary" onclick="openScanner('nfSku')">📷 BIPAR SKU</button>
-        <input type="text" id="nfSku" placeholder="SKU do Produto" oninput="showFastInfo(this.value, 'nfPreview')">
-        <div id="nfPreview" style="padding: 10px; font-size: 13px;"></div>
-        <input type="text" id="nfDoc" placeholder="Número da NF">
-        <input type="text" id="nfFornecedor" placeholder="Fornecedor">
-        <input type="number" id="nfQty" placeholder="Quantidade na Nota">
-        <button class="btn btn-primary" onclick="confirmNF()">✅ REGISTRAR ENTRADA</button>
+        <input type="text" id="nfSku" placeholder="SKU" oninput="showFastInfo(this.value, 'nfPreview')">
+        <div id="nfPreview" style="font-size: 12px; padding: 5px;"></div>
+        <input type="text" id="nfDoc" placeholder="Nº Nota Fiscal">
+        <input type="number" id="nfQty" placeholder="Quantidade">
+        <button class="btn btn-primary" onclick="confirmNF()">CONFIRMAR ENTRADA</button>
         <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
 
     <div id="viewReq" class="view hidden" style="padding: 20px;">
-        <h3>📋 Baixa de Requisição</h3>
-        <input type="text" id="reqFunc" placeholder="Nome do Funcionário">
+        <h3>📋 Baixa Requisição</h3>
+        <input type="text" id="reqFunc" placeholder="Funcionário">
         <input type="text" id="reqMatri" placeholder="Matrícula">
         <button class="btn btn-secondary" onclick="openScanner('reqSku')">📷 BIPAR ITEM</button>
         <input type="text" id="reqSku" placeholder="SKU" oninput="showFastInfo(this.value, 'reqPreview')">
-        <div id="reqPreview" style="padding: 10px; font-size: 13px; font-weight: bold; color: var(--accent);"></div>
-        <input type="number" id="reqQty" placeholder="Qtd. para Retirada">
-        <button class="btn btn-danger" onclick="confirmReq()">📉 DAR BAIXA E GERAR PDF</button>
+        <div id="reqPreview" style="font-size: 12px; font-weight: bold; color: var(--accent);"></div>
+        <input type="number" id="reqQty" placeholder="Quantidade">
+        <button class="btn btn-danger" onclick="confirmReq()">BAIXAR E GERAR PDF</button>
         <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
 
     <div id="viewStock" class="view hidden" style="padding: 20px;">
-        <h3>📦 Gestão de Almoxarifado</h3>
+        <h3>📦 Estoque Atualizado</h3>
         <div id="stockContainer"></div>
         <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
 
     <div id="viewLoc" class="view hidden" style="padding: 20px;">
-        <h3>📍 Gestão de Localização</h3>
-        <button class="btn btn-secondary" onclick="openScanner('locSku')">📷 BIPAR MATERIAL</button>
-        <input type="text" id="locSku" placeholder="SKU" oninput="showFastInfo(this.value, 'locPreview')">
-        <div id="locPreview" style="padding: 10px;"></div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <select id="locRua"><option value="">Rua (A-Z)</option></select>
-            <input type="number" id="locMod" placeholder="Módulo">
-        </div>
+        <h3>📍 Localização</h3>
+        <button class="btn btn-secondary" onclick="openScanner('locSku')">📷 BIPAR SKU</button>
+        <input type="text" id="locSku" placeholder="SKU">
+        <select id="locRua"><option value="">Rua (A-Z)</option></select>
+        <input type="number" id="locMod" placeholder="Módulo">
         <select id="locPrat">
             <option value="">Prateleira (1-6)</option>
-            <option value="1">Prateleira 1</option>
-            <option value="2">Prateleira 2</option>
-            <option value="3">Prateleira 3</option>
-            <option value="4">Prateleira 4</option>
-            <option value="5">Prateleira 5</option>
-            <option value="6">Prateleira 6</option>
+            <option value="1">P1</option><option value="2">P2</option><option value="3">P3</option>
+            <option value="4">P4</option><option value="5">P5</option><option value="6">P6</option>
         </select>
-        <button class="btn btn-primary" onclick="updateLoc()">📍 SALVAR LOCALIZAÇÃO</button>
+        <button class="btn btn-primary" onclick="updateLoc()">DEFINIR LOCALIZAÇÃO</button>
         <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
 
     <div id="viewQuotes" class="view hidden" style="padding: 20px;">
-        <h3>🔍 Cotação Integrada</h3>
-        <input type="text" id="qSearch" placeholder="Material ou Ferramenta...">
-        <button class="btn btn-primary" onclick="runQuote()">🌐 PESQUISAR PREÇOS</button>
+        <h3>🔍 Cotação Google</h3>
+        <input type="text" id="qSearch" placeholder="Material...">
+        <button class="btn btn-primary" onclick="runQuote()">PESQUISAR PREÇOS</button>
         <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
+    </div>
+</div>
+
+<div id="modalPayment" class="modal hidden">
+    <div class="modal-content">
+        <h2 style="color: var(--success); text-align: center;">🛡️ Pagamento Seguro</h2>
+        <p style="text-align: center;">O pagamento de <b>R$99,90</b> para acesso vitalício é processado totalmente pelo <b>Mercado Pago</b>.</p>
+        
+        <div class="highlight-box">
+            <b>Suporte ao Cliente:</b><br>
+            📧 <a href="mailto:italong8@gmail.com" style="color: var(--accent);">italong8@gmail.com</a>
+        </div>
+
+        <div class="legal-text">
+            <b>Lei do Consumidor (Art. 49 do CDC):</b> O consumidor pode desistir do contrato, no prazo de 7 dias a contar de sua assinatura ou do ato de recebimento do produto ou serviço. Caso haja desistência dentro deste prazo, o valor será reembolsado 100% e o login será permanentemente excluído.
+        </div>
+
+        <button class="btn btn-success" onclick="window.open('https://mpago.li/1Qt8hoV', '_blank')">🛒 PAGAR NO MERCADO PAGO</button>
+        <button class="btn btn-secondary" style="margin-top: 10px;" onclick="toggleModal('modalPayment', false)">FECHAR</button>
     </div>
 </div>
 
 <div id="modalSettings" class="modal hidden">
     <div class="modal-content">
-        <h3>⚙️ Configurações do Sistema</h3>
-        <label><input type="checkbox" id="setTheme" onchange="applyTheme()"> Tema Claro</label><br><br>
-        <label><input type="checkbox" id="setBip" checked> Som de Confirmação (Bip)</label><br><br>
-        <label><input type="checkbox" id="setMusic" onchange="applyMusic()"> Música Ambiente Relaxante</label>
+        <h3>⚙️ Configurações</h3>
+        <label><input type="checkbox" id="setTheme" onchange="applyTheme()"> Modo Claro</label><br><br>
+        <label><input type="checkbox" id="setBip" checked> Som de Bip</label><br><br>
+        <label><input type="checkbox" id="setMusic" onchange="applyMusic()"> Música Ambiente</label>
         <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--border);">
-        <h4>🔐 Segurança</h4>
         <input type="password" id="newPass" placeholder="Nova Senha">
-        <button class="btn btn-primary" onclick="alert('Solicitação enviada! Verifique seu E-mail/SMS cadastrado.')">REDEFINIR SENHA</button>
-        <button class="btn btn-danger" onclick="toggleModal('modalSettings', false)">FECHAR</button>
+        <button class="btn btn-primary" onclick="alert('Solicitação de troca enviada para email/SMS.')">MUDAR SENHA</button>
+        <button class="btn btn-danger" style="margin-top: 10px;" onclick="toggleModal('modalSettings', false)">FECHAR</button>
     </div>
 </div>
 
 <div id="modalScanner" class="modal hidden">
     <div class="modal-content">
         <div id="reader"></div>
-        <button class="btn btn-danger" onclick="stopScanner()">CANCELAR LEITURA</button>
+        <button class="btn btn-danger" onclick="stopScanner()">FECHAR CÂMERA</button>
     </div>
 </div>
 
@@ -218,23 +249,19 @@
 <audio id="audioMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"></audio>
 
 <footer>
-    Criado por ©Italo N. Dos Anjos em 2026. Todos os direitos reservados.
+    ERP Master Enterprise © 2026 | Desenvolvido por Italo N. Dos Anjos
 </footer>
 
 <script>
-    // --- ESTADO ---
-    let db = JSON.parse(localStorage.getItem('erp_master_2026_v11')) || { items: [], logs: [] };
+    // --- ESTADO INICIAL ---
+    let db = JSON.parse(localStorage.getItem('erp_v12_db')) || { items: [], logs: [], users: [{user: 'operador_teste', status: 'pendente'}] };
     let session = null;
     let scanner = null;
 
     function init() {
         const rua = document.getElementById('locRua');
         for(let i=65; i<=90; i++) rua.innerHTML += `<option value="${String.fromCharCode(i)}">Rua ${String.fromCharCode(i)}</option>`;
-        
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clockDisplay').innerText = now.toLocaleString('pt-BR');
-        }, 1000);
+        setInterval(() => { document.getElementById('clockDisplay').innerText = new Date().toLocaleString(); }, 1000);
     }
     init();
 
@@ -247,84 +274,108 @@
     function doLogin() {
         const u = document.getElementById('loginUser').value;
         const p = document.getElementById('loginPass').value;
+        
         if(u === "admin" && p === "adm2026@aB") {
-            session = { user: "Administrador", role: "admin" };
-            document.getElementById('btnIntranet').classList.remove('hidden');
+            session = { user: "Admin", role: "admin" };
+            document.getElementById('adminTools').classList.remove('hidden');
             loginSuccess();
         } else {
-            alert("Acesso negado.");
+            // Verifica se o usuário existe e está liberado
+            const userInDB = db.users.find(x => x.user === u && x.status === 'liberado');
+            if(userInDB) {
+                session = { user: u, role: "user" };
+                loginSuccess();
+            } else {
+                alert("Login inexistente ou pendente de liberação admin (R$99,90).");
+            }
         }
     }
 
     function startDemo() {
-        if(localStorage.getItem('erp_2026_demo_done')) return alert("O período de teste já foi utilizado neste aparelho.");
+        if(localStorage.getItem('erp_demo_v12')) return alert("Teste já realizado neste dispositivo.");
         session = { user: "Conta Teste", role: "demo" };
-        localStorage.setItem('erp_2026_demo_done', 'true');
+        localStorage.setItem('erp_demo_v12', 'true');
         document.getElementById('demoHeader').classList.remove('hidden');
         loginSuccess();
-        
-        let timeLeft = 600;
-        const t = setInterval(() => {
-            timeLeft--;
-            let m = Math.floor(timeLeft/60), s = timeLeft%60;
+        let t = 600;
+        const interval = setInterval(() => {
+            t--;
+            let m = Math.floor(t/60), s = t%60;
             document.getElementById('demoTimer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-            if(timeLeft <= 0) { clearInterval(t); alert("Sessão expirada."); location.reload(); }
+            if(t <= 0) { clearInterval(interval); alert("Sessão expirada."); location.reload(); }
         }, 1000);
     }
 
     function loginSuccess() {
         document.getElementById('screenAuth').classList.add('hidden');
         document.getElementById('screenMain').classList.remove('hidden');
-        document.getElementById('userName').innerText = session.user;
+        document.getElementById('displayUser').innerText = session.user;
     }
 
-    // --- NAVEGAÇÃO ---
+    // --- CONTROLE DE ACESSOS (ADMIN) ---
+    function renderAccessList() {
+        const rows = document.getElementById('accessRows');
+        rows.innerHTML = db.users.map((u, i) => `
+            <tr>
+                <td>${u.user}</td>
+                <td style="color: ${u.status === 'liberado' ? 'var(--success)' : 'var(--warning)'}">${u.status.toUpperCase()}</td>
+                <td>
+                    ${u.status === 'pendente' ? 
+                    `<button onclick="releaseUser(${i})" style="background:var(--success); border:none; padding:5px; border-radius:5px;">Liberar</button>` : 
+                    `<button onclick="deleteUser(${i})" style="background:var(--danger); border:none; color:white; padding:5px; border-radius:5px;">Remover</button>`}
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function releaseUser(idx) {
+        db.users[idx].status = 'liberado';
+        saveDB();
+        renderAccessList();
+        alert("Usuário liberado com sucesso!");
+    }
+
+    function deleteUser(idx) {
+        if(confirm("Remover este acesso?")) {
+            db.users.splice(idx, 1);
+            saveDB();
+            renderAccessList();
+        }
+    }
+
+    // --- LOGÍSTICA ---
     function openView(id) {
         document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
         if(id === 'viewStock') renderStock();
+        if(id === 'viewAccess') renderAccessList();
     }
 
-    function toggleModal(id, show) {
-        document.getElementById(id).classList.toggle('hidden', !show);
-    }
+    function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
 
-    // --- SCANNER ---
-    function openScanner(targetId) {
+    function openScanner(target) {
         toggleModal('modalScanner', true);
         scanner = new Html5Qrcode("reader");
         scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (txt) => {
-            document.getElementById(targetId).value = txt;
+            document.getElementById(target).value = txt;
             if(document.getElementById('setBip').checked) document.getElementById('audioBip').play();
-            showFastInfo(txt, targetId.includes('nf') ? 'nfPreview' : targetId.includes('req') ? 'reqPreview' : 'locPreview');
             stopScanner();
-        }).catch(err => console.error(err));
+        });
     }
 
-    function stopScanner() {
-        if(scanner) scanner.stop().then(() => toggleModal('modalScanner', false));
-    }
+    function stopScanner() { if(scanner) scanner.stop().then(() => toggleModal('modalScanner', false)); }
 
-    // --- OPERAÇÕES ---
     function saveNewMaterial() {
         const sku = document.getElementById('regSku').value;
         const name = document.getElementById('regName').value;
-        if(!sku || !name) return alert("SKU e Nome são obrigatórios.");
-        
-        db.items.push({
-            sku, name, desc: document.getElementById('regDesc').value,
-            min: parseInt(document.getElementById('regMin').value) || 0,
-            balance: 0, loc: "Não Definida"
-        });
-        saveDB();
-        alert("Material cadastrado com sucesso!");
-        openView('viewHome');
+        if(!sku || !name) return alert("Preencha SKU e Nome.");
+        db.items.push({ sku, name, desc: document.getElementById('regDesc').value, min: parseInt(document.getElementById('regMin').value)||0, balance: 0, loc: "Não Definida" });
+        saveDB(); alert("Cadastrado!"); openView('viewHome');
     }
 
     function showFastInfo(sku, divId) {
         const item = db.items.find(i => i.sku === sku);
-        document.getElementById(divId).innerHTML = item ? 
-            `✅ <b>${item.name}</b> | Saldo: ${item.balance}` : "❌ SKU não cadastrado.";
+        document.getElementById(divId).innerHTML = item ? `📦 ${item.name} | Saldo: ${item.balance}` : "❌ SKU não cadastrado.";
     }
 
     function confirmNF() {
@@ -332,36 +383,20 @@
         const qty = parseInt(document.getElementById('nfQty').value);
         const item = db.items.find(i => i.sku === sku);
         if(!item || isNaN(qty)) return alert("Dados inválidos.");
-        
         item.balance += qty;
         db.logs.push({ date: new Date().toLocaleString(), type: "ENTRADA", sku, qty, doc: document.getElementById('nfDoc').value });
-        saveDB();
-        alert("Entrada processada!");
-        openView('viewHome');
+        saveDB(); alert("Estoque atualizado!"); openView('viewHome');
     }
 
     function confirmReq() {
         const sku = document.getElementById('reqSku').value;
         const qty = parseInt(document.getElementById('reqQty').value);
         const item = db.items.find(i => i.sku === sku);
-        
-        if(!item || item.balance < qty) return alert("Saldo insuficiente ou SKU inexistente.");
-        
+        if(!item || item.balance < qty) return alert("Saldo insuficiente.");
         item.balance -= qty;
         const log = { date: new Date().toLocaleString(), type: "SAÍDA", sku, qty, func: document.getElementById('reqFunc').value, matri: document.getElementById('reqMatri').value };
         db.logs.push(log);
-        saveDB();
-        generateReqPDF(item, log);
-        openView('viewHome');
-    }
-
-    function updateLoc() {
-        const item = db.items.find(i => i.sku === document.getElementById('locSku').value);
-        if(!item) return alert("Item não encontrado.");
-        item.loc = `Rua ${document.getElementById('locRua').value} | Mód ${document.getElementById('locMod').value} | Prat ${document.getElementById('locPrat').value}`;
-        saveDB();
-        alert("Localização atualizada!");
-        openView('viewHome');
+        saveDB(); generateReqPDF(item, log); openView('viewHome');
     }
 
     function renderStock() {
@@ -369,73 +404,29 @@
         db.items.sort((a,b) => a.name.localeCompare(b.name));
         cont.innerHTML = db.items.map(m => `
             <div class="menu-item ${m.balance <= m.min ? 'stock-alert' : ''}" style="text-align:left; display:block; margin-bottom:10px;">
-                <div style="display:flex; justify-content:space-between;">
-                    <b>${m.name}</b>
-                    <span style="color:var(--accent)">SKU: ${m.sku}</span>
-                </div>
-                <small>${m.desc}</small><br>
+                <b>${m.name}</b> <small>(${m.sku})</small><br>
                 <small>📍 ${m.loc}</small><br>
-                <div style="margin-top:10px;">Saldo: ${m.balance} / Mín: ${m.min}</div>
-                <div style="display:flex; gap:10px; margin-top:10px;">
-                    <button class="btn-primary" style="padding:5px 10px; font-size:11px;" onclick="editItem('${m.sku}')">Editar</button>
-                    <button class="btn-danger" style="padding:5px 10px; font-size:11px;" onclick="deleteItem('${m.sku}')">Excluir</button>
-                </div>
+                Saldo: ${m.balance} / Mín: ${m.min}
             </div>
         `).join('');
     }
 
-    function deleteItem(sku) { if(confirm("Excluir definitivamente?")) { db.items = db.items.filter(i => i.sku !== sku); saveDB(); renderStock(); } }
-    function editItem(sku) {
-        const item = db.items.find(i => i.sku === sku);
-        const n = prompt("Novo Nome:", item.name);
-        if(n) { item.name = n; saveDB(); renderStock(); }
-    }
-
-    function runQuote() {
-        const s = document.getElementById('qSearch').value;
-        if(s) window.open(`https://www.google.com/search?q=comprar+${encodeURIComponent(s)}`, '_blank');
-    }
-
-    // --- PDF ---
     function generateReqPDF(item, log) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         doc.text("COMPROVANTE DE REQUISIÇÃO", 105, 20, {align:'center'});
-        doc.text(`Data: ${log.date}`, 20, 40);
-        doc.text(`Funcionário: ${log.func} | Matrícula: ${log.matri}`, 20, 50);
-        doc.text(`Material: ${item.name} (${item.sku})`, 20, 70);
-        doc.text(`Quantidade Retirada: ${log.qty}`, 20, 80);
-        doc.text(`Saldo Atual em Estoque: ${item.balance}`, 20, 90);
-        doc.text("__________________________          __________________________", 20, 140);
-        doc.text("Assinatura Funcionário               Assinatura Almoxarife", 20, 145);
-        doc.save(`Req_${Date.now()}.pdf`);
-    }
-
-    function generateInventoryPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("LISTA DE INVENTÁRIO PERIÓDICO", 105, 15, {align:'center'});
-        const rows = db.items.map(m => [m.name, m.sku, m.loc, m.balance, "________"]);
-        doc.autoTable({ head: [['Material', 'SKU', 'Localização', 'Saldo Sist.', 'Saldo Físico']], body: rows, startY: 25 });
-        doc.save("Inventario.pdf");
-    }
-
-    function generateReportPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("RELATÓRIO MENSAL DE MOVIMENTAÇÃO", 105, 15, {align:'center'});
-        const rows = db.logs.map(l => [l.date, l.type, l.sku, l.qty, l.doc || l.func || "-"]);
-        doc.autoTable({ head: [['Data', 'Tipo', 'SKU', 'Qtd', 'Doc/Func']], body: rows, startY: 25 });
-        doc.save("Relatorio_Mensal.pdf");
+        doc.text(`Funcionário: ${log.func} | Matrícula: ${log.matri}`, 20, 40);
+        doc.text(`Material: ${item.name} | Qtd: ${log.qty}`, 20, 50);
+        doc.text(`Assinatura Funcionário: _____________________`, 20, 100);
+        doc.text(`Assinatura Almoxarife: _____________________`, 20, 120);
+        doc.save(`Requisição_${Date.now()}.pdf`);
     }
 
     // --- CONFIGS ---
     function applyTheme() { document.body.classList.toggle('light-theme', document.getElementById('setTheme').checked); }
-    function applyMusic() { 
-        const m = document.getElementById('audioMusic');
-        document.getElementById('setMusic').checked ? m.play() : m.pause();
-    }
-    function saveDB() { localStorage.setItem('erp_master_2026_v11', JSON.stringify(db)); }
+    function applyMusic() { const m = document.getElementById('audioMusic'); document.getElementById('setMusic').checked ? m.play() : m.pause(); }
+    function saveDB() { localStorage.setItem('erp_v12_db', JSON.stringify(db)); }
+    function runQuote() { const s = document.getElementById('qSearch').value; if(s) window.open(`https://www.google.com/search?q=preço+${encodeURIComponent(s)}`, '_blank'); }
 </script>
 </body>
 </html>
