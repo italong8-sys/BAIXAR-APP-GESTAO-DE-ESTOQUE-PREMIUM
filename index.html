@@ -56,7 +56,10 @@
         .app-card { background: var(--card); width: 100%; max-width: 400px; padding: 30px; border-radius: 25px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         
         input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.4); color: #fff; margin-bottom: 15px; font-size: 16px; }
-        label { display: block; font-size: 10px; font-weight: 800; color: var(--accent); margin-bottom: 5px; text-transform: uppercase; }
+        
+        /* CHECKBOX STYLE */
+        .show-pass-area { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 13px; color: var(--text); opacity: 0.8; cursor: pointer; }
+        .show-pass-area input { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); }
 
         .btn { width: 100%; padding: 16px; border: none; border-radius: 15px; font-weight: 800; font-size: 13px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
         .btn-blue { background: var(--accent); color: #000; }
@@ -67,9 +70,8 @@
         /* MENU GRID */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
         .menu-item { background: var(--card); padding: 30px 10px; border-radius: 25px; border: 1px solid var(--border); text-align: center; }
-        .menu-item i { font-size: 32px; display: block; margin-bottom: 10px; }
-
-        /* CALCULADORA */
+        
+        /* CALC */
         .calc-display { background: #000; color: var(--neon-green); padding: 25px; text-align: right; font-size: 28px; border-radius: 15px; margin-bottom: 10px; font-family: monospace; border: 1px solid var(--border); }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .calc-btn { padding: 18px; border: none; border-radius: 12px; background: #1e293b; color: #fff; font-weight: bold; font-size: 18px; }
@@ -103,6 +105,10 @@
             <input type="text" id="lUser" placeholder="Usuário">
             <input type="password" id="lPass" placeholder="Senha">
             
+            <label class="show-pass-area">
+                <input type="checkbox" onchange="togglePassVisibility('lPass')"> Mostrar Senha
+            </label>
+
             <button class="btn-forgot" onclick="forgotPass()">Esqueci minha senha</button>
             
             <button class="btn btn-blue" onclick="handleLogin()">ENTRAR NO SISTEMA</button>
@@ -116,6 +122,11 @@
             <input type="email" id="rEmail" placeholder="E-mail">
             <input type="text" id="rUser" placeholder="Usuário">
             <input type="password" id="rPass" placeholder="Senha">
+            
+            <label class="show-pass-area">
+                <input type="checkbox" onchange="togglePassVisibility('rPass')"> Mostrar Senha
+            </label>
+
             <button class="btn btn-green" onclick="buyPremium()">PAGAR E ATIVAR AGORA</button>
             <button class="btn btn-outline" style="margin-top: 10px;" onclick="toggleAuth(true)">VOLTAR</button>
         </div>
@@ -143,7 +154,7 @@
             <div class="menu-item" onclick="exitApp()"><i>🚪</i><b>Sair</b></div>
         </div>
         <div style="padding: 10px 20px;">
-            <button class="btn btn-outline" onclick="exportPDF('stock')">📄 EXPORTAR ESTOQUE (PDF)</button>
+            <button class="btn btn-outline" onclick="exportPDF()">📄 EXPORTAR ESTOQUE (PDF)</button>
         </div>
     </div>
 
@@ -231,6 +242,12 @@
         }, 1000);
     }
 
+    // --- VISIBILIDADE DA SENHA ---
+    function togglePassVisibility(inputId) {
+        const input = document.getElementById(inputId);
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
     // --- AUTH & DEMO ---
     function handleLogin() {
         const u = document.getElementById('lUser').value;
@@ -285,6 +302,7 @@
     function doIn() {
         const sku = document.getElementById('inSku').value;
         const qtd = parseInt(document.getElementById('inQtd').value);
+        if(!sku || isNaN(qtd)) return alert("Preencha SKU e Qtd!");
         let item = db.stock.find(x => x.sku === sku);
         if(item) item.qtd += qtd;
         else db.stock.push({ sku, nome: document.getElementById('inNome').value, qtd });
@@ -343,8 +361,10 @@
     function buyPremium() {
         window.open('https://mpago.li/1Qt8hoV', '_blank');
         setTimeout(() => {
+            const u = document.getElementById('rUser').value;
+            if(!u) return;
             db.users.push({ 
-                user: document.getElementById('rUser').value, 
+                user: u, 
                 pass: document.getElementById('rPass').value, 
                 email: document.getElementById('rEmail').value,
                 nome: document.getElementById('rNome').value
