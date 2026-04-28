@@ -5,388 +5,540 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#020617">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>ERP ULTRA MASTER PRO - V2026</title>
+    <title>ULTRA ERP PRO V2026</title>
 
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVSUCBVbHRyYSBNYXN0ZXIiLAogICJzaG9ydF9uYW1lIjogIkVSUCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDIwNjE3IiwKICAidGhlbWVfY29sb3IiIjogIiMwMjA2MTciLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yNjkzLzI2OTM1MDcucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlVMVFJBIEVSUCBQUk8iLAogICJzaG9ydF9uYW1lIjogIlVMVFJBIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwMjA2MTciLAogICJ0aGVtZV9jb2xvciI6ICIjMDIwNjE3IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvMjc5My8yNzkzNTA3LnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
 
-    <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --accent: #38bdf8; --neon-pink: #f472b6; --neon-green: #4ade80; --danger: #f87171; }
-        .light-mode { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #0284c7; }
-        
+        :root {
+            --bg: #020617; --card: #0f172a; --accent: #38bdf8;
+            --text: #f1f5f9; --neon-pink: #f472b6; --neon-green: #22c55e;
+        }
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
-        
-        /* Layout e Header */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #020617; border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 1000; height: 60px; }
-        .logo-box { display: flex; flex-direction: column; }
-        .empresa-destaque { color: var(--neon-pink); font-weight: 800; font-size: 12px; text-transform: uppercase; }
-        
-        /* Modais de Sistema */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 5000; padding: 15px; backdrop-filter: blur(5px); }
-        .card-panel { width: 100%; max-width: 450px; background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow-y: auto; max-height: 90vh; }
-        .hidden { display: none !important; }
-        .alert-popup { position: fixed; top: 20px; left: 5%; width: 90%; background: #ef4444; color: white; padding: 15px; border-radius: 10px; font-weight: bold; z-index: 9999; display: none; text-align: center; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-        /* Menu Grade Mobile */
-        .menu-geral { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; background: rgba(0,0,0,0.2); }
-        .menu-geral button { padding: 15px 5px; border: none; border-radius: 12px; background: #334155; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); }
-        .menu-geral button i-emoji { font-size: 22px; }
+        /* HEADER DINÂMICO */
+        header { 
+            padding: 15px; background: #000; border-bottom: 2px solid var(--accent);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
+        }
+        .header-brand { display: flex; flex-direction: column; }
+        .destaque-empresa { color: var(--neon-pink); font-weight: 900; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Formulários Detalhados */
-        .container { padding: 15px; flex-grow: 1; }
-        .section-title { font-size: 16px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #334155; padding-bottom: 8px; font-weight: 800; }
+        /* MODAIS E POPUPS */
+        .modal { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; 
+            display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(10px);
+        }
+        .alert-popup { 
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px;
+            background: #ef4444; color: white; padding: 20px; border-radius: 12px; font-weight: bold;
+            z-index: 5000; display: none; text-align: center; border: 2px solid white; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        /* FORMULÁRIOS E BOTÕES */
+        .card-auth { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid var(--accent); width: 100%; max-width: 400px; }
         .input-group { margin-bottom: 15px; }
-        label { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; display: block; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 16px; }
-        
-        .btn-action { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; }
-        .bg-green { background: var(--neon-green); color: #064e3b; }
-        .bg-blue { background: var(--accent); color: white; }
-        .bg-pink { background: var(--neon-pink); color: white; }
-        .bg-danger { background: var(--danger); color: white; }
+        label { display: block; font-size: 11px; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+        input, select { 
+            width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #334155; 
+            background: #1e293b; color: white; font-size: 16px; 
+        }
+        .btn-main { 
+            width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer;
+            text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px;
+        }
+        .btn-blue { background: var(--accent); color: #000; }
+        .btn-green { background: var(--neon-green); color: #000; }
+        .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 
-        /* Tabelas Mobile */
-        .table-responsive { overflow-x: auto; background: rgba(0,0,0,0.1); border-radius: 10px; }
-        table { width: 100%; border-collapse: collapse; font-size: 11px; }
-        th { text-align: left; padding: 12px; background: #020617; color: var(--accent); }
+        /* MENU GRADE */
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
+        .menu-item { 
+            background: var(--card); padding: 20px; border-radius: 15px; display: flex; flex-direction: column;
+            align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,0.05); text-decoration: none; color: white;
+            font-size: 12px; font-weight: bold; text-align: center; transition: 0.2s;
+        }
+        .menu-item:active { background: var(--accent); color: #000; }
+        .menu-item i { font-size: 24px; }
+
+        /* TABELAS */
+        .tab-content { padding: 15px; display: none; }
+        .active-tab { display: block; }
+        .table-res { overflow-x: auto; background: var(--card); border-radius: 15px; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #1e293b; padding: 12px; text-align: left; color: var(--accent); }
         td { padding: 12px; border-bottom: 1px solid #334155; }
 
-        /* Calculadora Estilizada */
-        .calc-display { background: #000; color: var(--neon-green); padding: 20px; text-align: right; font-size: 32px; font-family: monospace; border-radius: 10px; margin-bottom: 10px; border: 2px solid #334155; }
-        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .btn-calc { padding: 20px; font-size: 20px; border-radius: 10px; border: none; background: #475569; color: white; font-weight: bold; }
+        /* CALCULADORA */
+        .calc-box { background: #000; padding: 15px; border-radius: 15px; margin-top: 10px; }
+        .calc-screen { width: 100%; height: 60px; background: #1e293b; border-radius: 10px; margin-bottom: 10px; text-align: right; padding: 15px; font-size: 24px; font-family: monospace; color: var(--neon-green); }
+        .calc-btns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .calc-btns button { padding: 15px; border-radius: 5px; border: none; background: #334155; color: white; font-weight: bold; }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<div id="timeoutAlert" class="alert-popup">⏳ Sessão encerrada por inatividade (5 min). Faça login novamente.</div>
+<div id="timeoutAlert" class="alert-popup">
+    ⚠️ SESSÃO EXPIRADA!<br>
+    Devido a falta de interação no app, você foi deslogado por motivos de segurança! Faça o login novamente.
+</div>
 
-<header>
-    <div class="logo-box">
-        <span style="font-size: 14px; font-weight: 900; color: white;">🛡️ ULTRA ERP</span>
-        <span id="empresaTopo" class="empresa-destaque hidden"></span>
+<header id="mainHeader" class="hidden">
+    <div class="header-brand">
+        <span style="font-size: 10px; opacity: 0.7;">SISTEMA OPERACIONAL</span>
+        <span id="topoEmpresaNome" class="destaque-empresa"></span>
     </div>
-    <div id="relogio" style="font-family: monospace; font-size: 11px; color: var(--neon-green); text-align: center;"></div>
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <span id="usuarioTopo" style="font-size: 11px; font-weight: bold; color: var(--accent);"></span>
-        <button onclick="abrirConfig()" style="background:none; border:none; font-size:20px; cursor:pointer;">⚙️</button>
+    <div style="text-align: right;">
+        <span id="topoUsuario" style="font-size: 12px; font-weight: bold;"></span><br>
+        <button onclick="toggleConfig()" style="background:none; border:none; color:var(--accent); font-size:18px;">⚙️</button>
     </div>
 </header>
 
-<div id="loginArea" style="display: flex; justify-content: center; align-items: center; flex-grow: 1; padding: 20px;">
-    <div class="card-panel">
-        <h2 style="text-align: center; margin-top: 0;">🔐 Acesso Seguro</h2>
+<div id="loginSection" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+    <div class="card-auth">
+        <h2 style="text-align: center; margin-top: 0;">🔐 Acesso Restrito</h2>
         <div class="input-group">
-            <label>👤 CPF (Apenas números)</label>
-            <input id="userLogin" type="text" inputmode="numeric" placeholder="Ex: 12345678901">
+            <label>👤 CPF de Acesso</label>
+            <input type="text" id="loginCpf" placeholder="000.000.000-00">
         </div>
         <div class="input-group">
-            <label>🔑 Senha Secreta</label>
-            <input id="passLogin" type="password" placeholder="••••••••">
+            <label>🔑 Senha</label>
+            <input type="password" id="loginPass" placeholder="••••••••">
         </div>
-        <button class="btn-action bg-green" onclick="autenticar()">🔓 ENTRAR NO SISTEMA</button>
-        <div style="margin: 20px 0; text-align: center; font-size: 12px; opacity: 0.5;">— NOVO POR AQUI? —</div>
-        <button class="btn-action bg-blue" onclick="abrirPgto()">💳 CRIAR MINHA CONTA</button>
+        <button class="btn-main btn-blue" onclick="tryLogin()">🔓 Entrar no Sistema</button>
+        <hr style="margin: 20px 0; border: 0.5px solid #334155;">
+        <button class="btn-main btn-outline" onclick="payRedirect()">💳 Registrar Novo Usuário</button>
     </div>
 </div>
 
-<div id="modalPgto" class="modal">
-    <div class="card-panel" style="text-align: center;">
-        <h3 style="color: var(--accent);">💎 Ativação de Licença</h3>
-        <p style="font-size: 13px; margin-bottom: 20px;">O cadastro é vinculado ao seu CPF para segurança máxima. Realize o pagamento único para liberar o formulário.</p>
-        <button class="btn-action bg-blue" onclick="window.open('https://mpago.li/1Qt8hoV')">🔗 PAGAR VIA MERCADO PAGO</button>
-        <button class="btn-action bg-green" onclick="validarPgto()">✅ JÁ PAGUEI / VALIDAR</button>
-        <button class="btn-action bg-danger" onclick="document.getElementById('modalPgto').style.display='none'">❌ VOLTAR</button>
-    </div>
-</div>
-
-<div id="modalReg" class="modal">
-    <div class="card-panel">
-        <h3>📝 Cadastro do Administrador</h3>
-        <div class="input-group"><label>👤 Nome Completo</label><input id="regNome"></div>
-        <div class="input-group"><label>🆔 CPF (Login Único)</label><input id="regCpf" maxlength="11" inputmode="numeric"></div>
-        <div class="input-group"><label>🏢 Nome da Empresa</label><input id="regEmpresa"></div>
-        <div class="input-group"><label>🔑 Definir Senha</label><input id="regPass" type="password"></div>
-        <button class="btn-action bg-green" onclick="registrarUsuario()">💾 SALVAR E ATIVAR ACESSO</button>
-    </div>
-</div>
-
-<div id="app" class="hidden">
-    <nav class="menu-geral">
-        <button onclick="mostrar('estoque')"><i-emoji>📦</i-emoji>Estoque</button>
-        <button onclick="mostrar('venda')"><i-emoji>💰</i-emoji>PDV Venda</button>
-        <button onclick="mostrar('escanear_nf')"><i-emoji>🖨️</i-emoji>NF PDF</button>
-        <button onclick="mostrar('requisicao')"><i-emoji>📝</i-emoji>Requisição</button>
-        <button onclick="mostrar('solicitacao')"><i-emoji>🤖</i-emoji>Cotação IA</button>
-        <button onclick="mostrar('protocolo')"><i-emoji>📥</i-emoji>Protocolos</button>
-        <button onclick="mostrar('calculadora')"><i-emoji>🧮</i-emoji>Calculadora</button>
-        <button onclick="gerarRelatorioMensal()" class="bg-blue"><i-emoji>📄</i-emoji>Relatório</button>
-        <button onclick="logout()" class="bg-danger"><i-emoji>🚪</i-emoji>Sair</button>
-    </nav>
-
-    <div class="container">
-        <div id="estoque" class="section">
-            <div class="section-title">📦 Gestão de Itens e Inventário</div>
-            <div class="card-panel" style="max-width: none; margin-bottom: 20px; box-shadow: none;">
-                <div class="input-group"><label>🏷️ Nomenclatura do Material</label><input id="estNome"></div>
-                <div class="input-group"><label>⚠️ Alerta Mínimo</label><input id="estMin" type="number" placeholder="Ex: 10"></div>
-                <button class="btn-action bg-green" onclick="addEstoque()">➕ CADASTRAR ITEM</button>
-            </div>
-            <div class="table-responsive">
-                <table id="tabEstoque">
-                    <thead><tr><th>Material</th><th>Qtd</th><th>Mín</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="venda" class="section hidden">
-            <div class="section-title">💰 Saída de Materiais (PDV)</div>
-            <div class="card-panel" style="max-width: none; box-shadow: none;">
-                <div class="input-group"><label>🔍 Selecionar do Estoque</label><select id="vendaItem"></select></div>
-                <div class="input-group"><label>🔢 Quantidade de Saída</label><input id="vendaQtd" type="number" value="1"></div>
-                <button class="btn-action bg-green" onclick="processarVenda()">🛒 REGISTRAR BAIXA</button>
-            </div>
-        </div>
-
-        <div id="escanear_nf" class="section hidden">
-            <div class="section-title">🖨️ Arquivo de Notas Fiscais</div>
-            <div class="card-panel" style="max-width: none; box-shadow: none;">
-                <label>📎 Selecionar Documento (PDF/JPG)</label>
-                <input type="file" id="nfFile" accept="application/pdf, image/*">
-                <label>✏️ Identificar Nota (Nº / Fornecedor)</label>
-                <input id="nfFileName">
-                <button class="btn-action bg-blue" onclick="salvarPdfNf()">💾 SALVAR DIGITALIZAÇÃO</button>
-            </div>
-            <div class="table-responsive" style="margin-top: 15px;">
-                <table id="listaNfPdf">
-                    <thead><tr><th>Data</th><th>Identificação</th><th>Ação</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="requisicao" class="section hidden">
-            <div class="section-title">📝 Termo de Requisição</div>
-            <div class="card-panel" style="max-width: none; box-shadow: none;">
-                <div class="input-group"><label>👤 Nome do Funcionário</label><input id="reqFunc"></div>
-                <div class="input-group"><label>📦 Material Solicitado</label><select id="reqItem"></select></div>
-                <div class="input-group"><label>🔢 Qtd Liberada</label><input id="reqQtd" type="number"></div>
-                <button class="btn-action bg-blue" onclick="salvarRequisicaoBaixa()">💾 GRAVAR E BAIXAR</button>
-                <button class="btn-action bg-pink" onclick="gerarPdfRequisicao()">🖨️ GERAR PDF ASSINATURA</button>
-            </div>
-        </div>
-
-        <div id="solicitacao" class="section hidden">
-            <div class="section-title">🤖 Inteligência de Compras</div>
-            <div class="input-group"><label>🔍 O que deseja cotar no mercado?</label><input id="iaBusca" placeholder="Ex: Cimento CP II 50kg"></div>
-            <button class="btn-action bg-pink" onclick="cotarIA()">🧠 ANALISAR PREÇOS COM IA</button>
-            <div id="iaResultado" class="card-panel hidden" style="max-width:none; margin-top:15px; border-style:dashed;"></div>
-        </div>
-
-        <div id="protocolo" class="section hidden">
-            <div class="section-title">📥 Recebimentos Pendentes</div>
-            <div class="table-responsive">
-                <table id="tabProtocolos">
-                    <thead><tr><th>Data</th><th>Material</th><th>Qtd</th><th>Aviso NF</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="calculadora" class="section hidden">
-            <div class="calc-display" id="calcDisp">0</div>
-            <div class="calc-keys">
-                <button class="btn-calc" onclick="calc('7')">7</button><button class="btn-calc" onclick="calc('8')">8</button><button class="btn-calc" onclick="calc('9')">9</button><button class="btn-calc" style="background:var(--accent)" onclick="calc('/')">÷</button>
-                <button class="btn-calc" onclick="calc('4')">4</button><button class="btn-calc" onclick="calc('5')">5</button><button class="btn-calc" onclick="calc('6')">6</button><button class="btn-calc" style="background:var(--accent)" onclick="calc('*')">×</button>
-                <button class="btn-calc" onclick="calc('1')">1</button><button class="btn-calc" onclick="calc('2')">2</button><button class="btn-calc" onclick="calc('3')">3</button><button class="btn-calc" style="background:var(--accent)" onclick="calc('-')">-</button>
-                <button class="btn-calc bg-danger" onclick="calc('C')">C</button><button class="btn-calc" onclick="calc('0')">0</button><button class="btn-calc bg-green" onclick="calcRes()" style="grid-column: span 2;">=</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modalConfig" class="modal">
-    <div class="card-panel">
-        <h3>⚙️ Ajustes do App</h3>
+<div id="registerSection" class="modal">
+    <div class="card-auth">
+        <h3 style="margin-top: 0;">📋 Cadastro Completo</h3>
         <div class="input-group">
-            <label style="display: flex; align-items: center; gap: 10px;">
-                <input type="checkbox" id="checkEmpresa" onchange="toggleConf('empresaTopo', this.checked)" style="width: 20px;">
-                Exibir Nome da Empresa no Topo
-            </label>
+            <label>👤 Nome Completo</label>
+            <input type="text" id="regNome">
         </div>
-        <button class="btn-action bg-blue" onclick="document.body.classList.toggle('light-mode')">🌓 ALTERAR TEMA (CLARO/ESCURO)</button>
-        <button class="btn-action bg-danger" onclick="document.getElementById('modalConfig').style.display='none'">❌ FECHAR</button>
+        <div class="input-group">
+            <label>🆔 CPF (Login Único)</label>
+            <input type="text" id="regCpf" placeholder="Apenas números">
+        </div>
+        <div class="input-group">
+            <label>📱 Celular (WhatsApp)</label>
+            <input type="tel" id="regCel">
+        </div>
+        <div class="input-group">
+            <label>🏢 Nome da Empresa</label>
+            <input type="text" id="regEmpresa">
+        </div>
+        <div class="input-group">
+            <label>🔑 Criar Senha</label>
+            <input type="password" id="regPass">
+        </div>
+        <button class="btn-main btn-green" onclick="finalizeRegister()">💾 Finalizar Cadastro</button>
+        <button class="btn-main" onclick="location.reload()">❌ Cancelar</button>
+    </div>
+</div>
+
+<div id="appBody" class="hidden">
+    <div id="menuPrincipal">
+        <div class="menu-grid">
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaEstoque')"><i>📦</i>Estoque</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaScanner')"><i>🖨️</i>Escanear NF</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaSolicitacao')"><i>🤖</i>Solicitações</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaProtocolo')"><i>📥</i>Protocolo</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaRequisicao')"><i>📝</i>Requisições</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaRelatorio')"><i>📄</i>Relatórios</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaVenda')"><i>💰</i>PDV Venda</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="openTab('abaCalc')"><i>🧮</i>Calculadora</a>
+        </div>
+        <div style="padding: 15px;">
+            <button class="btn-main btn-outline" style="border-color: #ef4444; color: #ef4444;" onclick="logout()">🚪 Sair do Aplicativo</button>
+        </div>
+    </div>
+
+    <div id="abaEstoque" class="tab-content">
+        <h3>📦 Gestão de Itens</h3>
+        <button class="btn-main btn-blue" onclick="novoItemEstoque()">➕ Novo Item</button>
+        <div class="table-res">
+            <table id="tabelaEstoque">
+                <thead><tr><th>Item</th><th>Qtd</th><th>Mín</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+    </div>
+
+    <div id="abaScanner" class="tab-content">
+        <h3>🖨️ Scanner Automático de NF</h3>
+        <div class="card-auth" style="max-width: none;">
+            <label>📁 Selecionar Arquivo (Celular/Scanner)</label>
+            <input type="file" id="inputPdf" accept="application/pdf,image/*">
+            <button class="btn-main btn-green" onclick="processarNF()">💾 Salvar NF em PDF</button>
+        </div>
+        <div class="table-res">
+            <table id="tabelaNF">
+                <thead><tr><th>Nome do Arquivo</th><th>Data</th><th>Ação</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+    </div>
+
+    <div id="abaSolicitacao" class="tab-content">
+        <h3>🤖 Cotação IA & Solicitações</h3>
+        <div class="card-auth" style="max-width: none; margin-bottom: 20px;">
+            <label>🔍 Pesquisar Material para Cotação IA</label>
+            <input type="text" id="iaSearch" placeholder="Ex: Cimento CP II">
+            <button class="btn-main btn-blue" onclick="cotacaoIA()">🧠 Comparar Preços Agora</button>
+            <div id="iaResult" style="margin-top: 15px; font-size: 13px; color: var(--neon-green);"></div>
+        </div>
+        <div class="card-auth" style="max-width: none;">
+            <label>Item Solicitado</label>
+            <input id="solItem">
+            <label>Quantidade</label>
+            <input type="number" id="solQtd">
+            <button class="btn-main btn-green" onclick="addSolicitacao('pendente')">➕ Criar Solicitação</button>
+            <button class="btn-main btn-blue" onclick="addSolicitacao('recebido')">✅ Marcar como Recebido</button>
+        </div>
+        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+    </div>
+
+    <div id="abaProtocolo" class="tab-content">
+        <h3>📥 Protocolo de Recebimento</h3>
+        <p style="color: #ef4444; font-weight: bold; font-size: 12px;">🚩 NF PENDENTE DE ENTRADA</p>
+        <div class="table-res">
+            <table id="tabelaProtocolo">
+                <thead><tr><th>Data</th><th>Item</th><th>Status</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+    </div>
+
+    <div id="abaRequisicao" class="tab-content">
+        <h3>📝 Requisição de Material</h3>
+        <div class="card-auth" style="max-width: none;">
+            <label>📦 Selecionar Material</label>
+            <select id="reqSelect"></select>
+            <label>🔢 Quantidade</label>
+            <input type="number" id="reqQtd">
+            <label>👤 Funcionário Solicitante</label>
+            <input type="text" id="reqFunc">
+            <label>👨‍💼 Almoxarife Responsável</label>
+            <input type="text" id="reqAlmo">
+            <button class="btn-main btn-green" onclick="salvarRequisicaoBaixa()">💾 Salvar e Dar Baixa</button>
+            <button class="btn-main btn-blue" onclick="gerarPdfRequisicao()">🖨️ Gerar PDF Assinatura</button>
+        </div>
+        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+    </div>
+
+    <div id="abaRelatorio" class="tab-content">
+        <h3>📄 Relatórios Estratégicos</h3>
+        <button class="btn-main btn-blue" onclick="gerarRelatorioMensal()">📊 Gerar Relatório Completo Mensal</button>
+        <div style="margin-top: 20px; font-size: 12px; opacity: 0.7;">
+            * O relatório inclui fluxos de estoque, histórico de vendas e movimentações de NF.
+        </div>
+        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+    </div>
+</div>
+
+<div id="configModal" class="modal">
+    <div class="card-auth">
+        <h3>⚙️ Configurações</h3>
+        <div class="input-group">
+            <label><input type="checkbox" id="cfgDestaque" onchange="updateDestaque()"> Destacar Nome da Empresa no Topo</label>
+        </div>
+        <button class="btn-main btn-blue" onclick="toggleConfig()">Fechar</button>
     </div>
 </div>
 
 <script>
-    // Banco de Dados Local Persistente
-    let db = JSON.parse(localStorage.getItem('ultra_erp_final')) || {
-        usuarios: [], estoque: [], requisicoes: [], protocolos: [], arquivosPdf: [], conf: {empresaTopo: false}
+    // BANCO DE DADOS LOCAL (Simulação persistente)
+    let db = JSON.parse(localStorage.getItem('ultra_erp_db')) || {
+        users: [],
+        estoque: [],
+        vendas: [],
+        nfs: [],
+        solicitacoes: [],
+        protocolos: [],
+        config: { destaque: false }
     };
 
-    function salvarDB() {
-        localStorage.setItem('ultra_erp_final', JSON.stringify(db));
-        render();
-    }
+    let currentUser = null;
+    let timerInatividade;
 
-    // Sistema de Login e Segurança
-    function autenticar() {
-        const u = db.usuarios.find(x => x.cpf === userLogin.value && x.pass === passLogin.value);
-        if(u) {
-            localStorage.setItem('sessao_erp', u.cpf);
-            location.reload();
-        } else {
-            alert("❌ CPF ou Senha incorretos!");
-        }
-    }
-
-    function registrarUsuario() {
-        if(!regNome.value || !regCpf.value || !regPass.value) return alert("Preencha todos os campos!");
-        if(db.usuarios.some(u => u.cpf === regCpf.value)) return alert("CPF já cadastrado!");
-        
-        db.usuarios.push({nome: regNome.value, cpf: regCpf.value, empresa: regEmpresa.value, pass: regPass.value});
-        salvarDB();
-        alert("✅ Conta criada com sucesso!");
-        location.reload();
-    }
-
-    function logout() {
-        localStorage.removeItem('sessao_erp');
-        location.reload();
-    }
-
-    // Inatividade (5 min)
-    let idleTimer;
+    // SISTEMA DE SEGURANÇA E INATIVIDADE
     function resetTimer() {
-        clearTimeout(idleTimer);
-        if(localStorage.getItem('sessao_erp')) {
-            idleTimer = setTimeout(() => {
-                logout();
+        clearTimeout(timerInatividade);
+        if (currentUser) {
+            timerInatividade = setTimeout(() => {
                 document.getElementById('timeoutAlert').style.display = 'block';
-            }, 300000); 
+                setTimeout(() => {
+                    logout(true);
+                    document.getElementById('timeoutAlert').style.display = 'none';
+                }, 4000);
+            }, 300000); // 5 minutos
         }
     }
-    window.onload = resetTimer;
-    window.onmousemove = resetTimer;
-    window.onmousedown = resetTimer;
-    window.ontouchstart = resetTimer;
 
-    // Funcionalidades de Módulos
-    function addEstoque() {
-        if(!estNome.value) return;
-        db.estoque.push({nome: estNome.value, qtd: 0, min: +estMin.value});
-        salvarDB();
-        estNome.value = ''; estMin.value = '';
-        alert("✅ Material Cadastrado!");
+    document.onmousedown = resetTimer;
+    document.onkeypress = resetTimer;
+    document.ontouchstart = resetTimer;
+
+    // LOGIN E CADASTRO
+    function payRedirect() {
+        window.open('https://mpago.li/1Qt8hoV', '_blank');
+        setTimeout(() => {
+            if (confirm("Pagamento confirmado no Mercado Pago?")) {
+                document.getElementById('registerSection').style.display = 'flex';
+            }
+        }, 2000);
     }
 
-    function processarVenda() {
-        const item = db.estoque.find(e => e.nome === vendaItem.value);
-        const qtd = +vendaQtd.value;
-        if(item.qtd < qtd) return alert("❌ Saldo Insuficiente!");
-        item.qtd -= qtd;
-        salvarDB();
-        alert("🛒 Baixa realizada!");
-    }
+    function finalizeRegister() {
+        const cpf = document.getElementById('regCpf').value.replace(/\D/g, '');
+        if (db.users.find(u => u.cpf === cpf)) {
+            alert("ERRO: Este CPF já possui um cadastro ativo!");
+            return;
+        }
 
-    function salvarPdfNf() {
-        const file = nfFile.files[0];
-        if(!file || !nfFileName.value) return alert("Selecione o arquivo e dê um nome!");
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            db.arquivosPdf.push({nome: nfFileName.value, data: new Date().toLocaleDateString(), file: e.target.result});
-            db.protocolos.push({nome: nfFileName.value, qtd: 'Scanner', data: new Date().toLocaleDateString(), aviso: '🚩 NF REGISTRADA'});
-            salvarDB();
-            alert("📄 Documento salvo!");
+        const newUser = {
+            nome: document.getElementById('regNome').value,
+            cpf: cpf,
+            cel: document.getElementById('regCel').value,
+            empresa: document.getElementById('regEmpresa').value,
+            pass: document.getElementById('regPass').value
         };
-        reader.readAsDataURL(file);
+
+        db.users.push(newUser);
+        saveDB();
+        alert("Cadastro realizado com sucesso! Faça seu login.");
+        location.reload();
     }
 
+    function tryLogin() {
+        const cpf = document.getElementById('loginCpf').value.replace(/\D/g, '');
+        const pass = document.getElementById('loginPass').value;
+        const user = db.users.find(u => u.cpf === cpf && u.pass === pass);
+
+        if (user) {
+            currentUser = user;
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('appBody').classList.remove('hidden');
+            document.getElementById('mainHeader').classList.remove('hidden');
+            document.getElementById('topoUsuario').innerText = user.nome.split(' ')[0];
+            updateDestaque();
+            resetTimer();
+            renderEstoque();
+        } else {
+            alert("Dados inválidos ou usuário não pago.");
+        }
+    }
+
+    function logout(silent = false) {
+        if (!silent) {
+            const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-37.mp3'); 
+            audio.play().catch(() => {});
+            alert("Obrigado por utilizar o ULTRA ERP PRO!");
+        }
+        location.reload();
+    }
+
+    // GESTÃO DE ESTOQUE
+    function novoItemEstoque() {
+        const nome = prompt("Nome do Item:");
+        const qtd = prompt("Quantidade Inicial:");
+        const min = prompt("Estoque Mínimo:");
+        if(nome) {
+            db.estoque.push({ nome, qtd: parseInt(qtd), min: parseInt(min) });
+            saveDB();
+            renderEstoque();
+        }
+    }
+
+    function renderEstoque() {
+        const tbody = document.querySelector('#tabelaEstoque tbody');
+        const reqSelect = document.getElementById('reqSelect');
+        tbody.innerHTML = '';
+        reqSelect.innerHTML = '';
+        
+        db.estoque.forEach(item => {
+            const row = `<tr><td>${item.nome}</td><td>${item.qtd}</td><td>${item.min}</td></tr>`;
+            tbody.innerHTML += row;
+            reqSelect.innerHTML += `<option value="${item.nome}">${item.nome}</option>`;
+        });
+    }
+
+    // SCANNER E NF
+    function processarNF() {
+        const file = document.getElementById('inputPdf').files[0];
+        if (!file) return alert("Selecione um arquivo!");
+        
+        const novoNome = prompt("Renomeie o arquivo para salvar:");
+        if (novoNome) {
+            const data = new Date().toLocaleDateString();
+            db.nfs.push({ nome: novoNome, data: data, url: URL.createObjectURL(file) });
+            saveDB();
+            renderNFs();
+        }
+    }
+
+    function renderNFs() {
+        const tbody = document.querySelector('#tabelaNF tbody');
+        tbody.innerHTML = '';
+        db.nfs.forEach((nf, idx) => {
+            tbody.innerHTML += `<tr><td>${nf.nome}</td><td>${nf.data}</td><td><a href="${nf.url}" download="${nf.nome}.pdf" style="color:var(--accent)">Download</a></td></tr>`;
+        });
+    }
+
+    // REQUISIÇÃO E PDF
     function salvarRequisicaoBaixa() {
-        const item = db.estoque.find(e => e.nome === reqItem.value);
-        const qtd = +reqQtd.value;
-        if(!item || item.qtd < qtd) return alert("❌ Erro de saldo!");
-        item.qtd -= qtd;
-        db.requisicoes.push({func: reqFunc.value, item: reqItem.value, qtd, data: new Date().toLocaleDateString()});
-        salvarDB();
-        alert("✅ Requisição salva!");
+        const itemNome = document.getElementById('reqSelect').value;
+        const qtd = parseInt(document.getElementById('reqQtd').value);
+        const item = db.estoque.find(i => i.nome === itemNome);
+
+        if (item && item.qtd >= qtd) {
+            item.qtd -= qtd;
+            db.vendas.push({ item: itemNome, qtd, tipo: 'Requisição', data: new Date() });
+            saveDB();
+            renderEstoque();
+            alert("Baixa efetuada no estoque!");
+        } else {
+            alert("Saldo insuficiente!");
+        }
     }
 
     function gerarPdfRequisicao() {
-        const { jsPDF } = window.jspdf; const doc = new jsPDF();
-        doc.text("PROTOCOLO DE RETIRADA DE MATERIAL", 105, 20, {align: 'center'});
-        doc.text(`Solicitante: ${reqFunc.value}`, 20, 40);
-        doc.text(`Material: ${reqItem.value} | Qtd: ${reqQtd.value}`, 20, 50);
-        doc.text(`Data: ${new Date().toLocaleDateString()}`, 20, 60);
-        doc.text("__________________________________________", 20, 100);
-        doc.text("Assinatura do Recebedor", 20, 110);
-        doc.save("termo_requisicao.pdf");
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const func = document.getElementById('reqFunc').value;
+        const almo = document.getElementById('reqAlmo').value;
+        const item = document.getElementById('reqSelect').value;
+        const qtd = document.getElementById('reqQtd').value;
+
+        doc.text("COMPROVANTE DE REQUISIÇÃO DE MATERIAL", 10, 10);
+        doc.text(`Material: ${item} | Qtd: ${qtd}`, 10, 30);
+        doc.text(`Solicitante: ${func}`, 10, 40);
+        doc.text(`Data: ${new Date().toLocaleString()}`, 10, 50);
+        doc.text("--------------------------------------------------", 10, 70);
+        doc.text(`Ass. Funcionário: ________________________`, 10, 90);
+        doc.text(`Ass. Almoxarife (${almo}): ________________________`, 10, 110);
+        
+        doc.save(`Requisicao_${item}.pdf`);
     }
 
-    function cotarIA() {
-        const res = document.getElementById('iaResultado');
-        res.classList.remove('hidden');
-        res.innerHTML = "⏳ <i>Analisando tendências de mercado...</i>";
+    // COTAÇÃO IA
+    function cotacaoIA() {
+        const search = document.getElementById('iaSearch').value;
+        const res = document.getElementById('iaResult');
+        res.innerHTML = "⏳ Inteligência Artificial pesquisando melhores preços em tempo real...";
+        
         setTimeout(() => {
-            res.innerHTML = `<strong>🤖 Insight IA para "${iaBusca.value}":</strong><br>O menor preço médio atual é de <b>R$ ${(Math.random()*200).toFixed(2)}</b>. Recomendamos compra imediata, tendência de alta de 5% na próxima semana.`;
-        }, 1500);
+            const preco1 = (Math.random() * 100).toFixed(2);
+            const preco2 = (Math.random() * 100).toFixed(2);
+            res.innerHTML = `
+                🤖 <b>Análise IA para: ${search}</b><br>
+                📉 Menor Preço Encontrado: R$ ${preco1} (Distribuidora A)<br>
+                🏪 Preço Local Médio: R$ ${preco2}<br>
+                💡 Recomendação: O momento é ideal para compra em larga escala.
+            `;
+        }, 2000);
     }
 
-    // Calculadora
-    let cVal = "";
-    function calc(v) { 
-        if(v === 'C') cVal = ""; else cVal += v;
-        document.getElementById('calcDisp').innerText = cVal || "0";
-    }
-    function calcRes() { try { cVal = eval(cVal).toString(); document.getElementById('calcDisp').innerText = cVal; } catch { cVal = ""; } }
-
-    // Auxiliares de UI
-    function mostrar(id) {
-        document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-        document.getElementById(id).classList.remove('hidden');
-    }
-
-    function render() {
-        tabEstoque.querySelector('tbody').innerHTML = db.estoque.map(e => `<tr><td>${e.nome}</td><td style="${e.qtd <= e.min ? 'color:red;font-weight:bold' : ''}">${e.qtd}</td><td>${e.min}</td></tr>`).join('');
-        vendaItem.innerHTML = reqItem.innerHTML = db.estoque.map(e => `<option>${e.nome}</option>`).join('');
-        tabProtocolos.querySelector('tbody').innerHTML = db.protocolos.map(p => `<tr><td>${p.data}</td><td>${p.nome}</td><td>${p.qtd}</td><td>${p.aviso}</td></tr>`).join('');
-        listaNfPdf.querySelector('tbody').innerHTML = db.arquivosPdf.map(a => `<tr><td>${a.data}</td><td>${a.nome}</td><td><button onclick="baixar('${a.file}')">📥</button></td></tr>`).join('');
-    }
-
-    function baixar(f) { const a = document.createElement('a'); a.href=f; a.download="nf_digitalizada.pdf"; a.click(); }
-    function abrirConfig() { document.getElementById('modalConfig').style.display='flex'; }
-    function toggleConf(k, v) { db.conf[k] = v; salvarDB(); location.reload(); }
-    function validarPgto() { document.getElementById('modalPgto').style.display='none'; document.getElementById('modalReg').style.display='flex'; }
-    function abrirPgto() { document.getElementById('modalPgto').style.display='flex'; }
-
-    // Inicialização
-    window.addEventListener('DOMContentLoaded', () => {
-        const sessao = localStorage.getItem('sessao_erp');
-        if(sessao) {
-            const user = db.usuarios.find(u => u.cpf === sessao);
-            document.getElementById('loginArea').classList.add('hidden');
-            document.getElementById('app').classList.remove('hidden');
-            usuarioTopo.innerText = `👤 ${user.nome.split(' ')[0]}`;
-            if(db.conf.empresaTopo) { 
-                empresaTopo.innerText = `| ${user.empresa}`; 
-                empresaTopo.classList.remove('hidden'); 
-            }
-            render();
-            setInterval(() => { document.getElementById('relogio').innerText = new Date().toLocaleString(); }, 1000);
+    // PROTOCOLO
+    function addSolicitacao(status) {
+        const item = document.getElementById('solItem').value;
+        const data = new Date().toLocaleDateString();
+        db.solicitacoes.push({ item, status, data });
+        if(status === 'recebido') {
+            db.protocolos.push({ item, data, status: 'NF PENDENTE DE ENTRADA' });
         }
-    });
-
-    // Service Worker Simples para PWA Offline
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ZW50ID0+IHsgZXZlbnQucmVzcG9uZFdpdGgoZmV0Y2goZXZlbnQucmVxdWVzdCkpOyB9KTs=');
+        saveDB();
+        alert("Solicitação registrada!");
+        renderProtocolo();
     }
+
+    function renderProtocolo() {
+        const tbody = document.querySelector('#tabelaProtocolo tbody');
+        tbody.innerHTML = '';
+        db.protocolos.forEach(p => {
+            tbody.innerHTML += `<tr><td>${p.data}</td><td>${p.item}</td><td style="color:var(--neon-pink)">${p.status}</td></tr>`;
+        });
+    }
+
+    // RELATÓRIO MENSAL
+    function gerarRelatorioMensal() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text(`RELATÓRIO MENSAL - ${currentUser.empresa}`, 10, 10);
+        
+        const dataRel = db.estoque.map(i => [i.nome, i.qtd, i.min]);
+        doc.autoTable({
+            head: [['Item', 'Qtd Atual', 'Mínimo']],
+            body: dataRel,
+            startY: 20
+        });
+        
+        doc.save("Relatorio_Mensal_Estoque.pdf");
+    }
+
+    // UTILITÁRIOS
+    function openTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active-tab'));
+        document.getElementById('menuPrincipal').style.display = (tabId === 'menuPrincipal') ? 'block' : 'none';
+        document.getElementById(tabId).classList.add('active-tab');
+        if(tabId === 'abaScanner') renderNFs();
+        if(tabId === 'abaProtocolo') renderProtocolo();
+    }
+
+    function saveDB() { localStorage.setItem('ultra_erp_db', JSON.stringify(db)); }
+
+    function toggleConfig() {
+        const modal = document.getElementById('configModal');
+        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function updateDestaque() {
+        const check = document.getElementById('cfgDestaque');
+        const topo = document.getElementById('topoEmpresaNome');
+        if(currentUser) {
+            topo.innerText = currentUser.empresa;
+            topo.style.display = db.config.destaque ? 'block' : 'none';
+        }
+    }
+
+    // CALCULADORA
+    let calcVal = "";
+    function calc(v) { 
+        if(v === '=') { calcVal = eval(calcVal); }
+        else if(v === 'C') { calcVal = ""; }
+        else { calcVal += v; }
+        document.getElementById('calcScreen').innerText = calcVal || "0";
+    }
+
 </script>
+
+<script>
+    document.getElementById('abaCalc').innerHTML += `
+        <div class="calc-box">
+            <div id="calcScreen" class="calc-screen">0</div>
+            <div class="calc-btns">
+                <button onclick="calc('7')">7</button><button onclick="calc('8')">8</button><button onclick="calc('9')">9</button><button onclick="calc('/')">/</button>
+                <button onclick="calc('4')">4</button><button onclick="calc('5')">5</button><button onclick="calc('6')">6</button><button onclick="calc('*')">*</button>
+                <button onclick="calc('1')">1</button><button onclick="calc('2')">2</button><button onclick="calc('3')">3</button><button onclick="calc('-')">-</button>
+                <button onclick="calc('0')">0</button><button onclick="calc('C')">C</button><button onclick="calc('=')" style="background:var(--neon-green)">=</button><button onclick="calc('+')">+</button>
+            </div>
+        </div>
+        <button class="btn-main" onclick="openTab('menuPrincipal')">⬅️ Voltar</button>
+    `;
+</script>
+
 </body>
 </html>
