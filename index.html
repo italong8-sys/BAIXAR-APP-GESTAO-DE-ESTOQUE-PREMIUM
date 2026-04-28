@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>ERP MASTER PRO 2026 - ULTIMATE</title>
+    <title>ERP MASTER ENTERPRISE 2026</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -13,314 +12,430 @@
 
     <style>
         :root {
-            --bg: #020617; --card: rgba(15, 23, 42, 0.95); --accent: #38bdf8;
-            --text: #f1f5f9; --neon-pink: #f472b6; --neon-green: #22c55e;
-            --border: rgba(255,255,255,0.1);
+            --bg: #0f172a; --card: #1e293b; --accent: #38bdf8;
+            --text: #f1f5f9; --border: #334155; --danger: #ef4444; --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        .light-theme {
+            --bg: #f8fafc; --card: #ffffff; --accent: #0284c7;
+            --text: #1e293b; --border: #e2e8f0; --warning: #d97706;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        
         body { 
             margin: 0; background: var(--bg); color: var(--text); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
+            font-family: 'Segoe UI', system-ui, sans-serif; transition: 0.3s;
+            min-height: 100vh; display: flex; flex-direction: column;
         }
 
         .hidden { display: none !important; }
 
-        /* --- ANIMAÇÃO ESTEIRA ROLANTE (TELA INICIAL) --- */
-        .conveyor-belt-container { width: 100%; height: 70px; position: relative; overflow: hidden; background: rgba(0,0,0,0.3); border-top: 2px solid #1e293b; border-bottom: 2px solid #1e293b; margin: 20px 0; }
-        .belt-line { width: 100%; height: 6px; background: #0f172a; position: absolute; bottom: 8px; }
-        .box-3d { 
-            width: 35px; height: 35px; background: #f59e0b; position: absolute; bottom: 14px; left: -60px;
-            animation: moveBoxes 6s linear infinite; box-shadow: inset -5px -5px 0 rgba(0,0,0,0.2), 2px 2px 10px rgba(0,0,0,0.5);
-            border-radius: 4px;
-        }
-        @keyframes moveBoxes { 0% { left: -60px; } 100% { left: 110%; } }
-
-        /* --- TELA DE LOGIN --- */
+        /* --- LOGIN --- */
         #screenAuth {
-            background: linear-gradient(rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.9)), 
-                        url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1600');
-            background-size: cover; background-position: center; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         }
-
-        .neon-display { text-align: center; margin-bottom: 20px; }
-        #neonTime { font-size: 55px; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent); font-family: monospace; line-height: 1; }
-        #neonDate { font-size: 14px; letter-spacing: 1px; color: #fff; margin-top: 10px; font-weight: 600; text-transform: capitalize; }
-
-        .app-card { background: var(--card); width: 90%; max-width: 420px; padding: 25px; border-radius: 30px; border: 1px solid var(--border); backdrop-filter: blur(20px); box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
-        input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.4); color: #fff; margin-bottom: 12px; font-size: 16px; }
-        
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 15px; font-weight: 800; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
-        .btn:active { transform: scale(0.97); }
-        .btn-blue { background: var(--accent); color: #000; }
-        .btn-green { background: var(--neon-green); color: #000; }
-        .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
-
-        .payment-box { text-align: center; margin-top: 15px; font-size: 11px; color: #94a3b8; }
+        .auth-card { background: var(--card); padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text); font-size: 16px; }
 
         /* --- DASHBOARD --- */
-        header { padding: 15px 20px; background: rgba(15, 23, 42, 0.95); border-bottom: 1px solid var(--accent); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        header { padding: 15px 20px; background: var(--card); border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .config-btn { font-size: 24px; cursor: pointer; transition: 0.3s; }
+        .config-btn:hover { transform: rotate(45deg); }
+
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .menu-item { background: var(--card); padding: 25px 10px; border-radius: 25px; border: 1px solid var(--border); text-align: center; cursor: pointer; }
-        .menu-item i { font-size: 32px; display: block; margin-bottom: 10px; font-style: normal; }
+        .menu-item { 
+            background: var(--card); padding: 20px 10px; border-radius: 20px; text-align: center;
+            border: 1px solid var(--border); cursor: pointer; transition: 0.2s;
+        }
+        .menu-item:active { transform: scale(0.95); }
+        .menu-item i { font-size: 32px; display: block; margin-bottom: 8px; font-style: normal; }
 
-        /* --- SCANNER & ROTAS --- */
-        #scanner-ui { width: 100%; border-radius: 20px; overflow: hidden; border: 2px solid var(--accent); margin-bottom: 15px; background: #000; }
-        .route-input-group { margin-bottom: 10px; }
-        .test-badge { background: var(--neon-pink); color: #000; font-size: 9px; padding: 2px 6px; border-radius: 5px; margin-left: 5px; vertical-align: middle; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; text-transform: uppercase; font-size: 14px; }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-secondary { background: var(--border); color: var(--text); }
 
-        footer { padding: 30px 20px; text-align: center; font-size: 12px; border-top: 1px solid var(--border); margin-top: auto; color: #94a3b8; }
+        /* --- ALERTAS ESTOQUE --- */
+        .stock-alert { border: 2px solid var(--danger) !important; background: rgba(239, 68, 68, 0.1) !important; animation: blink 2s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
 
-        .tab-content { display: none; animation: slideUp 0.4s ease; }
-        .active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- MODAIS --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card); width: 100%; max-width: 500px; padding: 25px; border-radius: 20px; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border); }
+
+        #reader { width: 100%; border-radius: 15px; overflow: hidden; background: #000; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: var(--accent); }
+        td { padding: 12px 10px; border-bottom: 1px solid var(--border); }
+
+        footer { margin-top: auto; padding: 20px; text-align: center; font-size: 12px; opacity: 0.6; }
     </style>
 </head>
-<body onload="initSystem()">
+<body class="dark-theme">
 
 <div id="screenAuth">
-    <div class="neon-display">
-        <div id="neonTime">00:00:00</div>
-        <div id="neonDate">---</div>
-    </div>
-
-    <div class="conveyor-belt-container">
-        <div class="belt-line"></div>
-        <div class="box-3d" style="animation-delay: 0s;"></div>
-        <div class="box-3d" style="animation-delay: 2s;"></div>
-        <div class="box-3d" style="animation-delay: 4s;"></div>
-    </div>
-
-    <div class="app-card">
-        <input type="text" id="userInput" placeholder="Usuário">
-        <input type="password" id="passInput" placeholder="Senha">
-        <button class="btn btn-blue" onclick="handleLogin()">ENTRAR NO ERP</button>
-        <button class="btn btn-green" style="margin-top: 10px;" onclick="startDemo()">AVALIAÇÃO GRÁTIS (10 MIN)</button>
-        
-        <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
-        
-        <button class="btn btn-outline" onclick="openPayment()">ACESSO VITALÍCIO - R$99,90</button>
-        <div class="payment-box">
-            Pagamento 100% Seguro via <b>Mercado Pago</b><br>
-            Liberação automática via sistema.
+    <div class="auth-card">
+        <h2 style="text-align: center; color: var(--accent); margin-bottom: 25px;">ERP ENTERPRISE</h2>
+        <input type="text" id="loginUser" placeholder="Usuário">
+        <div style="position: relative;">
+            <input type="password" id="loginPass" placeholder="Senha">
+            <span style="position: absolute; right: 15px; top: 22px; cursor: pointer; font-size: 18px;" onclick="togglePass()">👁️</span>
         </div>
+        <button class="btn btn-primary" onclick="doLogin()">🔓 ACESSAR SISTEMA</button>
+        <button class="btn btn-secondary" onclick="startDemo()">⏱️ MODO TESTE (10 MIN)</button>
+        <p id="demoNotice" style="font-size: 11px; text-align: center; color: #94a3b8; margin-top: 20px;">
+            Acesso administrativo exclusivo.<br>Teste limitado a uma vez por dispositivo.
+        </p>
     </div>
 </div>
 
-<main id="screenDash" class="hidden">
-    <div id="demoBanner" class="hidden" style="background:var(--neon-pink); color:#000; text-align:center; padding:8px; font-weight:bold; font-size:11px;">
-        SESSÃO DE TESTE: <span id="demoClock">10:00</span> RESTANTES
+<div id="screenMain" class="hidden">
+    <div id="demoHeader" class="hidden" style="background: var(--danger); text-align: center; padding: 6px; font-weight: bold; font-size: 12px; color: white;">
+        ⚠️ CONTA TESTE ATIVA | SAÍDA EM: <span id="demoTimer">10:00</span>
     </div>
 
     <header>
-        <div><small style="font-size: 9px; opacity: 0.6;">SISTEMA LOGÍSTICO</small><br><b id="opName">---</b></div>
-        <div id="headerClock" style="font-family: monospace; color: var(--neon-green); font-size: 18px; font-weight: bold;">00:00</div>
+        <div>
+            <span id="userName" style="font-weight: bold; color: var(--accent);">Admin</span><br>
+            <small id="clockDisplay">28/04/2026 - 12:00</small>
+        </div>
+        <div class="config-btn" onclick="toggleModal('modalSettings', true)">⚙️</div>
     </header>
 
-    <div id="tabHome" class="tab-content active">
+    <div id="viewHome" class="view">
         <div class="menu-grid">
-            <div class="menu-item" onclick="launchScanner('in')"><i>📥</i><b>Entrada NF</b></div>
-            <div class="menu-item" onclick="launchScanner('out')"><i>📋</i><b>Baixa Req.</b></div>
-            <div class="menu-item" onclick="nav('tabStock')"><i>📦</i><b>Estoque</b></div>
-            <div class="menu-item" onclick="nav('tabRoutes')"><i>📍</i><b>Traçar Rotas <span class="test-badge">TESTE</span></b></div>
-            <div class="menu-item" onclick="nav('tabQuotes')"><i>🔍</i><b>Cotações</b></div>
-            <div class="menu-item" onclick="nav('tabAudit')"><i>📝</i><b>Auditoria</b></div>
+            <div class="menu-item" onclick="openView('viewReg')"><i>🏷️</i>Cadastro</div>
+            <div class="menu-item" onclick="openView('viewNF')"><i>📥</i>Entrada NF</div>
+            <div class="menu-item" onclick="openView('viewReq')"><i>📋</i>Requisição</div>
+            <div class="menu-item" onclick="openView('viewStock')"><i>📦</i>Estoque</div>
+            <div class="menu-item" onclick="openView('viewLoc')"><i>📍</i>Localização</div>
+            <div class="menu-item" onclick="openView('viewQuotes')"><i>🔍</i>Cotações</div>
+            <div class="menu-item" onclick="generateInventoryPDF()"><i>📝</i>Inventário</div>
+            <div class="menu-item" onclick="generateReportPDF()"><i>📊</i>Relatório</div>
         </div>
-        <div style="padding: 10px 20px;"><button class="btn btn-outline" onclick="location.reload()">SAIR DO SISTEMA</button></div>
+        <button id="btnIntranet" class="btn hidden" style="background: #24292e; color: white; width: 90%; margin: 10px auto;" onclick="window.open('https://github.com')">🐙 INTRANET GITHUB</button>
+        <button class="btn btn-secondary" style="width: 90%; margin: 10px auto;" onclick="location.reload()">SAIR</button>
     </div>
 
-    <div id="tabScanner" class="tab-content" style="padding: 15px;">
-        <div class="app-card" style="max-width: 100%;">
-            <h3 id="scanModeTitle">BIPAGEM</h3>
-            <div id="scanner-ui"></div>
-            <input type="text" id="resSku" placeholder="Código Detectado" oninput="checkSku(this.value)">
-            <div id="skuPreview" style="padding: 12px; background: rgba(56,189,248,0.1); border-radius: 10px; margin-bottom: 15px; font-size: 13px;">Aguardando leitura...</div>
-            <input type="number" id="resQty" placeholder="Quantidade">
-            <button class="btn btn-blue" onclick="processEntry()">CONFIRMAR REGISTRO</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="killScanner()">VOLTAR</button>
-        </div>
+    <div id="viewReg" class="view hidden" style="padding: 20px;">
+        <h3>🏷️ Cadastro de Materiais</h3>
+        <button class="btn btn-secondary" onclick="openScanner('regSku')">📷 BIPAR CÓDIGO DE BARRAS</button>
+        <input type="text" id="regSku" placeholder="Código SKU / Barcode">
+        <input type="text" id="regName" placeholder="Nome do Material">
+        <textarea id="regDesc" placeholder="Descrição Técnica"></textarea>
+        <input type="number" id="regMin" placeholder="Qtd. Mínima para Alerta">
+        <p style="font-size: 11px; color: var(--warning);">* O saldo inicial é zero. Adicione via Entrada NF.</p>
+        <button class="btn btn-primary" onclick="saveNewMaterial()">💾 SALVAR CADASTRO</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
 
-    <div id="tabRoutes" class="tab-content" style="padding: 15px;">
-        <div class="app-card" style="max-width: 100%;">
-            <h3>📍 CIRCUITO DE ENTREGAS</h3>
-            <p style="font-size: 11px; opacity: 0.7; margin-bottom: 15px;">Autorize a localização para otimizar o percurso.</p>
-            <div id="routeFields">
-                <input type="text" class="r-addr" placeholder="Origem (Onde você está)">
-                <input type="text" class="r-addr" placeholder="Destino 1">
-            </div>
-            <button class="btn btn-outline" style="font-size: 11px; margin-bottom: 10px;" onclick="addNewStop()">+ ADICIONAR ENDEREÇO</button>
-            <button class="btn btn-blue" onclick="startNavigation()">ABRIR NO GOOGLE MAPS</button>
-            <p style="font-size: 9px; text-align: center; margin-top: 10px;">* Este menu está em fase de testes.</p>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
-        </div>
+    <div id="viewNF" class="view hidden" style="padding: 20px;">
+        <h3>📥 Entrada de Nota Fiscal</h3>
+        <button class="btn btn-secondary" onclick="openScanner('nfSku')">📷 BIPAR SKU</button>
+        <input type="text" id="nfSku" placeholder="SKU do Produto" oninput="showFastInfo(this.value, 'nfPreview')">
+        <div id="nfPreview" style="padding: 10px; font-size: 13px;"></div>
+        <input type="text" id="nfDoc" placeholder="Número da NF">
+        <input type="text" id="nfFornecedor" placeholder="Fornecedor">
+        <input type="number" id="nfQty" placeholder="Quantidade na Nota">
+        <button class="btn btn-primary" onclick="confirmNF()">✅ REGISTRAR ENTRADA</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
 
-    <div id="tabQuotes" class="tab-content" style="padding: 15px;">
-        <div class="app-card" style="max-width: 100%;">
-            <h3>🔍 COTAÇÃO DE MATERIAIS</h3>
-            <input type="text" id="quoteQuery" placeholder="O que deseja cotar?">
-            <button class="btn btn-blue" onclick="execQuote()">PESQUISAR PREÇOS (GOOGLE)</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
-        </div>
+    <div id="viewReq" class="view hidden" style="padding: 20px;">
+        <h3>📋 Baixa de Requisição</h3>
+        <input type="text" id="reqFunc" placeholder="Nome do Funcionário">
+        <input type="text" id="reqMatri" placeholder="Matrícula">
+        <button class="btn btn-secondary" onclick="openScanner('reqSku')">📷 BIPAR ITEM</button>
+        <input type="text" id="reqSku" placeholder="SKU" oninput="showFastInfo(this.value, 'reqPreview')">
+        <div id="reqPreview" style="padding: 10px; font-size: 13px; font-weight: bold; color: var(--accent);"></div>
+        <input type="number" id="reqQty" placeholder="Qtd. para Retirada">
+        <button class="btn btn-danger" onclick="confirmReq()">📉 DAR BAIXA E GERAR PDF</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
 
-    <div id="tabStock" class="tab-content" style="padding: 15px;">
-        <div class="app-card" style="max-width: 100%;">
-            <h3>📦 ESTOQUE ATUAL</h3>
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                    <thead style="border-bottom: 2px solid var(--accent);">
-                        <tr><th align="left" style="padding: 10px;">SKU</th><th align="left">NOME</th><th>QTD</th></tr>
-                    </thead>
-                    <tbody id="stockRows"></tbody>
-                </table>
-            </div>
-            <button class="btn btn-outline" style="margin-top: 20px;" onclick="nav('tabHome')">VOLTAR</button>
-        </div>
+    <div id="viewStock" class="view hidden" style="padding: 20px;">
+        <h3>📦 Gestão de Almoxarifado</h3>
+        <div id="stockContainer"></div>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
 
-    <div id="tabAudit" class="tab-content" style="padding: 15px;">
-        <div class="app-card" style="max-width: 100%;">
-            <h3>📝 REGISTRO DE LOGS</h3>
-            <div id="auditLog" style="font-size: 10px; max-height: 300px; overflow-y: auto; background: #000; padding: 10px; border-radius: 10px;"></div>
-            <button class="btn btn-outline" style="margin-top: 15px;" onclick="nav('tabHome')">VOLTAR</button>
+    <div id="viewLoc" class="view hidden" style="padding: 20px;">
+        <h3>📍 Gestão de Localização</h3>
+        <button class="btn btn-secondary" onclick="openScanner('locSku')">📷 BIPAR MATERIAL</button>
+        <input type="text" id="locSku" placeholder="SKU" oninput="showFastInfo(this.value, 'locPreview')">
+        <div id="locPreview" style="padding: 10px;"></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <select id="locRua"><option value="">Rua (A-Z)</option></select>
+            <input type="number" id="locMod" placeholder="Módulo">
         </div>
+        <select id="locPrat">
+            <option value="">Prateleira (1-6)</option>
+            <option value="1">Prateleira 1</option>
+            <option value="2">Prateleira 2</option>
+            <option value="3">Prateleira 3</option>
+            <option value="4">Prateleira 4</option>
+            <option value="5">Prateleira 5</option>
+            <option value="6">Prateleira 6</option>
+        </select>
+        <button class="btn btn-primary" onclick="updateLoc()">📍 SALVAR LOCALIZAÇÃO</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
     </div>
-</main>
+
+    <div id="viewQuotes" class="view hidden" style="padding: 20px;">
+        <h3>🔍 Cotação Integrada</h3>
+        <input type="text" id="qSearch" placeholder="Material ou Ferramenta...">
+        <button class="btn btn-primary" onclick="runQuote()">🌐 PESQUISAR PREÇOS</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
+    </div>
+</div>
+
+<div id="modalSettings" class="modal hidden">
+    <div class="modal-content">
+        <h3>⚙️ Configurações do Sistema</h3>
+        <label><input type="checkbox" id="setTheme" onchange="applyTheme()"> Tema Claro</label><br><br>
+        <label><input type="checkbox" id="setBip" checked> Som de Confirmação (Bip)</label><br><br>
+        <label><input type="checkbox" id="setMusic" onchange="applyMusic()"> Música Ambiente Relaxante</label>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--border);">
+        <h4>🔐 Segurança</h4>
+        <input type="password" id="newPass" placeholder="Nova Senha">
+        <button class="btn btn-primary" onclick="alert('Solicitação enviada! Verifique seu E-mail/SMS cadastrado.')">REDEFINIR SENHA</button>
+        <button class="btn btn-danger" onclick="toggleModal('modalSettings', false)">FECHAR</button>
+    </div>
+</div>
+
+<div id="modalScanner" class="modal hidden">
+    <div class="modal-content">
+        <div id="reader"></div>
+        <button class="btn btn-danger" onclick="stopScanner()">CANCELAR LEITURA</button>
+    </div>
+</div>
+
+<audio id="audioBip" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+<audio id="audioMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"></audio>
 
 <footer>
     Criado por ©Italo N. Dos Anjos em 2026. Todos os direitos reservados.
 </footer>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('erp_master_final_2026')) || { stock: [], logs: [], usedDemo: false };
+    // --- ESTADO ---
+    let db = JSON.parse(localStorage.getItem('erp_master_2026_v11')) || { items: [], logs: [] };
     let session = null;
-    let qrEngine = null;
-    let timer = 600;
-    let opMode = 'in';
+    let scanner = null;
 
-    function save() { localStorage.setItem('erp_master_final_2026', JSON.stringify(db)); }
-
-    function initSystem() {
+    function init() {
+        const rua = document.getElementById('locRua');
+        for(let i=65; i<=90; i++) rua.innerHTML += `<option value="${String.fromCharCode(i)}">Rua ${String.fromCharCode(i)}</option>`;
+        
         setInterval(() => {
             const now = new Date();
-            const time = now.toLocaleTimeString('pt-BR');
-            const date = now.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
-            document.getElementById('neonTime').innerText = time;
-            document.getElementById('neonDate').innerText = date;
-            document.getElementById('headerClock').innerText = time.substring(0, 5);
+            document.getElementById('clockDisplay').innerText = now.toLocaleString('pt-BR');
         }, 1000);
     }
+    init();
 
-    // --- LOGIN E PAGAMENTO ---
-    function handleLogin() {
-        const u = document.getElementById('userInput').value;
-        const p = document.getElementById('passInput').value;
+    // --- AUTENTICAÇÃO ---
+    function togglePass() {
+        const p = document.getElementById('loginPass');
+        p.type = p.type === 'password' ? 'text' : 'password';
+    }
+
+    function doLogin() {
+        const u = document.getElementById('loginUser').value;
+        const p = document.getElementById('loginPass').value;
         if(u === "admin" && p === "adm2026@aB") {
-            session = { nome: "GESTOR ADMIN", role: "admin" };
-            return startApp();
+            session = { user: "Administrador", role: "admin" };
+            document.getElementById('btnIntranet').classList.remove('hidden');
+            loginSuccess();
+        } else {
+            alert("Acesso negado.");
         }
-        alert("Credenciais inválidas ou acesso não adquirido.");
     }
 
     function startDemo() {
-        if(db.usedDemo) return alert("Período de avaliação já utilizado neste dispositivo.");
-        session = { nome: "USUÁRIO TESTE", role: "demo" };
-        db.usedDemo = true; save();
-        startApp();
-        document.getElementById('demoBanner').classList.remove('hidden');
-        const count = setInterval(() => {
-            timer--;
-            let m = Math.floor(timer/60), s = timer%60;
-            document.getElementById('demoClock').innerText = `${m}:${s<10?'0':''}${s}`;
-            if(timer <= 0) { clearInterval(count); alert("Fim do teste!"); location.reload(); }
+        if(localStorage.getItem('erp_2026_demo_done')) return alert("O período de teste já foi utilizado neste aparelho.");
+        session = { user: "Conta Teste", role: "demo" };
+        localStorage.setItem('erp_2026_demo_done', 'true');
+        document.getElementById('demoHeader').classList.remove('hidden');
+        loginSuccess();
+        
+        let timeLeft = 600;
+        const t = setInterval(() => {
+            timeLeft--;
+            let m = Math.floor(timeLeft/60), s = timeLeft%60;
+            document.getElementById('demoTimer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+            if(timeLeft <= 0) { clearInterval(t); alert("Sessão expirada."); location.reload(); }
         }, 1000);
     }
 
-    function startApp() {
+    function loginSuccess() {
         document.getElementById('screenAuth').classList.add('hidden');
-        document.getElementById('screenDash').classList.remove('hidden');
-        document.getElementById('opName').innerText = session.nome;
+        document.getElementById('screenMain').classList.remove('hidden');
+        document.getElementById('userName').innerText = session.user;
     }
 
-    function openPayment() {
-        window.open('https://www.mercadopago.com.br/', '_blank');
-        alert("Redirecionando para o Mercado Pago. Após aprovação, seu acesso será liberado.");
+    // --- NAVEGAÇÃO ---
+    function openView(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        if(id === 'viewStock') renderStock();
+    }
+
+    function toggleModal(id, show) {
+        document.getElementById(id).classList.toggle('hidden', !show);
     }
 
     // --- SCANNER ---
-    function launchScanner(m) {
-        opMode = m;
-        document.getElementById('scanModeTitle').innerText = m === 'in' ? 'RECEBIMENTO (NF)' : 'BAIXA DE REQUISIÇÃO';
-        nav('tabScanner');
-        qrEngine = new Html5Qrcode("scanner-ui");
-        qrEngine.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (txt) => {
-            document.getElementById('resSku').value = txt;
-            checkSku(txt);
-        });
+    function openScanner(targetId) {
+        toggleModal('modalScanner', true);
+        scanner = new Html5Qrcode("reader");
+        scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (txt) => {
+            document.getElementById(targetId).value = txt;
+            if(document.getElementById('setBip').checked) document.getElementById('audioBip').play();
+            showFastInfo(txt, targetId.includes('nf') ? 'nfPreview' : targetId.includes('req') ? 'reqPreview' : 'locPreview');
+            stopScanner();
+        }).catch(err => console.error(err));
     }
 
-    function killScanner() {
-        if(qrEngine) qrEngine.stop().then(() => nav('tabHome')).catch(() => nav('tabHome'));
-        else nav('tabHome');
+    function stopScanner() {
+        if(scanner) scanner.stop().then(() => toggleModal('modalScanner', false));
     }
 
-    function checkSku(sku) {
-        const item = db.stock.find(x => x.sku === sku);
-        document.getElementById('skuPreview').innerText = item ? `${item.nome} | Saldo: ${item.qtd}` : "Item Novo - Cadastre ao confirmar.";
-    }
-
-    function processEntry() {
-        const sku = document.getElementById('resSku').value;
-        const qtd = parseInt(document.getElementById('resQty').value);
-        if(!sku || isNaN(qtd)) return alert("Dados inválidos.");
+    // --- OPERAÇÕES ---
+    function saveNewMaterial() {
+        const sku = document.getElementById('regSku').value;
+        const name = document.getElementById('regName').value;
+        if(!sku || !name) return alert("SKU e Nome são obrigatórios.");
         
-        let item = db.stock.find(x => x.sku === sku);
-        if(opMode === 'in') {
-            if(item) item.qtd += qtd;
-            else db.stock.push({ sku, nome: prompt("Nome do Material:"), qtd });
-        } else {
-            if(item && item.qtd >= qtd) item.qtd -= qtd;
-            else return alert("Saldo insuficiente.");
-        }
-        db.logs.unshift(`${new Date().toLocaleString()} - ${opMode.toUpperCase()}: ${sku} (${qtd}) por ${session.nome}`);
-        save(); alert("Sucesso!"); killScanner();
+        db.items.push({
+            sku, name, desc: document.getElementById('regDesc').value,
+            min: parseInt(document.getElementById('regMin').value) || 0,
+            balance: 0, loc: "Não Definida"
+        });
+        saveDB();
+        alert("Material cadastrado com sucesso!");
+        openView('viewHome');
     }
 
-    // --- ROTAS ---
-    function addNewStop() {
-        const i = document.createElement('input');
-        i.className = "r-addr";
-        i.placeholder = "Próximo Endereço";
-        document.getElementById('routeFields').appendChild(i);
+    function showFastInfo(sku, divId) {
+        const item = db.items.find(i => i.sku === sku);
+        document.getElementById(divId).innerHTML = item ? 
+            `✅ <b>${item.name}</b> | Saldo: ${item.balance}` : "❌ SKU não cadastrado.";
     }
 
-    function startNavigation() {
-        const addrs = Array.from(document.querySelectorAll('.r-addr')).map(x => encodeURIComponent(x.value)).filter(v => v !== "");
-        if(addrs.length < 2) return alert("Informe origem e pelo menos um destino.");
-        const origin = addrs.shift(), dest = addrs.pop(), waypoints = addrs.join('|');
-        window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}&waypoints=${waypoints}&travelmode=driving`, '_blank');
+    function confirmNF() {
+        const sku = document.getElementById('nfSku').value;
+        const qty = parseInt(document.getElementById('nfQty').value);
+        const item = db.items.find(i => i.sku === sku);
+        if(!item || isNaN(qty)) return alert("Dados inválidos.");
+        
+        item.balance += qty;
+        db.logs.push({ date: new Date().toLocaleString(), type: "ENTRADA", sku, qty, doc: document.getElementById('nfDoc').value });
+        saveDB();
+        alert("Entrada processada!");
+        openView('viewHome');
     }
 
-    // --- COTAÇÃO ---
-    function execQuote() {
-        const q = document.getElementById('quoteQuery').value;
-        if(q) window.open(`https://www.google.com/search?q=preço+de+${encodeURIComponent(q)}&tbm=shop`, '_blank');
+    function confirmReq() {
+        const sku = document.getElementById('reqSku').value;
+        const qty = parseInt(document.getElementById('reqQty').value);
+        const item = db.items.find(i => i.sku === sku);
+        
+        if(!item || item.balance < qty) return alert("Saldo insuficiente ou SKU inexistente.");
+        
+        item.balance -= qty;
+        const log = { date: new Date().toLocaleString(), type: "SAÍDA", sku, qty, func: document.getElementById('reqFunc').value, matri: document.getElementById('reqMatri').value };
+        db.logs.push(log);
+        saveDB();
+        generateReqPDF(item, log);
+        openView('viewHome');
     }
 
-    // --- INTERFACE ---
-    function nav(id) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if(id === 'tabStock') {
-            document.getElementById('stockRows').innerHTML = db.stock.map(i => `<tr><td style="padding:10px">${i.sku}</td><td>${i.nome}</td><td align="center">${i.qtd}</td></tr>`).join('');
-        }
-        if(id === 'tabAudit') {
-            document.getElementById('auditLog').innerHTML = db.logs.map(l => `<div style="border-bottom:1px solid #222; padding:5px;">${l}</div>`).join('');
-        }
+    function updateLoc() {
+        const item = db.items.find(i => i.sku === document.getElementById('locSku').value);
+        if(!item) return alert("Item não encontrado.");
+        item.loc = `Rua ${document.getElementById('locRua').value} | Mód ${document.getElementById('locMod').value} | Prat ${document.getElementById('locPrat').value}`;
+        saveDB();
+        alert("Localização atualizada!");
+        openView('viewHome');
     }
+
+    function renderStock() {
+        const cont = document.getElementById('stockContainer');
+        db.items.sort((a,b) => a.name.localeCompare(b.name));
+        cont.innerHTML = db.items.map(m => `
+            <div class="menu-item ${m.balance <= m.min ? 'stock-alert' : ''}" style="text-align:left; display:block; margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between;">
+                    <b>${m.name}</b>
+                    <span style="color:var(--accent)">SKU: ${m.sku}</span>
+                </div>
+                <small>${m.desc}</small><br>
+                <small>📍 ${m.loc}</small><br>
+                <div style="margin-top:10px;">Saldo: ${m.balance} / Mín: ${m.min}</div>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="btn-primary" style="padding:5px 10px; font-size:11px;" onclick="editItem('${m.sku}')">Editar</button>
+                    <button class="btn-danger" style="padding:5px 10px; font-size:11px;" onclick="deleteItem('${m.sku}')">Excluir</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function deleteItem(sku) { if(confirm("Excluir definitivamente?")) { db.items = db.items.filter(i => i.sku !== sku); saveDB(); renderStock(); } }
+    function editItem(sku) {
+        const item = db.items.find(i => i.sku === sku);
+        const n = prompt("Novo Nome:", item.name);
+        if(n) { item.name = n; saveDB(); renderStock(); }
+    }
+
+    function runQuote() {
+        const s = document.getElementById('qSearch').value;
+        if(s) window.open(`https://www.google.com/search?q=comprar+${encodeURIComponent(s)}`, '_blank');
+    }
+
+    // --- PDF ---
+    function generateReqPDF(item, log) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("COMPROVANTE DE REQUISIÇÃO", 105, 20, {align:'center'});
+        doc.text(`Data: ${log.date}`, 20, 40);
+        doc.text(`Funcionário: ${log.func} | Matrícula: ${log.matri}`, 20, 50);
+        doc.text(`Material: ${item.name} (${item.sku})`, 20, 70);
+        doc.text(`Quantidade Retirada: ${log.qty}`, 20, 80);
+        doc.text(`Saldo Atual em Estoque: ${item.balance}`, 20, 90);
+        doc.text("__________________________          __________________________", 20, 140);
+        doc.text("Assinatura Funcionário               Assinatura Almoxarife", 20, 145);
+        doc.save(`Req_${Date.now()}.pdf`);
+    }
+
+    function generateInventoryPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("LISTA DE INVENTÁRIO PERIÓDICO", 105, 15, {align:'center'});
+        const rows = db.items.map(m => [m.name, m.sku, m.loc, m.balance, "________"]);
+        doc.autoTable({ head: [['Material', 'SKU', 'Localização', 'Saldo Sist.', 'Saldo Físico']], body: rows, startY: 25 });
+        doc.save("Inventario.pdf");
+    }
+
+    function generateReportPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("RELATÓRIO MENSAL DE MOVIMENTAÇÃO", 105, 15, {align:'center'});
+        const rows = db.logs.map(l => [l.date, l.type, l.sku, l.qty, l.doc || l.func || "-"]);
+        doc.autoTable({ head: [['Data', 'Tipo', 'SKU', 'Qtd', 'Doc/Func']], body: rows, startY: 25 });
+        doc.save("Relatorio_Mensal.pdf");
+    }
+
+    // --- CONFIGS ---
+    function applyTheme() { document.body.classList.toggle('light-theme', document.getElementById('setTheme').checked); }
+    function applyMusic() { 
+        const m = document.getElementById('audioMusic');
+        document.getElementById('setMusic').checked ? m.play() : m.pause();
+    }
+    function saveDB() { localStorage.setItem('erp_master_2026_v11', JSON.stringify(db)); }
 </script>
 </body>
 </html>
