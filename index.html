@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0f172a">
-    <title>ERP 2026 - Gestão de Estoque e Vendas</title>
+    <meta name="theme-color" content="#020617">
+    <title>ERP MASTER LOGÍSTICA 2026</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -12,495 +12,409 @@
 
     <style>
         :root {
-            --bg-overlay: rgba(2, 6, 23, 0.88); /* Fundo escuro transparente para legibilidade */
-            --card: rgba(15, 23, 42, 0.85); /* Efeito vidro escritório */
-            --accent: #38bdf8;
+            --bg: #020617; --card: rgba(15, 23, 42, 0.9); --accent: #38bdf8;
             --text: #f1f5f9; --neon-pink: #f472b6; --neon-green: #22c55e;
-            --neon-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', sans-serif; }
+        .light-theme {
+            --bg: #f8fafc; --card: rgba(255, 255, 255, 0.95); --accent: #0284c7;
+            --text: #1e293b; --neon-pink: #be185d; --neon-green: #15803d;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: var(--font-main); transition: 0.3s ease; }
         
-        /* THEMA ESCRITÓRIO/LOGÍSTICA */
-        body { 
-            margin: 0; 
-            color: var(--text); 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            overflow-x: hidden;
-            background-image: url('https://images.unsplash.com/photo-1586528116311-ad8ed7c663c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .bg-overlay { position: fixed; inset: 0; background: var(--bg-overlay); backdrop-filter: blur(5px); z-index: -1; }
+        body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* HEADER E LOGO */
+        /* Fundo Pulsante Neon */
+        #pulseBg {
+            position: fixed; inset: 0; z-index: -1;
+            background: linear-gradient(-45deg, #020617, #0f172a, #1e1b4b, #020617);
+            background-size: 400% 400%;
+            animation: gradientAnim 15s ease infinite;
+            display: none;
+        }
+        @keyframes gradientAnim { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* Header e Nome em Neon Pulsante */
         header { 
-            padding: 15px; background: rgba(0, 0, 0, 0.7); border-bottom: 2px solid var(--accent);
-            text-align: center; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+            padding: 12px 18px; background: rgba(0,0,0,0.85); border-bottom: 2px solid var(--accent);
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .header-container { display: flex; align-items: center; justify-content: center; gap: 12px; }
-        .app-title { font-size: 13px; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
         
-        /* RELÓGIO NEON GLOBAL */
-        #neonClock { 
-            display: block; color: var(--neon-green); font-family: 'Courier New', monospace;
-            font-weight: bold; text-shadow: 0 0 10px var(--neon-green); margin-top: 8px; font-size: 14px;
+        .user-neon {
+            color: var(--accent); font-weight: bold; font-size: 13px;
+            text-shadow: 0 0 10px var(--accent);
+            animation: userPulse 2s infinite; text-transform: uppercase;
         }
+        @keyframes userPulse { 0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--accent); } 50% { opacity: 0.6; text-shadow: 0 0 2px var(--accent); } }
 
-        /* MODAIS E CARDS */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; backdrop-filter: blur(10px); }
-        .login-screen { display: flex; align-items: center; justify-content: center; flex-grow: 1; padding: 20px; }
-        .card-auth { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.3); width: 100%; max-width: 450px; box-shadow: var(--neon-shadow); backdrop-filter: blur(12px); }
-        
-        .input-group { margin-bottom: 18px; position: relative; }
-        label { display: block; font-size: 11px; color: var(--accent); font-weight: bold; margin-bottom: 6px; text-transform: uppercase; }
-        input, select { width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #334155; background: rgba(30, 41, 59, 0.9); color: white; font-size: 14px; outline: none; }
-        input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 5px var(--accent); }
-        
-        .show-pass { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-top: 8px; cursor: pointer; color: var(--text); opacity: 0.8; }
-        .show-pass input { width: auto; height: auto; }
-
-        /* BOTÕES */
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 12px; transition: all 0.2s; }
-        .btn:active { transform: scale(0.98); }
-        .btn-blue { background: var(--accent); color: #000; }
-        .btn-green { background: var(--neon-green); color: #000; }
-        .btn-danger { background: #ef4444; color: white; }
-        .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
-
-        /* DASHBOARD */
+        /* Dashboard e Menu Grid */
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
         .menu-item { 
-            background: rgba(30, 41, 59, 0.8); padding: 25px 10px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);
-            display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; font-size: 11px; font-weight: bold; transition: 0.3s;
+            background: var(--card); padding: 25px 10px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1);
+            display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+            font-size: 11px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-        .menu-item:active { background: rgba(56, 189, 248, 0.2); }
-        .menu-item i { font-size: 28px; }
+        .menu-item i { font-size: 32px; }
 
-        /* ABAS */
-        .tab-content { padding: 15px; display: none; flex-grow: 1; }
-        .active-tab { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Inputs e Botões */
+        .input-group { margin-bottom: 12px; }
+        label { display: block; font-size: 10px; color: var(--accent); font-weight: bold; margin-bottom: 4px; text-transform: uppercase; }
+        input, select { 
+            width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #334155; 
+            background: rgba(30, 41, 59, 0.8); color: var(--text); font-size: 14px;
+        }
 
-        .section-header { border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 0 10px 10px 0; }
-        .section-header h2 { margin: 0; font-size: 18px; color: var(--accent); }
-        .section-header p { margin: 5px 0 0 0; font-size: 11px; color: #cbd5e1; }
+        .btn { 
+            width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; 
+            cursor: pointer; text-transform: uppercase; font-size: 11px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-blue { background: var(--accent); color: #000; }
+        .btn-green { background: var(--neon-green); color: #fff; }
+        .btn-danger { background: #ef4444; color: #fff; }
 
-        /* SCANNER */
-        #reader { width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid var(--accent); margin-bottom: 15px; background: #000; }
+        /* Scanner e Modais */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; padding: 20px; overflow-y: auto; }
+        .tab-content { display: none; padding: 15px; flex-grow: 1; }
+        .active-tab { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TABELAS */
-        .table-res { overflow-x: auto; background: rgba(30, 41, 59, 0.9); border-radius: 12px; border: 1px solid #334155; margin-top: 15px; }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { background: #0f172a; padding: 12px; text-align: left; color: var(--accent); }
-        td { padding: 12px; border-bottom: 1px solid #334155; }
+        #reader { width: 100%; border-radius: 15px; border: 2px solid var(--accent); margin-bottom: 15px; overflow: hidden; background: #000; }
 
-        /* RODAPÉ E DÚVIDAS */
-        .duvidas-container { text-align: center; padding: 15px; }
-        footer { padding: 15px; text-align: center; font-size: 11px; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto; background: rgba(0,0,0,0.5); }
+        .config-box { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--accent); }
+        .config-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #334155; }
         
-        .alert-popup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: #ef4444; color: white; padding: 20px; border-radius: 12px; font-weight: bold; z-index: 9999; display: none; text-align: center; border: 2px solid white; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+        .clock-display { text-align: center; padding: 10px; font-weight: bold; color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); font-size: 14px; }
+        
+        footer { padding: 20px; text-align: center; font-size: 10px; opacity: 0.6; margin-top: auto; }
         .hidden { display: none !important; }
     </style>
 </head>
-<body onload="iniciarApp()">
+<body>
 
-<div class="bg-overlay"></div>
+<div id="pulseBg"></div>
 
-<div id="timeoutAlert" class="alert-popup">
-    ⏳ SESSÃO EXPIRADA!<br><br>Por segurança, você foi deslogado após 5 minutos de inatividade.
-</div>
+<audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+</audio>
+<audio id="beepSound">
+    <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
+</audio>
 
 <header>
-    <div class="header-container">
-        <svg width="40" height="40" viewBox="0 0 512 512" fill="none">
-            <rect width="512" height="512" rx="60" fill="#020617"/>
-            <circle cx="256" cy="200" r="80" stroke="#38bdf8" stroke-width="20"/>
-            <path d="M350 150L410 210L350 270" stroke="#22c55e" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M100 210H400" stroke="#22c55e" stroke-width="30" stroke-linecap="round"/>
-        </svg>
-        <div class="app-title">Gestão de Estoque e Vendas Premium</div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <svg width="32" height="32" viewBox="0 0 512 512"><rect width="512" height="512" rx="60" fill="#020617"/><circle cx="256" cy="200" r="80" stroke="#38bdf8" stroke-width="20"/><path d="M350 150L410 210L350 270" stroke="#22c55e" stroke-width="30" stroke-linecap="round"/><path d="M100 210H400" stroke="#22c55e" stroke-width="30" stroke-linecap="round"/></svg>
+        <div id="compTitle" class="hidden" style="font-weight: 900; font-size: 12px; color: var(--accent);">MASTER LOGÍSTICA</div>
     </div>
-    <div id="neonClock">Carregando relógio...</div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <div id="userNeon" class="user-neon hidden"></div>
+        <button onclick="abrirConfig()" style="background:none; border:none; font-size: 22px; cursor:pointer;">⚙️</button>
+    </div>
 </header>
 
-<div id="loginSection" class="login-screen">
-    <div class="card-auth">
-        <h2 style="text-align: center; margin-top: 0; color: white;">🔐 Acesso Restrito</h2>
+<div id="mainClock" class="clock-display"></div>
+
+<div id="loginArea" style="flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div class="config-box" style="width: 100%; max-width: 380px;">
+        <h2 style="text-align: center; margin-top: 0;">🛡️ LOGIN ERP</h2>
         <div class="input-group">
-            <label>👤 CPF (Apenas números)</label>
-            <input type="text" id="loginCpf" inputmode="numeric" placeholder="00000000000">
+            <label>👤 Usuário</label>
+            <input type="text" id="loginUser" placeholder="Seu nome">
         </div>
         <div class="input-group">
             <label>🔑 Senha</label>
-            <input type="password" id="loginPass" placeholder="Sua senha secreta">
-            <label class="show-pass">
-                <input type="checkbox" onclick="togglePassword('loginPass')"> Revelar senha
-            </label>
+            <input type="password" id="loginPass" placeholder="••••••">
         </div>
-        <button class="btn btn-blue" onclick="tentarLogin()">🔓 Acessar Sistema</button>
-        
-        <div style="margin: 25px 0; text-align: center; font-size: 11px; opacity: 0.7; color: var(--text);">— NÃO POSSUI LICENÇA? —</div>
-        
-        <button class="btn btn-outline" onclick="window.open('https://mpago.li/1Qt8hoV', '_blank')">💳 Registrar / Pagar Licença</button>
+        <button class="btn btn-blue" onclick="fazerLogin()">🔓 ACESSAR PAINEL</button>
+        <button class="btn" style="margin-top: 12px; border: 1px solid var(--accent); background: none; color: var(--accent);" onclick="window.open('https://mpago.li/1Qt8hoV', '_blank')">💳 REGISTRAR LICENÇA</button>
     </div>
 </div>
 
-<div id="helpModal" class="modal">
-    <div class="card-auth" style="text-align: center;">
-        <h2 style="color: var(--accent); margin-top:0;">📌 Como Acessar o App</h2>
-        <div style="font-size: 13px; line-height: 1.6; text-align: left; margin-bottom: 20px;">
-            <p><b>1.</b> Clique no botão <b>"Registrar / Pagar Licença"</b>.</p>
-            <p><b>2.</b> Você será redirecionado com segurança para a página do <b>Mercado Pago</b>.</p>
-            <p><b>3.</b> Efetue o pagamento. O seu CPF será registrado automaticamente como chave de acesso ao sistema após a aprovação.</p>
-            <hr style="border: 1px solid #334155; margin: 15px 0;">
-            <p style="text-align: center;">Ainda possui dúvidas ou teve problemas técnicos? Entre em contato pelo e-mail oficial de suporte:</p>
-            <p style="text-align: center; font-weight: bold; font-size: 15px;"><a href="mailto:italong8@gmail.com" style="color: var(--neon-pink); text-decoration: none;">italong8@gmail.com</a></p>
-        </div>
-        <button class="btn btn-blue" onclick="document.getElementById('helpModal').style.display='none'">✅ Entendi</button>
-    </div>
-</div>
-
-<main id="appBody" class="hidden">
-    <div id="menuDashboard" class="active-tab">
-        <div class="menu-grid">
-            <div class="menu-item" onclick="mostrarAba('abaEntradaNF')"><i>🧾</i>Entrada de NF</div>
-            <div class="menu-item" onclick="mostrarAba('abaEstoque')"><i>📦</i>Estoque</div>
-            <div class="menu-item" onclick="mostrarAba('abaRequisicao')"><i>📝</i>Requisições</div>
-            <div class="menu-item" onclick="mostrarAba('abaScannerPDF')"><i>🖨️</i>Scanner PDF</div>
-            <div class="menu-item" onclick="mostrarAba('abaIA')"><i>🤖</i>Cotação IA</div>
-            <div class="menu-item" onclick="mostrarAba('abaProtocolo')"><i>📥</i>Protocolos</div>
-        </div>
-        <div style="padding: 15px;">
-            <button class="btn btn-blue" style="margin-bottom: 10px;" onclick="gerarRelatorioPDF()">📊 Gerar Relatório Mensal</button>
-            <button class="btn btn-danger" onclick="logout()">🚪 Encerrar Sessão</button>
-        </div>
-    </div>
-
-    <div id="abaEntradaNF" class="tab-content">
-        <div class="section-header">
-            <h2>🧾 Entrada de Nota Fiscal</h2>
-            <p>Use a câmera para escanear a chave de acesso da NF.</p>
-        </div>
-        <div class="card-auth" style="max-width: none;">
-            <div id="reader" class="hidden"></div>
-            <button class="btn btn-blue" id="btnScan" onclick="abrirCamera()">📸 Escanear Código de Barras</button>
-            
-            <div class="input-group" style="margin-top: 15px;">
-                <label>🔢 Chave de Acesso (44 dígitos)</label>
-                <input type="text" id="nfChave" placeholder="Escanear ou digitar...">
-            </div>
-            <div class="input-group">
-                <label>🏢 Fornecedor</label>
-                <input type="text" id="nfFornecedor" placeholder="Nome da empresa">
-            </div>
-            <div class="input-group">
-                <label>💰 Valor Total (R$)</label>
-                <input type="number" id="nfValor" placeholder="0.00">
-            </div>
-            <div class="input-group">
-                <label>📅 Data de Recebimento</label>
-                <input type="date" id="nfData">
-            </div>
-            <button class="btn btn-green" onclick="salvarNFEntrada()">💾 Confirmar e Registrar</button>
-        </div>
-        <button class="btn btn-outline" style="margin-top: 15px;" onclick="mostrarAba('menuDashboard')">⬅️ Voltar</button>
-    </div>
-
-    <div id="abaEstoque" class="tab-content">
-        <div class="section-header">
-            <h2>📦 Controle de Estoque</h2>
-            <p>Gerencie o saldo dos seus materiais.</p>
-        </div>
-        <div class="card-auth" style="max-width: none; margin-bottom: 15px;">
-            <div class="input-group"><label>Nome do Item</label><input id="estItem"></div>
-            <div class="input-group"><label>Quantidade</label><input type="number" id="estQtd"></div>
-            <button class="btn btn-green" onclick="addEstoque()">➕ Adicionar</button>
-        </div>
-        <div class="table-res">
-            <table><thead><tr><th>Material</th><th>Saldo</th></tr></thead><tbody id="corpoEstoque"></tbody></table>
-        </div>
-        <button class="btn btn-outline" style="margin-top: 20px;" onclick="mostrarAba('menuDashboard')">⬅️ Voltar</button>
-    </div>
-
-    <div id="abaRequisicao" class="tab-content">
-        <div class="section-header">
-            <h2>📝 Requisição de Material</h2>
-            <p>Dê baixa no estoque e gere o PDF para assinatura.</p>
-        </div>
-        <div class="card-auth" style="max-width: none;">
-            <div class="input-group"><label>👤 Solicitante</label><input id="reqSolicitante"></div>
-            <div class="input-group"><label>👨‍💼 Almoxarife</label><input id="reqAlmoxarife"></div>
-            <div class="input-group"><label>📦 Material (Selecione do Estoque)</label><select id="reqSelect"></select></div>
-            <div class="input-group"><label>🔢 Quantidade</label><input type="number" id="reqQtd"></div>
-            <button class="btn btn-green" onclick="salvarBaixaReq()">💾 Salvar e Dar Baixa</button>
-            <button class="btn btn-blue" style="margin-top:10px;" onclick="gerarPDFReq()">🖨️ Gerar PDF para Assinatura</button>
-        </div>
-        <button class="btn btn-outline" style="margin-top: 20px;" onclick="mostrarAba('menuDashboard')">⬅️ Voltar</button>
-    </div>
-
-    <div id="abaScannerPDF" class="tab-content">
-        <div class="section-header">
-            <h2>🖨️ Arquivos e Notas em PDF</h2>
-            <p>Anexe e guarde cópias digitais das notas fiscais.</p>
-        </div>
-        <div class="card-auth" style="max-width: none;">
-            <div class="input-group"><label>Nome do Documento</label><input type="text" id="docNome" placeholder="Ex: NF 12345"></div>
-            <div class="input-group"><label>📎 Anexar Arquivo</label><input type="file" id="fileNf" accept="application/pdf,image/*"></div>
-            <button class="btn btn-blue" onclick="salvarArquivoNF()">💾 Guardar no Sistema</button>
-        </div>
-        <div class="table-res">
-            <table id="tabArquivosNF"><thead><tr><th>Documento</th><th>Data</th><th>Ação</th></tr></thead><tbody></tbody></table>
-        </div>
-        <button class="btn btn-outline" style="margin-top: 20px;" onclick="mostrarAba('menuDashboard')">⬅️ Voltar</button>
-    </div>
-
-    <div id="abaIA" class="tab-content">
-        <div class="section-header">
-            <h2>🤖 Cotação Inteligente (IA)</h2>
-            <p>Analise tendências e registre pedidos pendentes.</p>
-        </div>
-        <div class="card-auth" style="max-width: none; border-color: var(--neon-pink);">
-            <div class="input-group"><label>🔍 O que deseja cotar?</label><input type="text" id="iaBusca" placeholder="Ex: Cimento CP II"></div>
-            <button class="btn" style="background: var(--neon-pink); color: white;" onclick="simularIA()">🧠 Analisar Mercado</button>
-            <div id="iaResultado" style="margin-top: 15px; font-size: 13px; color: var(--neon-green);"></div>
-            <hr style="border-color: #334155; margin: 15px 0;">
-            <button class="btn btn-blue" onclick="gerarProtocoloIA()">📥 Enviar para Protocolo de Compra</button>
-        </div>
-        <button class="btn btn-outline" style="margin-top: 20px;" onclick="mostrarAba('menuDashboard')">⬅️ Voltar</button>
-    </div>
-
-    <div id="abaProtocolo" class="tab-content">
-        <div class="section-header">
-            <h2>📥 Protocolos e Pendências</h2>
-            <p>Acompanhe entregas e compras solicitadas.</p>
-        </div>
-        <div class="table-res">
-            <table id="tabProtocolos"><thead><tr><th>Data</th><th>Item/Status</th></tr></thead><tbody></tbody></table>
-        </div>
-        <button class="btn btn-outline" style="margin-top: 20px;" onclick="mostrarAba('menuDashboard')">⬅️ Voltar</button>
+<main id="dashboard" class="hidden">
+    <div class="menu-grid">
+        <div class="menu-item" onclick="navegar('tabEntrada')"><i>📥</i>Entrada SKU</div>
+        <div class="menu-item" onclick="navegar('tabVendas')"><i>💰</i>Vendas (PDV)</div>
+        <div class="menu-item" onclick="navegar('tabEstoque')"><i>📦</i>Estoque</div>
+        <div class="menu-item" onclick="navegar('tabRequisicao')"><i>📝</i>Requisição</div>
+        <div class="menu-item" onclick="navegar('tabIA')"><i>🤖</i>Cotação IA</div>
+        <div class="menu-item" onclick="exportarRelatorio()"><i>📊</i>Relatório</div>
     </div>
 </main>
 
-<div class="duvidas-container">
-    <button class="btn btn-outline" style="width: auto; display: inline-block; padding: 10px 20px; font-size: 11px;" onclick="document.getElementById('helpModal').style.display='flex'">❓ Dúvidas? Clique aqui!</button>
+<div id="tabEntrada" class="tab-content">
+    <h3>📥 Registro de Entrada / SKU</h3>
+    <div id="readerEntrada" class="hidden"></div>
+    <button class="btn btn-blue" onclick="ativarScanner('readerEntrada', 'skuEntrada')">📸 BIPAR SKU MATERIAL</button>
+    <div class="input-group" style="margin-top:15px;">
+        <label>Código SKU / Barcode</label>
+        <input type="text" id="skuEntrada" placeholder="Bipe ou digite o SKU">
+    </div>
+    <div class="input-group">
+        <label>Nome do Material</label>
+        <input type="text" id="nomeEntrada" placeholder="Ex: Bobina Plástica">
+    </div>
+    <div class="input-group">
+        <label>Quantidade</label>
+        <input type="number" id="qtdEntrada" value="1">
+    </div>
+    <button class="btn btn-green" onclick="salvarMaterial()">💾 SALVAR NO SISTEMA</button>
+    <button class="btn" style="margin-top:10px" onclick="navegar('dashboard')">⬅️ VOLTAR</button>
+</div>
+
+<div id="tabVendas" class="tab-content">
+    <h3>💰 Ponto de Venda (PDV)</h3>
+    <div id="readerVenda" class="hidden"></div>
+    <button class="btn btn-blue" onclick="ativarScanner('readerVenda', 'skuVenda', 'VENDA')">📸 BIPAR PRODUTO</button>
+    <div class="input-group" style="margin-top:15px;">
+        <label>SKU do Produto</label>
+        <input type="text" id="skuVenda" placeholder="SKU" onchange="lookupVenda()">
+    </div>
+    <div id="vendaCard" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+        <p><b>Produto:</b> <span id="vNome">-</span></p>
+        <div style="display: flex; gap: 10px;">
+            <div style="flex:1">
+                <label>Preço Unit.</label>
+                <input type="number" id="vPreco" value="0.00" oninput="atualizarVendaTotal()">
+            </div>
+            <div style="flex:1">
+                <label>Qtd.</label>
+                <input type="number" id="vQtd" value="1" oninput="atualizarVendaTotal()">
+            </div>
+        </div>
+        <h2 style="color: var(--neon-green); text-align: right; margin: 10px 0 0 0;">Total: R$ <span id="vTotal">0.00</span></h2>
+    </div>
+    <button class="btn btn-green" onclick="confirmarVenda()">🛒 FINALIZAR VENDA</button>
+    <button class="btn" style="margin-top:10px" onclick="navegar('dashboard')">⬅️ VOLTAR</button>
+</div>
+
+<div id="tabRequisicao" class="tab-content">
+    <h3>📝 Requisição com Baixa</h3>
+    <div id="readerReq" class="hidden"></div>
+    <div class="config-row">
+        <span>Bipagem Automática (Qtd: 1)</span>
+        <input type="checkbox" id="checkAutoBip" style="width: 20px; height: 20px;">
+    </div>
+    <button class="btn btn-blue" onclick="ativarScanner('readerReq', 'skuReq', 'REQ')">📸 BIPAR SKU BAIXA</button>
+    <input type="text" id="skuReq" placeholder="SKU do Material" style="margin-top:15px">
+    <input type="number" id="qtdReq" placeholder="Quantidade p/ Baixa" value="1">
+    <button class="btn btn-danger" onclick="darBaixaManual()">📉 EFETUAR BAIXA</button>
+    <button class="btn" style="margin-top:10px" onclick="navegar('dashboard')">⬅️ VOLTAR</button>
+</div>
+
+<div id="tabEstoque" class="tab-content">
+    <h3>📦 Inventário Atual</h3>
+    <div style="overflow-x: auto; background: var(--card); border-radius: 10px;">
+        <table style="width:100%; border-collapse: collapse; font-size: 12px;">
+            <thead><tr style="background: #0f172a; color: var(--accent);"><th style="padding:10px;">SKU</th><th>Item</th><th>Saldo</th></tr></thead>
+            <tbody id="listaEstoque"></tbody>
+        </table>
+    </div>
+    <button class="btn btn-outline" style="margin-top:20px; border: 1px solid var(--accent); color:var(--accent);" onclick="navegar('dashboard')">⬅️ VOLTAR</button>
+</div>
+
+<div id="tabIA" class="tab-content">
+    <h3>🤖 Cotação Inteligente (Pesquisa Google IA)</h3>
+    <div class="input-group">
+        <label>Produto para Cotação</label>
+        <input type="text" id="termoIA" placeholder="Ex: Cimento CP II">
+    </div>
+    <button class="btn btn-blue" onclick="executarPesquisaIA()">🌐 PESQUISAR PREÇOS REAIS</button>
+    <p style="font-size: 11px; opacity: 0.7; margin-top: 15px;">*A IA irá configurar os parâmetros de logística 2026 e abrirá os melhores resultados de fornecedores no Google Shopping.</p>
+    <button class="btn" style="margin-top:10px" onclick="navegar('dashboard')">⬅️ VOLTAR</button>
+</div>
+
+<div id="modalConfig" class="modal">
+    <div class="config-box">
+        <h3>⚙️ Configurações</h3>
+        <div class="config-row"><span>Modo Escuro (Neon)</span><input type="checkbox" id="cfgTema" checked onchange="trocarTema()"></div>
+        <div class="config-row"><span>Nome da Empresa no Topo</span><input type="checkbox" id="cfgEmpresa" onchange="toggleEmpresa()"></div>
+        <div class="config-row"><span>Exibir Relógio/Data</span><input type="checkbox" id="cfgRelogio" checked></div>
+        <div class="config-row"><span>Música Ambiente</span><input type="checkbox" id="cfgMusica" onchange="toggleMusica()"></div>
+        <button class="btn btn-blue" style="margin-top: 20px;" onclick="fecharConfig()">✅ APLICAR</button>
+    </div>
 </div>
 
 <footer>
-    Aplicativo criado por ©Italo N. Dos Anjos em 2026. Todos os Direitos reservados.
+    Dúvidas? <span onclick="alert('Suporte: italong8@gmail.com\nPagamento: Mercado Pago aprova o acesso via seu CPF automaticamente.')" style="color:var(--accent); text-decoration: underline; cursor: pointer;">Clique aqui!</span><br>
+    © 2026 ERP Logística Master - Italo N. Dos Anjos
 </footer>
 
 <script>
-    // --- BANCO DE DADOS LOCAL ---
-    let db = JSON.parse(localStorage.getItem('erp_premium_2026')) || {
-        estoque: [], nfs: [], arquivos: [], protocolos: []
-    };
-    let currentUser = null;
-    let timerInatividade;
-    let qrScanner = null;
+    // --- ESTADO GLOBAL ---
+    let bancoDados = JSON.parse(localStorage.getItem('erp_master_2026')) || { estoque: [], historico: [] };
+    let scannerAtivo = null;
+    let usuarioLogado = "";
 
-    // --- INICIALIZAÇÃO ---
-    function iniciarApp() {
-        iniciarRelogio();
-    }
-
-    // --- RELÓGIO NEON GLOBAL ---
-    function iniciarRelogio() {
+    // --- SISTEMA DE RELÓGIO ---
+    function atualizarRelogio() {
         setInterval(() => {
+            const clockEl = document.getElementById('mainClock');
+            if (!document.getElementById('cfgRelogio').checked) {
+                clockEl.innerText = "";
+                return;
+            }
             const agora = new Date();
             const dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-            const formatado = `${dias[agora.getDay()]}, ${agora.toLocaleDateString()} — ${agora.toLocaleTimeString()}`;
-            document.getElementById('neonClock').innerText = formatado;
+            clockEl.innerText = `${dias[agora.getDay()]}, ${agora.toLocaleDateString()} — ${agora.toLocaleTimeString()}`;
         }, 1000);
     }
-
-    // --- SEGURANÇA E TIMEOUT ---
-    function resetarTimer() {
-        clearTimeout(timerInatividade);
-        if (currentUser) {
-            timerInatividade = setTimeout(() => {
-                document.getElementById('timeoutAlert').style.display = 'block';
-                setTimeout(() => location.reload(), 4000);
-            }, 300000); // 5 minutos
-        }
-    }
-    window.onclick = resetarTimer;
-    window.onkeypress = resetarTimer;
-
-    function togglePassword(id) {
-        const x = document.getElementById(id);
-        x.type = x.type === "password" ? "text" : "password";
-    }
+    atualizarRelogio();
 
     // --- LOGIN ---
-    function tentarLogin() {
-        const cpf = document.getElementById('loginCpf').value.replace(/\D/g, '');
-        const pass = document.getElementById('loginPass').value;
+    function fazerLogin() {
+        const user = document.getElementById('loginUser').value;
+        if(user.length >= 3) {
+            usuarioLogado = user;
+            document.getElementById('loginArea').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('pulseBg').style.display = 'block';
+            const userDisp = document.getElementById('userNeon');
+            userDisp.innerText = "👤 " + user;
+            userDisp.classList.remove('hidden');
+            
+            if(document.getElementById('cfgMusica').checked) document.getElementById('bgMusic').play();
+            renderEstoque();
+        } else alert("Digite um nome de usuário válido.");
+    }
+
+    // --- SCANNER INTELIGENTE ---
+    function ativarScanner(readerId, inputId, modo = "") {
+        const readerEl = document.getElementById(readerId);
+        readerEl.classList.remove('hidden');
         
-        // Simulação de verificação de licença (pode adaptar sua lógica aqui)
-        if (cpf.length >= 3 && pass.length >= 3) {
-            currentUser = cpf;
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('appBody').classList.remove('hidden');
-            resetarTimer();
-            renderTodos();
-        } else {
-            alert("⚠️ Credenciais inválidas ou licença não ativada.");
+        if(scannerAtivo) scannerAtivo.stop();
+        
+        scannerAtivo = new Html5Qrcode(readerId);
+        scannerAtivo.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+            document.getElementById('beepSound').play();
+            document.getElementById(inputId).value = txt;
+            
+            if(modo === "VENDA") lookupVenda();
+            if(modo === "REQ" && document.getElementById('checkAutoBip').checked) darBaixaManual();
+            
+            pararScanner(readerId);
+        }).catch(() => alert("Erro ao abrir câmera."));
+    }
+
+    function pararScanner(readerId) {
+        if(scannerAtivo) {
+            scannerAtivo.stop().then(() => document.getElementById(readerId).classList.add('hidden'));
         }
     }
 
-    function logout() {
-        if(confirm("Deseja realmente sair do sistema?")) location.reload();
-    }
+    // --- LÓGICA DE NEGÓCIO ---
+    function salvarMaterial() {
+        const sku = document.getElementById('skuEntrada').value;
+        const nome = document.getElementById('nomeEntrada').value;
+        const qtd = parseInt(document.getElementById('qtdEntrada').value);
+        
+        if(!sku || !nome) return alert("Preencha SKU e Nome!");
 
-    // --- NAVEGAÇÃO DE ABAS ---
-    function mostrarAba(id) {
-        document.querySelectorAll('.tab-content, #menuDashboard').forEach(el => el.classList.remove('active-tab'));
-        document.getElementById(id).classList.add('active-tab');
-        if (id !== 'abaEntradaNF') fecharCamera();
-        if (id === 'abaRequisicao') atualizarSelectReq();
-    }
+        let item = bancoDados.estoque.find(i => i.sku === sku);
+        if(item) item.qtd += qtd;
+        else bancoDados.estoque.push({ sku, nome, qtd });
 
-    // --- 1. ENTRADA DE NF (COM CÂMERA) ---
-    function abrirCamera() {
-        const r = document.getElementById('reader');
-        r.classList.remove('hidden');
-        qrScanner = new Html5Qrcode("reader");
-        qrScanner.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 150 } }, (text) => {
-            document.getElementById('nfChave').value = text;
-            fecharCamera();
-            alert("✅ Código de Barras lido com sucesso!");
-        }).catch(err => alert("Erro na câmera: " + err));
-    }
-    function fecharCamera() {
-        if (qrScanner) qrScanner.stop().then(() => document.getElementById('reader').classList.add('hidden')).catch(()=>{});
-    }
-    function salvarNFEntrada() {
-        const nf = {
-            chave: document.getElementById('nfChave').value,
-            fornecedor: document.getElementById('nfFornecedor').value,
-            valor: document.getElementById('nfValor').value,
-            data: document.getElementById('nfData').value
-        };
-        if(!nf.chave || !nf.fornecedor) return alert("Preencha Chave e Fornecedor!");
-        db.nfs.push(nf);
         persistir();
-        alert("Nota Fiscal registrada!");
-        document.getElementById('nfChave').value = '';
-        mostrarAba('menuDashboard');
+        alert("Estoque Atualizado!");
+        navegar('dashboard');
     }
 
-    // --- 2. ESTOQUE ---
-    function addEstoque() {
-        const item = document.getElementById('estItem').value;
-        const qtd = parseInt(document.getElementById('estQtd').value);
-        if(item && !isNaN(qtd)) {
-            const index = db.estoque.findIndex(i => i.item.toLowerCase() === item.toLowerCase());
-            if(index >= 0) db.estoque[index].qtd += qtd;
-            else db.estoque.push({ item, qtd });
-            persistir(); renderEstoque();
-            document.getElementById('estItem').value = ''; document.getElementById('estQtd').value = '';
-        } else alert("Dados inválidos!");
-    }
-    function renderEstoque() {
-        const corpo = document.getElementById('corpoEstoque');
-        corpo.innerHTML = db.estoque.map(i => `<tr><td>${i.item}</td><td>${i.qtd}</td></tr>`).join('');
-    }
-
-    // --- 3. REQUISIÇÕES ---
-    function atualizarSelectReq() {
-        const sel = document.getElementById('reqSelect');
-        sel.innerHTML = db.estoque.map(i => `<option value="${i.item}">${i.item} (Disp: ${i.qtd})</option>`).join('');
-    }
-    function salvarBaixaReq() {
-        const itemReq = document.getElementById('reqSelect').value;
-        const qtdReq = parseInt(document.getElementById('reqQtd').value);
-        const produto = db.estoque.find(i => i.item === itemReq);
-        
-        if(produto && produto.qtd >= qtdReq) {
-            produto.qtd -= qtdReq;
-            persistir(); renderEstoque(); atualizarSelectReq();
-            alert("Baixa realizada com sucesso no estoque!");
+    function lookupVenda() {
+        const sku = document.getElementById('skuVenda').value;
+        const item = bancoDados.estoque.find(i => i.sku === sku);
+        if(item) {
+            document.getElementById('vNome').innerText = item.nome;
+            atualizarVendaTotal();
         } else {
-            alert("Saldo insuficiente!");
+            document.getElementById('vNome').innerText = "NÃO ENCONTRADO";
         }
     }
-    function gerarPDFReq() {
-        const sol = document.getElementById('reqSolicitante').value;
-        const alm = document.getElementById('reqAlmoxarife').value;
-        const item = document.getElementById('reqSelect').value;
-        const qtd = document.getElementById('reqQtd').value;
-        if(!sol || !alm || !qtd) return alert("Preencha todos os campos!");
 
+    function atualizarVendaTotal() {
+        const p = parseFloat(document.getElementById('vPreco').value) || 0;
+        const q = parseInt(document.getElementById('vQtd').value) || 0;
+        document.getElementById('vTotal').innerText = (p * q).toFixed(2);
+    }
+
+    function confirmarVenda() {
+        const sku = document.getElementById('skuVenda').value;
+        const q = parseInt(document.getElementById('vQtd').value);
+        let item = bancoDados.estoque.find(i => i.sku === sku);
+
+        if(item && item.qtd >= q) {
+            item.qtd -= q;
+            persistir();
+            alert("Venda Finalizada!");
+            navegar('dashboard');
+        } else alert("Saldo insuficiente ou produto não cadastrado.");
+    }
+
+    function darBaixaManual() {
+        const sku = document.getElementById('skuReq').value;
+        const q = parseInt(document.getElementById('qtdReq').value);
+        let item = bancoDados.estoque.find(i => i.sku === sku);
+        
+        if(item && item.qtd >= q) {
+            item.qtd -= q;
+            document.getElementById('beepSound').play();
+            persistir();
+            if(!document.getElementById('checkAutoBip').checked) alert("Baixa realizada!");
+            renderEstoque();
+        } else alert("SKU inválido ou estoque insuficiente.");
+    }
+
+    function renderEstoque() {
+        const body = document.getElementById('listaEstoque');
+        body.innerHTML = bancoDados.estoque.map(i => 
+            `<tr style="border-bottom:1px solid #334155"><td style="padding:10px;">${i.sku}</td><td>${i.nome}</td><td style="color:var(--neon-green); font-weight:bold;">${i.qtd}</td></tr>`
+        ).join('');
+    }
+
+    function executarPesquisaIA() {
+        const termo = document.getElementById('termoIA').value;
+        if(!termo) return;
+        const url = `https://www.google.com/search?q=${encodeURIComponent(termo)}+preço+logistica+2026&tbm=shop`;
+        window.open(url, '_blank');
+    }
+
+    // --- UTILITÁRIOS ---
+    function navegar(aba) {
+        document.querySelectorAll('.tab-content, #dashboard').forEach(el => el.classList.add('hidden'));
+        if(aba === 'dashboard') {
+            document.getElementById('dashboard').classList.remove('hidden');
+            renderEstoque();
+        } else {
+            document.getElementById(aba).classList.add('active-tab');
+        }
+        if(scannerAtivo) pararScanner('readerEntrada'), pararScanner('readerVenda'), pararScanner('readerReq');
+    }
+
+    function persistir() { localStorage.setItem('erp_master_2026', JSON.stringify(bancoDados)); }
+
+    function abrirConfig() { document.getElementById('modalConfig').style.display = 'block'; }
+    function fecharConfig() { document.getElementById('modalConfig').style.display = 'none'; }
+
+    function trocarTema() { document.body.classList.toggle('light-theme', !document.getElementById('cfgTema').checked); }
+    function toggleEmpresa() { document.getElementById('compTitle').classList.toggle('hidden', !document.getElementById('cfgEmpresa').checked); }
+    function toggleMusica() { 
+        const m = document.getElementById('bgMusic');
+        document.getElementById('cfgMusica').checked ? m.play() : m.pause();
+    }
+
+    function exportarRelatorio() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.text("TERMO DE RETIRADA DE MATERIAL", 15, 20);
-        doc.text(`Solicitante: ${sol}`, 15, 40);
-        doc.text(`Almoxarife: ${alm}`, 15, 50);
-        doc.text(`Material: ${item} | Quantidade: ${qtd}`, 15, 60);
-        doc.text(`Data: ${new Date().toLocaleString()}`, 15, 70);
-        doc.text("--------------------------------------------------", 15, 90);
-        doc.text("Ass. Solicitante: ____________________", 15, 110);
-        doc.save("Requisicao_Assinatura.pdf");
-    }
-
-    // --- 4. SCANNER PDF (ARQUIVOS) ---
-    function salvarArquivoNF() {
-        const nome = document.getElementById('docNome').value;
-        const file = document.getElementById('fileNf').files[0];
-        if(!nome || !file) return alert("Dê um nome e selecione o arquivo!");
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            db.arquivos.push({ nome: nome, data: new Date().toLocaleDateString(), file: e.target.result });
-            persistir(); renderArquivos();
-            alert("Arquivo salvo!");
-        };
-        reader.readAsDataURL(file);
-    }
-    function renderArquivos() {
-        const body = document.querySelector('#tabArquivosNF tbody');
-        body.innerHTML = db.arquivos.map(a => `<tr><td>${a.nome}</td><td>${a.data}</td><td><a href="${a.file}" download="${a.nome}" style="color:var(--accent);">Baixar</a></td></tr>`).join('');
-    }
-
-    // --- 5. IA COTAÇÃO ---
-    function simularIA() {
-        const busca = document.getElementById('iaBusca').value;
-        const res = document.getElementById('iaResultado');
-        if(!busca) return alert("Digite o que deseja cotar!");
-        res.innerHTML = "⏳ Analisando base de dados globais...";
-        setTimeout(() => {
-            res.innerHTML = `🤖 <b>Resultado para "${busca}":</b><br>Menor valor de mercado encontrado: <b>R$ ${(Math.random()*500).toFixed(2)}</b>. Tendência de alta para amanhã.`;
-        }, 1500);
-    }
-    function gerarProtocoloIA() {
-        const busca = document.getElementById('iaBusca').value;
-        if(!busca) return;
-        db.protocolos.push({ data: new Date().toLocaleDateString(), status: `Pendente Compra: ${busca}` });
-        persistir(); renderProtocolos();
-        alert("Enviado para protocolos!");
-    }
-
-    // --- 6. PROTOCOLOS ---
-    function renderProtocolos() {
-        const body = document.querySelector('#tabProtocolos tbody');
-        body.innerHTML = db.protocolos.map(p => `<tr><td>${p.data}</td><td style="color:var(--neon-pink)">${p.status}</td></tr>`).join('');
-    }
-
-    // --- GERAIS ---
-    function persistir() { localStorage.setItem('erp_premium_2026', JSON.stringify(db)); }
-    function renderTodos() { renderEstoque(); renderArquivos(); renderProtocolos(); }
-
-    function gerarRelatorioPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("RELATÓRIO MENSAL - ESTOQUE GERAL", 15, 15);
-        const data = db.estoque.map(i => [i.item, i.qtd]);
-        doc.autoTable({ head: [['Material', 'Saldo Atual']], body: data, startY: 25 });
-        doc.save("Relatorio_Mensal_2026.pdf");
+        doc.setFontSize(18);
+        doc.text("INVENTÁRIO MASTER 2026", 15, 20);
+        doc.setFontSize(10);
+        doc.text("Responsável: " + usuarioLogado.toUpperCase(), 15, 28);
+        
+        const rows = bancoDados.estoque.map(i => [i.sku, i.nome, i.qtd]);
+        doc.autoTable({ head: [['SKU', 'Material', 'Saldo']], body: rows, startY: 35 });
+        doc.save("relatorio_estoque.pdf");
     }
 </script>
 
