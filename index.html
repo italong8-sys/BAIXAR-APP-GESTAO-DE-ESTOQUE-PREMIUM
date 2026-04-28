@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#020617">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ERP Master">
+    <link rel="manifest" href="manifest.json">
+    
     <title>ERP MASTER LOGÍSTICA 2026 - VITALÍCIO</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -24,6 +29,7 @@
             display: flex; flex-direction: column; overflow-x: hidden;
             background-image: url('https://images.unsplash.com/photo-1586528116311-ad8ed7c663c0?auto=format&fit=crop&w=1600&q=80');
             background-size: cover; background-position: center; background-attachment: fixed;
+            user-select: none; /* Evita selecionar texto como se fosse um site */
         }
 
         /* Animações de Símbolos */
@@ -40,6 +46,7 @@
         header { 
             padding: 12px 15px; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--accent);
             display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(15px);
+            padding-top: env(safe-area-inset-top); /* Para o entalhe do iPhone */
         }
 
         /* Menu Grid */
@@ -102,7 +109,7 @@
             <label for="verSenha" style="margin:0;">Mostrar Senha</label>
         </div>
 
-        <button class="btn btn-blue" onclick="tentarLogin()">🔓 ENTRAR NO ERP</button>
+        <button class="btn btn-blue" onclick="tentarLogin()">🔓 ENTRAR NO APP</button>
         <hr style="margin: 25px 0; opacity: 0.1;">
         <button class="btn" style="background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink);" onclick="abrirModal('modalTriagem')">💎 ADQUIRIR LICENÇA VITALÍCIA</button>
     </div>
@@ -118,7 +125,7 @@
             <div class="menu-item" onclick="nav('abaIA')"><i class="blink-icon">🤖</i><span>IA Cotação</span><small>Preços de Mercado</small></div>
             <div class="menu-item" onclick="gerarPDF()"><i class="blink-icon">📊</i><span>Relatórios</span><small>Exportar em PDF</small></div>
         </div>
-        <div style="padding: 0 20px;"><button class="btn btn-danger" onclick="location.reload()">🚪 SAIR DO SISTEMA</button></div>
+        <div style="padding: 0 20px;"><button class="btn btn-danger" onclick="location.reload()">🚪 SAIR DO APP</button></div>
     </div>
 
     <div id="abaEntrada" class="tab-content">
@@ -212,23 +219,23 @@
         <div class="highlight-box">
             <h3 style="margin-top:0; color:var(--neon-green);">R$ 99,90 (Taxa Única)</h3>
             <ul style="padding-left:15px; line-height:1.6;">
-                <li>Acesso vitalício sem mensalidades.</li>
+                <li>Aplicativo de forma vitalícia.</li>
                 <li>Atualizações automáticas constantes.</li>
-                <li>Suporte prioritário via e-mail.</li>
+                <li>Suporte prioritário a bugs.</li>
             </ul>
         </div>
 
         <div style="font-size:11px; line-height:1.5; color:rgba(255,255,255,0.8); margin-bottom:20px;">
-            <p><b>📧 Suporte:</b> italong8@gmail.com</p>
-            <p><b>🛡️ Garantia:</b> 7 dias para cancelamento e reembolso total caso não goste da versão.</p>
-            <p><b>📞 Cancelamento:</b> Enviar nome, CPF e comprovante para o WhatsApp: <b>(11) 99374-7623</b>.</p>
-            <p style="color:var(--neon-blue); text-align:center; font-weight:bold; border: 1px solid var(--neon-blue); padding:10px; border-radius:10px;">
+            <p><b>📧 Suporte (Dúvidas e Bugs):</b> italong8@gmail.com</p>
+            <p><b>🛡️ Garantia:</b> 7 dias para cancelamento da compra caso não goste da versão premium.</p>
+            <p><b>📞 Cancelamento:</b> Mande seu nome completo, CPF e comprovante para o número <b>(11) 99374-7623</b> (WhatsApp).</p>
+            <p style="color:var(--neon-blue); text-align:center; font-weight:bold; border: 1px solid var(--neon-blue); padding:10px; border-radius:10px; margin-top:15px;">
                 🔒 COMPRA 100% SEGURA VIA MERCADO PAGO
             </p>
         </div>
 
         <button class="btn btn-green" onclick="irParaPagamento()">🚀 COMPRAR PELO MERCADO PAGO</button>
-        <button class="btn" style="margin-top:10px; background:none;" onclick="fecharModal('modalTriagem')">CONTINUAR NA VERSÃO FREE</button>
+        <button class="btn" style="margin-top:10px; background:none;" onclick="fecharModal('modalTriagem')">VOLTAR</button>
     </div>
 </div>
 
@@ -252,6 +259,15 @@
 <script>
     let db = JSON.parse(localStorage.getItem('master_erp_pro_2026')) || { estoque: [], licenca: false, user: "", pass: "" };
     let scanner = null;
+
+    // Registro do Service Worker (Para transformar em App Instalável)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').then(reg => {
+                console.log('App Registrado com sucesso!', reg);
+            }).catch(err => console.log('Falha no registro do App', err));
+        });
+    }
 
     function initApp() {
         setInterval(() => { document.getElementById('relogio').innerText = new Date().toLocaleTimeString(); }, 1000);
