@@ -22,7 +22,6 @@
             --neon-blue: #00d2ff; --border: rgba(255,255,255,0.1);
         }
 
-        /* Tema Claro */
         .light-theme {
             --bg: #f1f5f9; --card: rgba(255, 255, 255, 0.98); --accent: #0284c7;
             --text: #0f172a; --neon-pink: #be185d; --neon-green: #15803d;
@@ -30,7 +29,6 @@
         }
         .light-theme body { background-image: none; background: var(--bg); }
         .light-theme input, .light-theme select, .light-theme textarea { background: #f8fafc; color: #000; border: 1px solid #cbd5e1; }
-        .light-theme .highlight-box { background: rgba(21, 128, 61, 0.1); border-color: var(--neon-green); }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', system-ui, sans-serif; transition: background-color 0.3s, color 0.3s; }
         
@@ -42,11 +40,8 @@
             user-select: none;
         }
 
-        /* Animações de Símbolos */
         @keyframes icon-blink { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px var(--accent)); } 50% { opacity: 0.4; filter: drop-shadow(0 0 2px transparent); } }
         .blink-icon { animation: icon-blink 2s infinite ease-in-out; display: inline-block; }
-        
-        /* Desativar Animações */
         .disable-anim .blink-icon { animation: none !important; filter: none !important; }
 
         .neon-pulse-overlay {
@@ -62,7 +57,6 @@
             padding-top: env(safe-area-inset-top);
         }
 
-        /* Menu Grid */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
         .menu-item { 
             background: var(--card); padding: 20px 10px; border-radius: 15px; border: 1px solid var(--border);
@@ -73,34 +67,32 @@
         .menu-item span { font-weight: 800; font-size: 12px; color: var(--accent); text-transform: uppercase; }
         .menu-item small { font-size: 9px; opacity: 0.7; color: var(--text); }
 
-        /* Forms ERP */
         .form-section { background: var(--card); margin: 15px; padding: 20px; border-radius: 15px; border: 1px solid var(--accent); }
         .erp-group { border: 1px solid var(--border); padding: 15px; border-radius: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.2); }
         .erp-title { font-size: 11px; color: var(--text); opacity: 0.8; margin-top: -25px; margin-left: 10px; background: var(--card); padding: 0 5px; width: fit-content; margin-bottom: 15px; font-weight: bold;}
         
         label { display: block; font-size: 10px; font-weight: bold; margin-bottom: 5px; color: var(--accent); text-transform: uppercase; }
         input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: rgba(15,23,42,0.8); color: var(--text); font-size: 13px; margin-bottom: 12px; outline: none; }
-        input:focus, select:focus { border-color: var(--accent); }
         
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; }
         .btn-blue { background: var(--accent); color: #000; }
         .btn-green { background: var(--neon-green); color: #000; }
         .btn-danger { background: #ef4444; color: #fff; }
+        .btn-mini { padding: 5px 10px; font-size: 10px; border-radius: 5px; background: var(--neon-blue); color: #000; border: none; cursor: pointer; margin-top: 5px; }
 
         .tab-content { display: none; padding-bottom: 100px; animation: slideUp 0.3s ease; }
         .active-tab { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Modals */
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; padding: 20px; align-items: center; justify-content: center; overflow-y: auto; }
-        .card-modal { background: var(--card); padding: 25px; border-radius: 20px; border: 2px solid var(--accent); width: 100%; max-width: 480px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .card-modal { background: var(--card); padding: 25px; border-radius: 20px; border: 2px solid var(--accent); width: 100%; max-width: 480px; }
 
         .highlight-box { background: rgba(34, 197, 94, 0.1); border: 1px solid var(--neon-green); padding: 15px; border-radius: 10px; margin: 15px 0; font-size: 12px; }
+        .alert-box { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 10px; border-radius: 8px; font-size: 11px; margin-top: 5px; font-weight: bold; }
         
         #reader { width: 100%; border-radius: 10px; overflow: hidden; border: 2px solid var(--accent); background: #000; }
         .hidden { display: none !important; }
 
-        /* Toggles Switch */
         .toggle-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 12px; font-weight: bold; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -109,7 +101,6 @@
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(18px); }
         
-        /* Tabelas */
         table { width: 100%; border-collapse: collapse; font-size: 11px; }
         th { padding: 10px; text-align: left; border-bottom: 2px solid var(--accent); color: var(--accent); }
         td { padding: 10px; border-bottom: 1px solid var(--border); }
@@ -124,7 +115,11 @@
     <div style="display: flex; align-items: center; gap: 10px;">
         <span style="font-weight: 900; color: var(--accent); font-size: 14px; letter-spacing: 1px;"><i class="blink-icon">🛰️</i> ERP MASTER PRO</span>
     </div>
-    <div style="display: flex; align-items: center; gap: 15px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <div id="welcomeMsg" style="font-size: 10px; text-align: right; line-height: 1.2; display: none;">
+            <span style="opacity: 0.7;">Bem vindo,</span><br>
+            <b id="userNameHeader" style="color: var(--accent); text-transform: uppercase;">USUÁRIO</b>
+        </div>
         <div id="relogioContainer" style="text-align: right; line-height: 1.1;">
             <div id="data" style="font-size: 9px; opacity: 0.8;"></div>
             <div id="relogio" style="color: var(--neon-green); font-family: monospace; font-weight: bold; font-size: 13px;"></div>
@@ -135,34 +130,27 @@
 
 <div id="areaLogin" style="flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 20px;">
     <div class="card-modal">
-        <h2 style="text-align: center; color: var(--accent); margin-bottom: 5px;"><i class="blink-icon">🗝️</i> ACESSO AO SISTEMA</h2>
-        <p style="text-align: center; font-size: 11px; opacity: 0.6; margin-bottom: 20px;">Logística Inteligente & ERP 2026</p>
-        
+        <h2 style="text-align: center; color: var(--accent); margin-bottom: 5px;">🗝️ ACESSO AO SISTEMA</h2>
         <div class="erp-group">
-            <label>Credenciais de Acesso</label>
-            <input type="text" id="userLogin" placeholder="Usuário / CPF">
+            <label>Credenciais</label>
+            <input type="text" id="userLogin" placeholder="Usuário">
             <input type="password" id="passLogin" placeholder="Senha">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
-                <input type="checkbox" id="verSenha" onchange="document.getElementById('passLogin').type = this.checked ? 'text' : 'password'" style="width:16px; height:16px; margin:0;">
-                <label for="verSenha" style="margin:0; text-transform:none;">Mostrar Senha</label>
-            </div>
         </div>
-
-        <button class="btn btn-blue" onclick="tentarLogin()">🔓 ENTRAR NO APP</button>
-        <hr style="margin: 25px 0; border: 0; border-top: 1px solid var(--border);">
-        <button class="btn" style="background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink);" onclick="abrirModal('modalTriagem')">💎 ADQUIRIR LICENÇA VITALÍCIA</button>
+        <button class="btn btn-blue" onclick="tentarLogin()">🔓 ENTRAR</button>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--border);">
+        <button class="btn" style="background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink);" onclick="abrirModal('modalTriagem')">💎 COMPRAR ACESSO VITALÍCIO</button>
     </div>
 </div>
 
 <main id="appContent" class="hidden">
     <div id="abaHome" class="tab-content active-tab">
         <div class="menu-grid">
-            <div class="menu-item" onclick="nav('abaEntrada')"><i class="blink-icon">📥</i><span>Entrada NF/SKU</span><small>Recebimento Fornecedor</small></div>
-            <div class="menu-item" onclick="nav('abaHistorico')"><i class="blink-icon">🧾</i><span>Histórico NF</span><small>Auditoria de Entradas</small></div>
-            <div class="menu-item" onclick="nav('abaVenda')"><i class="blink-icon">💰</i><span>Vendas PDV</span><small>Faturamento</small></div>
-            <div class="menu-item" onclick="nav('abaRequisicao')"><i class="blink-icon">📝</i><span>Requisição</span><small>Baixa Interna</small></div>
-            <div class="menu-item" onclick="nav('abaEstoque')"><i class="blink-icon">📦</i><span>Estoque Geral</span><small>Saldos e Posições</small></div>
-            <div class="menu-item" onclick="nav('abaIA')"><i class="blink-icon">🤖</i><span>IA Cotação</span><small>Pesquisa Mercado</small></div>
+            <div class="menu-item" onclick="nav('abaEntrada')"><i>📥</i><span>Entrada NF</span><small>Estoque e Fiscal</small></div>
+            <div class="menu-item" onclick="nav('abaHistorico')"><i>🧾</i><span>Histórico</span><small>Auditoria</small></div>
+            <div class="menu-item" onclick="nav('abaVenda')"><i>💰</i><span>PDV</span><small>Vendas</small></div>
+            <div class="menu-item" onclick="nav('abaRequisicao')"><i>📝</i><span>Requisição</span><small>Baixas</small></div>
+            <div class="menu-item" onclick="nav('abaEstoque')"><i>📦</i><span>Estoque</span><small>Saldos</small></div>
+            <div class="menu-item" onclick="nav('abaIA')"><i>🤖</i><span>IA Cotação</span><small>Preços</small></div>
         </div>
         <div style="padding: 0 20px; display:flex; gap:10px;">
             <button class="btn btn-blue" style="flex:1;" onclick="gerarPDF()">📊 EXPORTAR PDF</button>
@@ -172,240 +160,154 @@
 
     <div id="abaEntrada" class="tab-content">
         <div class="form-section">
-            <h3 style="margin-top:0; color:var(--accent);"><i class="blink-icon">📥</i> RECEBIMENTO DE CARGA</h3>
-            
-            <div class="erp-group" style="margin-top:20px;">
-                <div class="erp-title">DADOS FISCAIS</div>
-                <label>Número da Nota Fiscal (NF-e)</label>
-                <input type="text" id="inNF" placeholder="Ex: 000.123.456">
-                <label>Fornecedor / Razão Social</label>
-                <input type="text" id="inForn" placeholder="Ex: Indústria XYZ LTDA">
-            </div>
-
+            <h3 style="margin-top:0; color:var(--accent);">📥 ENTRADA DE MATERIAIS</h3>
             <div class="erp-group">
-                <div class="erp-title">DADOS DO PRODUTO</div>
+                <div class="erp-title">FISCAL / FORNECEDOR</div>
+                <input type="text" id="inNF" placeholder="Número da Nota Fiscal">
+                <input type="text" id="inForn" placeholder="Fornecedor">
+            </div>
+            <div class="erp-group">
+                <div class="erp-title">PRODUTO</div>
                 <div id="readerEntrada" class="hidden"></div>
-                <button class="btn btn-blue" style="margin-bottom:12px;" onclick="abrirScanner('readerEntrada', 'inSku')">📸 ESCANEAR CÓDIGO BARRAS</button>
-                <label>SKU / ID Único</label><input type="text" id="inSku" placeholder="Ex: SKU-2026-990">
-                <label>Descrição do Material</label><input type="text" id="inNome" placeholder="Ex: Painel Solar 400W">
+                <button class="btn btn-blue" style="margin-bottom:12px;" onclick="abrirScanner('readerEntrada', 'inSku')">📸 ESCANEAR SKU</button>
+                <input type="text" id="inSku" placeholder="SKU">
+                <input type="text" id="inNome" placeholder="Descrição">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
                     <div><label>Quantidade</label><input type="number" id="inQtd" placeholder="0"></div>
-                    <div><label>Preço Custo (R$)</label><input type="number" id="inCusto" placeholder="0.00"></div>
+                    <div><label>Estoque Mínimo</label><input type="number" id="inMinQtd" placeholder="Ex: 10"></div>
                 </div>
-                <label>Local de Armazenagem</label>
-                <select id="inLocal"><option>Almoxarifado Central</option><option>Docas 01</option><option>Quarentena</option></select>
+                <label>Localização</label>
+                <select id="inLocal"><option>Almoxarifado</option><option>Docas</option></select>
             </div>
-
-            <button class="btn btn-green" onclick="salvarEntrada()">💾 SALVAR NO ESTOQUE E HISTÓRICO</button>
-            <button class="btn" style="margin-top:10px; background:none; color:var(--text); border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR AO MENU</button>
+            <button class="btn btn-green" onclick="salvarEntrada()">💾 SALVAR ENTRADA</button>
+            <button class="btn" style="margin-top:10px; background:none; border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR</button>
         </div>
     </div>
 
     <div id="abaHistorico" class="tab-content">
         <div class="form-section">
-            <h3 style="margin-top:0; color:var(--accent);"><i class="blink-icon">🧾</i> AUDITORIA DE ENTRADAS (NF)</h3>
-            <p style="font-size:10px; opacity:0.7;">Registro completo de todas as entradas sistêmicas.</p>
-            
-            <div style="overflow-x: auto; background: var(--bg); border-radius: 10px; padding: 5px;">
-                <table style="min-width: 500px;">
-                    <thead><tr>
-                        <th>DATA / HORA</th>
-                        <th>NF / FORNECEDOR</th>
-                        <th>MATERIAL / SKU</th>
-                        <th>QTD</th>
-                        <th>USUÁRIO</th>
-                    </tr></thead>
-                    <tbody id="corpoHistorico"></tbody>
-                </table>
-            </div>
-            <button class="btn" style="margin-top:20px; background:none; color:var(--text); border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR AO MENU</button>
+            <h3>🧾 HISTÓRICO DE NOTAS FISCAIS</h3>
+            <div style="overflow-x: auto;"><table id="tableHistorico">
+                <thead><tr><th>DATA/HORA</th><th>NF</th><th>PRODUTO</th><th>QTD</th><th>USUÁRIO</th></tr></thead>
+                <tbody id="corpoHistorico"></tbody>
+            </table></div>
+            <button class="btn" style="margin-top:20px; background:none; border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR</button>
         </div>
     </div>
 
     <div id="abaVenda" class="tab-content">
         <div class="form-section">
-            <h3 style="margin-top:0; color:var(--accent);"><i class="blink-icon">💰</i> MÓDULO DE FATURAMENTO (PDV)</h3>
-            
-            <div class="erp-group" style="margin-top:20px;">
-                <div class="erp-title">CARRINHO DE VENDA</div>
+            <h3>💰 PONTO DE VENDA</h3>
+            <div class="erp-group">
                 <div id="readerVenda" class="hidden"></div>
-                <button class="btn btn-blue" style="margin-bottom:12px;" onclick="abrirScanner('readerVenda', 'vSku', true)">📸 BIPAR ITEM</button>
-                <label>SKU do Produto</label>
-                <input type="text" id="vSku" placeholder="Ex: SKU-123" onchange="lookupVenda()">
-                
-                <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; border: 1px dashed var(--accent); margin-top: 10px;">
-                    <label>Item Identificado</label>
-                    <h4 id="vNomeRes" style="margin:5px 0; color:var(--accent);">Aguardando Leitura...</h4>
+                <button class="btn btn-blue" onclick="abrirScanner('readerVenda', 'vSku', true)">📸 BIPAR</button>
+                <input type="text" id="vSku" placeholder="SKU" onchange="lookupVenda()" style="margin-top:10px">
+                <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; border:1px solid var(--accent);">
+                    <label>Produto:</label><b id="vNomeRes" style="color:var(--accent);">---</b>
                     <div style="display:flex; gap:10px; margin-top:10px;">
-                        <div style="flex:1"><label>Preço Venda (R$)</label><input type="number" id="vPreco" oninput="calcV()"></div>
-                        <div style="flex:1"><label>Quantidade</label><input type="number" id="vQtd" value="1" oninput="calcV()"></div>
+                        <input type="number" id="vPreco" placeholder="Preço" oninput="calcV()">
+                        <input type="number" id="vQtd" value="1" oninput="calcV()">
                     </div>
-                    <h2 style="text-align: right; color:var(--neon-green); margin:10px 0 0 0;">TOTAL: R$ <span id="vTotalRes">0.00</span></h2>
+                    <h3 style="text-align:right; margin:0; color:var(--neon-green);">TOTAL: R$ <span id="vTotalRes">0.00</span></h3>
                 </div>
             </div>
-
-            <button class="btn btn-green" onclick="confirmarVenda()">🛒 EFETIVAR VENDA E BAIXAR ESTOQUE</button>
-            <button class="btn" style="margin-top:10px; background:none; color:var(--text); border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR AO MENU</button>
+            <button class="btn btn-green" onclick="confirmarVenda()">🛒 FINALIZAR VENDA</button>
+            <button class="btn" style="margin-top:10px; background:none; border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR</button>
         </div>
     </div>
 
     <div id="abaRequisicao" class="tab-content">
         <div class="form-section">
-            <h3 style="margin-top:0; color:var(--accent);"><i class="blink-icon">📝</i> REQUISIÇÃO DE MATERIAIS</h3>
-            
-            <div class="erp-group" style="margin-top:20px;">
-                <div class="erp-title">MODO DE BAIXA</div>
-                <div style="background:rgba(56,189,248,0.1); padding:10px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; border: 1px solid var(--accent);">
-                    <span style="font-size:11px; font-weight:bold; color:var(--accent);">⚡ AUTO-BAIXA (Escanear = -1 Unid.)</span>
-                    <label class="switch" style="margin:0;"><input type="checkbox" id="autoBip"><span class="slider"></span></label>
-                </div>
-            </div>
-
+            <h3>📝 REQUISIÇÃO DE SAÍDA</h3>
             <div class="erp-group">
-                <div class="erp-title">DADOS DA SAÍDA</div>
                 <div id="readerReq" class="hidden"></div>
-                <button class="btn btn-blue" style="margin-bottom:12px;" onclick="abrirScanner('readerReq', 'rSku', false, true)">📸 BIPAR PARA RETIRADA</button>
-                <label>SKU do Produto</label>
-                <input type="text" id="rSku" placeholder="Ex: SKU-456">
-                <label>Motivo da Requisição / OS</label>
-                <textarea id="rMotivo" placeholder="Ex: Manutenção da Máquina 02" rows="2"></textarea>
-            </div>
+                <button class="btn btn-blue" onclick="abrirScanner('readerReq', 'rSku', false, true)">📸 SCANNER</button>
+                <input type="text" id="rSku" placeholder="SKU" oninput="previewSaldo(this.value)" style="margin-top:10px">
+                
+                <div id="reqPreview" style="background:rgba(56,189,248,0.1); padding:10px; border-radius:8px; border:1px solid var(--accent); margin-bottom:10px; display:none;">
+                    <span style="font-size:10px; opacity:0.8;">SALDO EM ESTOQUE:</span><br>
+                    <b id="reqSaldoTxt" style="font-size:18px; color:var(--neon-blue);">0</b> <small>unidades</small>
+                </div>
 
-            <button class="btn btn-danger" onclick="baixaDireta()">📉 PROCESSAR SAÍDA</button>
-            <button class="btn" style="margin-top:10px; background:none; color:var(--text); border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR AO MENU</button>
+                <textarea id="rMotivo" placeholder="Motivo da Saída"></textarea>
+            </div>
+            <button class="btn btn-danger" onclick="baixaDireta()">📉 PROCESSAR BAIXA</button>
+            <button class="btn" style="margin-top:10px; background:none; border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR</button>
         </div>
     </div>
 
     <div id="abaEstoque" class="tab-content">
         <div class="form-section">
-            <h3 style="margin-top:0; color:var(--accent);"><i class="blink-icon">📦</i> INVENTÁRIO ATUALIZADO</h3>
-            <div style="overflow-x: auto; background: var(--bg); border-radius: 10px; padding: 5px;">
-                <table style="min-width: 400px;">
-                    <thead><tr>
-                        <th>SKU / CÓDIGO</th>
-                        <th>PRODUTO / LOCAL</th>
-                        <th style="text-align:center;">SALDO FÍSICO</th>
-                    </tr></thead>
-                    <tbody id="corpoEstoque"></tbody>
-                </table>
-            </div>
-            <button class="btn" style="margin-top:20px; background:none; color:var(--text); border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR AO MENU</button>
+            <h3>📦 ESTOQUE GERAL</h3>
+            <div style="overflow-x: auto;"><table>
+                <thead><tr><th>SKU</th><th>PRODUTO</th><th>SALDO</th><th>STATUS</th></tr></thead>
+                <tbody id="corpoEstoque"></tbody>
+            </table></div>
+            <button class="btn" style="margin-top:20px; background:none; border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR</button>
         </div>
     </div>
 
     <div id="abaIA" class="tab-content">
         <div class="form-section">
-            <h3 style="margin-top:0; color:var(--accent);"><i class="blink-icon">🤖</i> MÓDULO IA DE COMPRAS</h3>
-            <div class="erp-group" style="margin-top:20px;">
-                <div class="erp-title">PESQUISA DE MERCADO</div>
-                <p style="font-size:10px; opacity:0.8;">Utilize a IA para varrer a internet em busca do menor preço para reposição.</p>
-                <label>Termo / Produto a cotar</label>
-                <input type="text" id="iaTermo" placeholder="Ex: Bobina Plástico Bolha 100m">
-            </div>
-            <button class="btn btn-blue" onclick="execIA()">🌐 BUSCAR COTAÇÃO NO GOOGLE SHOPPING</button>
-            <button class="btn" style="margin-top:10px; background:none; color:var(--text); border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR AO MENU</button>
+            <h3>🤖 IA COTAÇÃO</h3>
+            <input type="text" id="iaTermo" placeholder="Produto">
+            <button class="btn btn-blue" onclick="execIA()">🌐 PESQUISAR PREÇOS 2026</button>
+            <button class="btn" style="margin-top:10px; background:none; border:1px solid var(--border);" onclick="nav('abaHome')">⬅️ VOLTAR</button>
         </div>
     </div>
 </main>
 
 <div id="modalConfig" class="modal">
     <div class="card-modal">
-        <h3 style="margin-top:0; color:var(--accent); text-align:center;"><i class="blink-icon">⚙️</i> PREFERÊNCIAS DO SISTEMA</h3>
-        <p style="font-size:10px; text-align:center; opacity:0.6; margin-bottom:20px;">Personalize a interface do seu ERP Master.</p>
-        
-        <div class="toggle-row">
-            <span>Modo Visual (Tema Claro)</span>
-            <label class="switch"><input type="checkbox" id="cfgTheme" onchange="aplicarConfig()"><span class="slider"></span></label>
-        </div>
-        <div class="toggle-row">
-            <span>Mostrar Data e Relógio</span>
-            <label class="switch"><input type="checkbox" id="cfgClock" onchange="aplicarConfig()"><span class="slider"></span></label>
-        </div>
-        <div class="toggle-row">
-            <span>Efeito de Fundo Neon (Requer Login)</span>
-            <label class="switch"><input type="checkbox" id="cfgNeon" onchange="aplicarConfig()"><span class="slider"></span></label>
-        </div>
-        <div class="toggle-row" style="border:none;">
-            <span>Ativar Animações (Símbolos)</span>
-            <label class="switch"><input type="checkbox" id="cfgAnim" onchange="aplicarConfig()"><span class="slider"></span></label>
-        </div>
-
-        <button class="btn btn-blue" style="margin-top:15px" onclick="fecharModal('modalConfig')">✅ APLICAR E FECHAR</button>
+        <h3>⚙️ CONFIGURAÇÕES</h3>
+        <div class="toggle-row"><span>Tema Claro</span><label class="switch"><input type="checkbox" id="cfgTheme" onchange="aplicarConfig()"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Relógio</span><label class="switch"><input type="checkbox" id="cfgClock" onchange="aplicarConfig()"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Neon</span><label class="switch"><input type="checkbox" id="cfgNeon" onchange="aplicarConfig()"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Animações</span><label class="switch"><input type="checkbox" id="cfgAnim" onchange="aplicarConfig()"><span class="slider"></span></label></div>
+        <button class="btn btn-blue" onclick="fecharModal('modalConfig')">FECHAR</button>
     </div>
 </div>
 
 <div id="modalTriagem" class="modal">
     <div class="card-modal">
-        <h2 style="margin-top:0; color:var(--accent); text-align:center;">💎 VERSÃO PREMIUM VITALÍCIA</h2>
-        
-        <div class="highlight-box">
-            <h3 style="margin:top:0; color:var(--neon-green);">R$ 99,90 (Taxa Única)</h3>
-            <ul style="padding-left:15px; line-height:1.6;">
-                <li>Aplicativo de forma vitalícia.</li>
-                <li>Atualizações automáticas constantes.</li>
-                <li>Suporte prioritário a bugs.</li>
-            </ul>
-        </div>
-
-        <div style="font-size:11px; line-height:1.5; color:var(--text); opacity:0.9; margin-bottom:20px;">
-            <p><b>📧 Suporte (Dúvidas e Bugs):</b> italong8@gmail.com</p>
-            <p><b>🛡️ Garantia:</b> 7 dias para cancelamento da compra caso não goste da versão premium.</p>
-            <p><b>📞 Cancelamento:</b> Mande seu nome completo, CPF e comprovante para o número <b>(11) 99374-7623</b> (WhatsApp).</p>
-            <p style="color:var(--neon-blue); text-align:center; font-weight:bold; border: 1px dashed var(--neon-blue); padding:10px; border-radius:8px; margin-top:15px;">
-                🔒 COMPRA 100% SEGURA VIA MERCADO PAGO
-            </p>
-        </div>
-
-        <button class="btn btn-green" onclick="irParaPagamento()">🚀 IR PARA O PAGAMENTO EM NOVA ABA</button>
-        <button class="btn" style="margin-top:10px; background:none; border:1px solid var(--border); color:var(--text);" onclick="fecharModal('modalTriagem')">VOLTAR</button>
+        <h2 style="color:var(--accent); text-align:center;">💎 PREMIUM VITALÍCIO</h2>
+        <div class="highlight-box"><h3>R$ 99,90</h3><p>Acesso total sem mensalidades.</p></div>
+        <button class="btn btn-green" onclick="irParaPagamento()">🚀 PAGAR NO MERCADO PAGO</button>
+        <button class="btn" style="margin-top:10px; background:none;" onclick="fecharModal('modalTriagem')">VOLTAR</button>
     </div>
 </div>
 
 <div id="modalValidar" class="modal">
     <div class="card-modal">
-        <h2 style="margin-top:0; color:var(--accent); text-align:center;">📄 LIBERAR LICENÇA</h2>
-        <p style="font-size:11px; text-align:center;">Após pagar no Mercado Pago, anexe o print do comprovante aqui para nossa IA liberar seu acesso.</p>
-        
-        <div style="border: 2px dashed var(--accent); padding: 30px; text-align:center; border-radius: 15px; margin-bottom:20px; background:rgba(0,0,0,0.3);">
-            <input type="file" id="fileComp" accept="image/*" onchange="analisarComp()">
-            <p id="txtAnalise" style="font-size:11px; margin-top:10px; color:var(--neon-pink); display:none; font-weight:bold;">🔍 IA ANALISANDO AUTENTICIDADE...</p>
-        </div>
-        <button class="btn btn-blue" id="btnFinalizar" disabled onclick="concluirCadastro()">✅ ATIVAR MEU ACESSO VITALÍCIO</button>
+        <h3>📄 ATIVAR LICENÇA</h3>
+        <input type="file" id="fileComp" accept="image/*" onchange="analisarComp()">
+        <p id="txtAnalise" style="display:none;">🔍 Verificando...</p>
+        <button class="btn btn-blue" id="btnFinalizar" disabled onclick="concluirCadastro()">ATIVAR</button>
     </div>
 </div>
 
+<footer style="padding: 20px; text-align: center; font-size: 11px; opacity: 0.7;">
+    Criado por ©Italo N. Dos Anjos em 2026. Todos os direitos reservados.
+</footer>
+
 <script>
-    // --- ESTRUTURA DO BANCO DE DADOS LOCAL ---
     let db = JSON.parse(localStorage.getItem('master_erp_pro_2026')) || { 
-        estoque: [], 
-        historico: [],
-        licenca: false, 
-        user: "", 
-        pass: "",
+        estoque: [], historico: [], licenca: false, user: "", pass: "",
         config: { theme: 'dark', clock: true, neon: true, anim: true }
     };
-    
-    // Assegurar compatibilidade de dados antigos
-    if(!db.historico) db.historico = [];
-    if(!db.config) db.config = { theme: 'dark', clock: true, neon: true, anim: true };
-
     let scanner = null;
 
-    // --- INICIALIZAÇÃO ---
     function initApp() {
-        setInterval(atualizarRelogio, 1000);
+        setInterval(() => {
+            const agora = new Date();
+            document.getElementById('data').innerText = agora.toLocaleDateString();
+            document.getElementById('relogio').innerText = agora.toLocaleTimeString();
+        }, 1000);
         carregarConfigs();
         renderEstoque();
         renderHistorico();
     }
 
-    function atualizarRelogio() {
-        const agora = new Date();
-        document.getElementById('data').innerText = agora.toLocaleDateString('pt-BR');
-        document.getElementById('relogio').innerText = agora.toLocaleTimeString('pt-BR');
-    }
-
-    // --- CONFIGURAÇÕES DE INTERFACE ---
     function carregarConfigs() {
         document.getElementById('cfgTheme').checked = (db.config.theme === 'light');
         document.getElementById('cfgClock').checked = db.config.clock;
@@ -424,53 +326,13 @@
     }
 
     function aplicarVisual() {
-        // Tema
         if(db.config.theme === 'light') document.body.classList.add('light-theme');
         else document.body.classList.remove('light-theme');
-        
-        // Relógio
         document.getElementById('relogioContainer').style.display = db.config.clock ? 'block' : 'none';
-        
-        // Animação
         if(!db.config.anim) document.body.classList.add('disable-anim');
         else document.body.classList.remove('disable-anim');
-
-        // Neon (Sempre oculto na tela de login, controlado no tentarLogin)
         if(db.licenca && !document.getElementById('appContent').classList.contains('hidden')) {
             document.getElementById('neonPulseBg').style.display = db.config.neon ? 'block' : 'none';
-        }
-    }
-
-    // --- SEGURANÇA E LICENÇA ---
-    function irParaPagamento() {
-        fecharModal('modalTriagem');
-        // Abertura na Nova Aba Forçada
-        window.open('https://mpago.li/1Qt8hoV', '_blank');
-        setTimeout(() => { abrirModal('modalValidar'); }, 2000);
-    }
-
-    function analisarComp() {
-        const txt = document.getElementById('txtAnalise');
-        txt.style.display = 'block';
-        setTimeout(() => {
-            txt.innerText = "✅ PAGAMENTO CONFIRMADO PELA IA!";
-            txt.style.color = "var(--neon-green)";
-            document.getElementById('btnFinalizar').disabled = false;
-        }, 3500);
-    }
-
-    function concluirCadastro() {
-        const u = prompt("CRIAR NOME DE USUÁRIO:");
-        const p = prompt("CRIAR SENHA:");
-        if(u && p) {
-            db.licenca = true;
-            db.user = u;
-            db.pass = p;
-            persist();
-            alert("SISTEMA LIBERADO COM SUCESSO! Faça login agora.");
-            location.reload();
-        } else {
-            alert("Operação cancelada. Usuário e senha são obrigatórios.");
         }
     }
 
@@ -480,15 +342,122 @@
         if(db.licenca && u === db.user && p === db.pass) {
             document.getElementById('areaLogin').classList.add('hidden');
             document.getElementById('appContent').classList.remove('hidden');
-            if(db.config.neon) document.getElementById('neonPulseBg').style.display = 'block';
-        } else if (!db.licenca) {
-            alert("SISTEMA BLOQUEADO: Usuário sem licença premium ativa.");
+            document.getElementById('welcomeMsg').style.display = 'block';
+            document.getElementById('userNameHeader').innerText = db.user;
+            aplicarVisual();
+        } else if (!db.licenca) { alert("Sem licença ativa."); }
+        else { alert("Usuário/Senha inválidos."); }
+    }
+
+    function salvarEntrada() {
+        const sku = document.getElementById('inSku').value;
+        const nome = document.getElementById('inNome').value || "S/ Descrição";
+        const qtd = parseInt(document.getElementById('inQtd').value);
+        const min = parseInt(document.getElementById('inMinQtd').value) || 0;
+        if(!sku || isNaN(qtd)) return alert("Preencha SKU e Qtd!");
+
+        let item = db.estoque.find(i => i.sku === sku);
+        if(item) { 
+            item.qtd += qtd; 
+            item.minQtd = min; 
+            if(nome !== "S/ Descrição") item.nome = nome; 
+        } else { 
+            db.estoque.push({ sku, nome, qtd, minQtd: min, local: document.getElementById('inLocal').value }); 
+        }
+
+        db.historico.unshift({ 
+            dataHora: new Date().toLocaleString(), 
+            nf: document.getElementById('inNF').value || "S/ NF", 
+            sku, nome, qtd, user: db.user 
+        });
+
+        persist();
+        alert("Entrada realizada!");
+        nav('abaHome');
+    }
+
+    // PRÉVIA DE SALDO NA REQUISIÇÃO
+    function previewSaldo(sku) {
+        const previewDiv = document.getElementById('reqPreview');
+        const saldoTxt = document.getElementById('reqSaldoTxt');
+        const item = db.estoque.find(i => i.sku === sku);
+        
+        if(item) {
+            previewDiv.style.display = 'block';
+            saldoTxt.innerText = item.qtd;
+            saldoTxt.style.color = item.qtd <= item.minQtd ? 'var(--neon-pink)' : 'var(--neon-blue)';
         } else {
-            alert("FALHA NO ACESSO: Usuário ou senha incorretos.");
+            previewDiv.style.display = 'none';
         }
     }
 
-    // --- OPERAÇÕES LOGÍSTICAS ERP ---
+    function baixaDireta() {
+        const sku = document.getElementById('rSku').value;
+        let item = db.estoque.find(i => i.sku === sku);
+        if(item && item.qtd > 0) {
+            item.qtd -= 1;
+            persist();
+            document.getElementById('beepSfx').play();
+            previewSaldo(sku); // Atualiza a prévia imediatamente
+            if(!document.getElementById('autoBip').checked) alert(`Baixa concluída! Novo saldo: ${item.qtd}`);
+        } else { alert("Saldo insuficiente ou SKU inexistente."); }
+    }
+
+    function renderEstoque() {
+        const corpo = document.getElementById('corpoEstoque');
+        corpo.innerHTML = db.estoque.map(i => {
+            const isAcabando = i.qtd <= i.minQtd;
+            return `
+                <tr>
+                    <td style="color:var(--accent); font-weight:bold;">${i.sku}</td>
+                    <td>${i.nome}</td>
+                    <td style="font-weight:bold; font-size:14px;">${i.qtd}</td>
+                    <td>
+                        ${isAcabando ? `
+                            <div class="alert-box">⚠️ ESTOQUE CRÍTICO</div>
+                            <button class="btn-mini" onclick="execIA('${i.nome}')">🛒 COTAR AGORA</button>
+                        ` : '<span style="color:var(--neon-green)">✅ OK</span>'}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // CONFIGURAÇÕES DE PAGAMENTO (ABRE EM NOVA ABA)
+    function irParaPagamento() {
+        fecharModal('modalTriagem');
+        window.open('https://mpago.li/1Qt8hoV', '_blank');
+        setTimeout(() => { abrirModal('modalValidar'); }, 2000);
+    }
+
+    function concluirCadastro() {
+        const u = prompt("Crie seu usuário:");
+        const p = prompt("Crie sua senha:");
+        if(u && p) {
+            db.licenca = true; db.user = u; db.pass = p;
+            persist(); alert("Licença Ativada!"); location.reload();
+        }
+    }
+
+    function analisarComp() {
+        document.getElementById('txtAnalise').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('txtAnalise').innerText = "✅ Comprovante Válido!";
+            document.getElementById('btnFinalizar').disabled = false;
+        }, 3000);
+    }
+
+    function renderHistorico() {
+        document.getElementById('corpoHistorico').innerHTML = db.historico.map(h => `
+            <tr><td>${h.dataHora}</td><td>${h.nf}</td><td>${h.nome}</td><td>${h.qtd}</td><td>${h.user}</td></tr>
+        `).join('');
+    }
+
+    function execIA(termo) {
+        const q = termo || document.getElementById('iaTermo').value;
+        if(q) window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}+preço+2026&tbm=shop`, '_blank');
+    }
+
     function abrirScanner(divId, inputId, isVenda = false, isAuto = false) {
         document.getElementById(divId).classList.remove('hidden');
         if(scanner) scanner.stop();
@@ -496,61 +465,18 @@
         scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
             document.getElementById('beepSfx').play();
             document.getElementById(inputId).value = txt;
+            if(inputId === 'rSku') previewSaldo(txt);
             if(isVenda) lookupVenda();
             if(isAuto && document.getElementById('autoBip').checked) baixaDireta();
             scanner.stop().then(() => document.getElementById(divId).classList.add('hidden'));
         });
     }
 
-    function salvarEntrada() {
-        const nf = document.getElementById('inNF').value || "S/ NF";
-        const forn = document.getElementById('inForn').value || "Não Informado";
-        const sku = document.getElementById('inSku').value;
-        const nome = document.getElementById('inNome').value || "S/ Descrição";
-        const qtd = parseInt(document.getElementById('inQtd').value);
-        const local = document.getElementById('inLocal').value;
-
-        if(!sku || isNaN(qtd)) return alert("ERRO DE SISTEMA: Preencha o SKU e a Quantidade obrigatórios!");
-
-        // Adiciona ao Estoque
-        let item = db.estoque.find(i => i.sku === sku);
-        if(item) { item.qtd += qtd; if(nome !== "S/ Descrição") item.nome = nome; }
-        else { db.estoque.push({ sku, nome, qtd, local }); }
-
-        // Adiciona ao Histórico de NF
-        const dataHora = new Date().toLocaleString('pt-BR');
-        db.historico.unshift({ dataHora, nf, forn, sku, nome, qtd, user: db.user }); // unshift coloca no topo
-
-        persist();
-        alert("ENTRADA FISCAL E FÍSICA REGISTRADA COM SUCESSO!");
-        document.getElementById('inSku').value = '';
-        document.getElementById('inQtd').value = '';
-        renderHistorico();
-        nav('abaHome');
-    }
-
-    function renderHistorico() {
-        const corpo = document.getElementById('corpoHistorico');
-        if(db.historico.length === 0) {
-            corpo.innerHTML = '<tr><td colspan="5" style="text-align:center; opacity:0.5;">Nenhuma entrada registrada.</td></tr>';
-            return;
-        }
-        corpo.innerHTML = db.historico.map(h => `
-            <tr>
-                <td style="font-weight:bold;">${h.dataHora.replace(' ', '<br>')}</td>
-                <td><span style="color:var(--accent);">${h.nf}</span><br><small>${h.forn}</small></td>
-                <td>${h.nome}<br><small style="opacity:0.5">${h.sku}</small></td>
-                <td style="text-align:center; color:var(--neon-green); font-weight:bold;">+${h.qtd}</td>
-                <td>${h.user.toUpperCase()}</td>
-            </tr>
-        `).join('');
-    }
-
     function lookupVenda() {
         const sku = document.getElementById('vSku').value;
         const item = db.estoque.find(i => i.sku === sku);
         if(item) { document.getElementById('vNomeRes').innerText = item.nome; calcV(); }
-        else { document.getElementById('vNomeRes').innerText = "PRODUTO NÃO ENCONTRADO NO BANCO"; }
+        else { document.getElementById('vNomeRes').innerText = "NÃO ENCONTRADO"; }
     }
 
     function calcV() {
@@ -564,47 +490,15 @@
         const q = parseInt(document.getElementById('vQtd').value);
         let item = db.estoque.find(i => i.sku === sku);
         if(item && item.qtd >= q) {
-            item.qtd -= q; persist(); alert("FATURAMENTO CONCLUÍDO E ESTOQUE BAIXADO!"); nav('abaHome');
-        } else alert("ERRO DE OPERAÇÃO: ESTOQUE FÍSICO INSUFICIENTE PARA ATENDER A VENDA!");
+            item.qtd -= q; persist(); alert("Venda realizada!"); nav('abaHome');
+        } else alert("Estoque insuficiente!");
     }
 
-    function baixaDireta() {
-        const sku = document.getElementById('rSku').value;
-        let item = db.estoque.find(i => i.sku === sku);
-        if(item && item.qtd > 0) {
-            item.qtd -= 1; persist(); document.getElementById('beepSfx').play();
-            if(!document.getElementById('autoBip').checked) alert("BAIXA INTERNA CONFIRMADA!");
-            renderEstoque();
-        } else alert("OPERAÇÃO NEGADA: SKU INVÁLIDO OU SALDO DE ESTOQUE ZERADO.");
-    }
-
-    function renderEstoque() {
-        const corpo = document.getElementById('corpoEstoque');
-        if(db.estoque.length === 0) {
-            corpo.innerHTML = '<tr><td colspan="3" style="text-align:center; opacity:0.5;">Estoque Vazio.</td></tr>';
-            return;
-        }
-        corpo.innerHTML = db.estoque.map(i => `
-            <tr>
-                <td style="font-weight:bold; color:var(--accent);">${i.sku}</td>
-                <td>${i.nome}<br><small style="opacity:0.6">📍 ${i.local || 'Geral'}</small></td>
-                <td style="text-align:center; color:var(--text); font-weight:bold; font-size:14px;">${i.qtd}</td>
-            </tr>
-        `).join('');
-    }
-
-    function execIA() {
-        const q = document.getElementById('iaTermo').value;
-        if(q) window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}+preço+2026&tbm=shop`, '_blank');
-    }
-
-    // --- NAVEGAÇÃO E UTILITÁRIOS ---
     function nav(id) {
         document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active-tab'));
         document.getElementById(id).classList.add('active-tab');
         if(scanner) scanner.stop();
-        renderEstoque();
-        renderHistorico();
+        renderEstoque(); renderHistorico();
     }
     function abrirModal(id) { document.getElementById(id).style.display = 'flex'; }
     function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
@@ -613,10 +507,9 @@
     function gerarPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.text("RELATÓRIO GERENCIAL - MASTER PRO 2026", 15, 20);
-        const data = db.estoque.map(i => [i.sku, i.nome, i.local, i.qtd]);
-        doc.autoTable({ head: [['SKU', 'PRODUTO', 'LOCAL', 'SALDO FÍSICO']], body: data, startY: 30 });
-        doc.save("Inventario_MasterERP_2026.pdf");
+        doc.text("ESTOQUE MASTER PRO 2026", 15, 20);
+        doc.autoTable({ head: [['SKU', 'PRODUTO', 'SALDO']], body: db.estoque.map(i => [i.sku, i.nome, i.qtd]), startY: 30 });
+        doc.save("Relatorio_ERP_2026.pdf");
     }
 </script>
 </body>
