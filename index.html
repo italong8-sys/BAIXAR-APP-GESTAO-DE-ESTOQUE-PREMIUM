@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ERP Master">
-    
-    <title>ERP MASTER PRO - MOBILE VERSION</title>
+    <title>ERP MASTER PRO 2026</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -17,462 +15,487 @@
         :root {
             --bg: #020617; --card: #0f172a; --accent: #38bdf8;
             --text: #f1f5f9; --neon-pink: #f472b6; --neon-green: #22c55e;
-            --border: rgba(255,255,255,0.1);
+            --border: rgba(255,255,255,0.1); --glass: rgba(15, 23, 42, 0.8);
         }
 
         .light-theme {
-            --bg: #f1f5f9; --card: #ffffff; --accent: #0284c7;
-            --text: #0f172a; --border: rgba(0,0,0,0.1);
+            --bg: #f8fafc; --card: #ffffff; --accent: #0284c7;
+            --text: #0f172a; --border: rgba(0,0,0,0.1); --glass: rgba(255, 255, 255, 0.9);
         }
 
-        /* Animação de Piscar */
-        @keyframes blinker { 50% { opacity: 0.3; transform: scale(1.1); } }
-        .blink-icon { animation: blinker 1.5s linear infinite; display: inline-block; margin-right: 5px; }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; background: var(--bg); color: var(--text); 
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
             min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
+            transition: all 0.3s ease;
         }
 
-        /* Header Estilo iOS */
+        @keyframes blinker { 50% { opacity: 0.2; transform: scale(1.1); } }
+        .blink-icon { animation: blinker 1.8s ease-in-out infinite; display: inline-block; }
+
+        /* HEADER */
         header { 
-            padding: 15px; background: rgba(0,0,0,0.85); border-bottom: 1px solid var(--accent);
-            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(20px);
+            padding: 15px 20px; background: var(--glass); border-bottom: 1px solid var(--accent);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(15px);
             padding-top: env(safe-area-inset-top);
         }
 
-        .welcome-badge { font-size: 10px; background: var(--accent); color: #000; padding: 2px 8px; border-radius: 10px; font-weight: bold; text-transform: uppercase; }
+        .header-left h1 { margin: 0; font-size: 16px; letter-spacing: 1px; font-weight: 900; color: var(--accent); }
+        .greeting { font-size: 10px; opacity: 0.8; }
 
-        /* Grid App */
+        .btn-config { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--accent); transition: transform 0.3s; }
+        .btn-config:active { transform: rotate(90deg); }
+
+        /* GRID MENU */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
         .menu-item { 
             background: var(--card); padding: 20px 10px; border-radius: 20px; border: 1px solid var(--border);
             display: flex; flex-direction: column; align-items: center; text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.2s;
         }
-        .menu-item:active { transform: scale(0.95); background: rgba(56, 189, 248, 0.1); }
+        .menu-item:active { transform: scale(0.95); background: var(--accent); color: #000; }
         .menu-item i { font-size: 28px; margin-bottom: 10px; }
-        .menu-item b { font-size: 12px; color: var(--accent); text-transform: uppercase; }
-        .menu-item span { font-size: 9px; opacity: 0.6; margin-top: 4px; line-height: 1.2; }
+        .menu-item b { font-size: 11px; text-transform: uppercase; }
 
-        /* Formulários Móveis */
-        .app-card { background: var(--card); margin: 12px; padding: 20px; border-radius: 25px; border: 1px solid var(--border); }
-        label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--accent); }
+        /* COMPONENTES */
+        .app-card { background: var(--card); margin: 12px; padding: 20px; border-radius: 25px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        label { display: block; font-size: 10px; font-weight: 800; margin-bottom: 5px; color: var(--accent); text-transform: uppercase; }
         input, select, textarea { 
-            width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); 
-            background: rgba(0,0,0,0.2); color: var(--text); font-size: 15px; margin-bottom: 15px; outline: none;
+            width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); 
+            background: rgba(0,0,0,0.1); color: var(--text); font-size: 14px; margin-bottom: 12px; outline: none;
         }
         
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 15px; font-weight: 800; font-size: 13px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 15px; font-weight: 800; font-size: 12px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-blue { background: var(--accent); color: #000; }
         .btn-green { background: var(--neon-green); color: #000; }
         .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 
-        .tab-content { display: none; animation: fadeIn 0.3s ease; padding-bottom: 100px; }
+        .tab-content { display: none; animation: slideUp 0.3s ease; padding-bottom: 80px; }
         .active-tab { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Modais */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; padding: 20px; align-items: center; justify-content: center; overflow-y: auto; }
-        .modal-body { background: var(--card); padding: 25px; border-radius: 30px; border: 1px solid var(--accent); width: 100%; max-width: 400px; }
+        /* CALCULADORA */
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .calc-btn { padding: 15px; border-radius: 10px; border: none; background: #334155; color: white; font-weight: bold; font-size: 18px; }
+        .calc-btn.op { background: var(--accent); color: #000; }
+        .calc-display { grid-column: span 4; background: #000; color: var(--neon-green); padding: 20px; border-radius: 10px; text-align: right; font-size: 24px; font-family: monospace; margin-bottom: 10px; }
 
-        /* Badge Segurança */
-        .secure-badge { background: #e0f2fe; color: #0369a1; padding: 10px; border-radius: 10px; display: flex; align-items: center; gap: 10px; font-size: 11px; margin: 15px 0; }
-        
-        footer { padding: 30px; text-align: center; font-size: 10px; opacity: 0.5; font-weight: bold; }
+        /* CONFIG MODAL */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: var(--card); width: 100%; max-width: 350px; padding: 25px; border-radius: 30px; border: 1px solid var(--accent); }
+
+        /* TOGGLES */
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
+        .switch { position: relative; width: 40px; height: 20px; appearance: none; background: #334155; border-radius: 20px; outline: none; cursor: pointer; transition: 0.3s; }
+        .switch:checked { background: var(--accent); }
+        .switch::before { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; top: 2px; left: 2px; background: #fff; transition: 0.3s; }
+        .switch:checked::before { left: 22px; }
+
         .hidden { display: none !important; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th { text-align: left; color: var(--accent); padding: 10px; border-bottom: 1px solid var(--accent); }
+        td { padding: 10px; border-bottom: 1px solid var(--border); }
     </style>
 </head>
-<body onload="initSystem()">
+<body onload="init()">
 
-<audio id="beep" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+<audio id="audioBeep" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+<audio id="audioBg" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"></audio>
 
 <header>
-    <div style="display: flex; flex-direction: column;">
-        <span style="font-weight: 900; font-size: 14px; letter-spacing: 1px;">ERP MASTER 2026</span>
-        <div id="userTag" class="welcome-badge hidden">Bem vindo, <span id="curUser">...</span></div>
+    <div class="header-left">
+        <div class="greeting">Seja Bem Vindo(a),</div>
+        <h1 id="userDisplay">USUÁRIO GUEST</h1>
     </div>
-    <div id="clockBox" style="text-align: right;">
-        <div id="hTime" style="font-size: 16px; font-weight: bold; color: var(--neon-green); font-family: monospace;">00:00</div>
-        <div id="hDate" style="font-size: 9px; opacity: 0.6;">00/00/2026</div>
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <div style="text-align: right; line-height: 1;">
+            <div id="clock" style="font-size: 14px; font-weight: 900; color: var(--neon-green);">00:00:00</div>
+            <div id="date" style="font-size: 9px; opacity: 0.6;">01/01/2026</div>
+        </div>
+        <button class="btn-config" onclick="toggleModal('modalConfig', true)">⚙️</button>
     </div>
 </header>
 
-<div id="authArea" style="flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 20px;">
-    <div class="modal-body" id="loginForm">
-        <h2 style="text-align: center; margin-bottom: 5px;">Acesso ao App</h2>
-        <p style="text-align: center; font-size: 11px; opacity: 0.6; margin-bottom: 20px;">Insira suas credenciais para continuar</p>
-        <label>Usuário</label>
-        <input type="text" id="lUser">
-        <label>Senha</label>
-        <input type="password" id="lPass">
-        <button class="btn btn-blue" onclick="handleLogin()">ENTRAR NO SISTEMA</button>
-        <p style="text-align: center; font-size: 12px; margin-top: 20px;">Não tem conta? <a href="javascript:void(0)" onclick="toggleAuth(true)" style="color:var(--accent)">Cadastre-se aqui</a></p>
+<div id="authScreen" style="flex:1; display:flex; align-items:center; justify-content:center; padding:20px;">
+    <div class="app-card" id="loginBox" style="width:100%; max-width:400px;">
+        <h2 style="text-align:center;">🗝️ ACESSO PRIVADO</h2>
+        <label>Login</label><input type="text" id="lUser">
+        <label>Senha</label><input type="password" id="lPass">
+        <button class="btn btn-blue" onclick="doLogin()">ACESSAR SISTEMA</button>
+        <button class="btn btn-outline" style="margin-top:10px;" onclick="toggleLogin(false)">NOVO CADASTRO PREMIUM</button>
     </div>
 
-    <div class="modal-body hidden" id="registerForm">
-        <h2 style="text-align: center; margin-bottom: 5px;">Novo Cadastro</h2>
-        <div style="max-height: 60vh; overflow-y: auto; padding-right: 5px;">
+    <div class="app-card hidden" id="registerBox" style="width:100%; max-width:400px;">
+        <h2 style="text-align:center;">💎 REGISTRO PREMIUM</h2>
+        <div style="max-height: 50vh; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;">
             <label>Nome Completo</label><input type="text" id="rNome">
-            <label>CPF</label><input type="number" id="rCpf">
-            <label>E-mail de Suporte</label><input type="email" id="rEmail">
-            <label>Usuário de Acesso</label><input type="text" id="rUser">
+            <label>CPF</label><input type="text" id="rCpf">
+            <label>Usuário</label><input type="text" id="rUser">
             <label>Senha</label><input type="password" id="rPass">
             
-            <div style="background: rgba(56, 189, 248, 0.1); padding: 15px; border-radius: 15px; font-size: 11px; border: 1px solid var(--accent); margin-bottom: 15px;">
-                <b style="color: var(--accent); display: block; margin-bottom: 5px;">⭐ INFORMAÇÕES PREMIUM:</b>
-                • Valor Único: <b>R$ 99,90</b> (Vitalício).<br>
+            <div style="background:rgba(56, 189, 248, 0.1); padding:15px; border-radius:15px; font-size:11px; border:1px solid var(--accent);">
+                <b style="color:var(--accent);">TERMOS PREMIUM:</b><br><br>
+                • Valor: <b>R$ 99,90</b> (Pagamento Único/Vitalício).<br>
                 • Suporte: <b>italong8@gmail.com</b><br>
-                • Garantia: <b>7 dias para cancelamento</b>.<br>
-                • Para cancelar: Envie Nome, CPF e Comprovante para <b>(11) 99374-7623</b> (WhatsApp).
-            </div>
-
-            <div class="secure-badge">
-                <span style="font-size: 20px;">🛡️</span>
-                <span>Compra 100% segura processada pelo <b>Mercado Pago</b>. Seus dados estão criptografados.</span>
+                • Cancelamento: <b>7 dias</b> garantidos.<br>
+                • Envie Nome/CPF/Comprovante para <b>(11) 99374-7623</b> (WhatsApp) para estorno.<br><br>
+                <center><b>✅ COMPRA 100% SEGURA VIA MERCADO PAGO</b></center>
             </div>
         </div>
-        <button class="btn btn-green" onclick="handleRegister()">PAGAR E ATIVAR CONTA</button>
-        <button class="btn btn-outline" style="margin-top: 10px;" onclick="toggleAuth(false)">VOLTAR</button>
+        <button class="btn btn-green" onclick="goPay()">PAGAR E ATIVAR AGORA</button>
+        <button class="btn btn-outline" style="margin-top:10px;" onclick="toggleLogin(true)">VOLTAR</button>
     </div>
 </div>
 
-<main id="appBody" class="hidden">
+<main id="mainApp" class="hidden">
     <div id="tabHome" class="tab-content active-tab">
         <div class="menu-grid">
-            <div class="menu-item" onclick="nav('tabEntrada')">
-                <i class="blink-icon">📥</i><b>Entrada NF</b><span>Gerencie novas cargas e estoque inicial.</span>
-            </div>
-            <div class="menu-item" onclick="nav('tabHistorico')">
-                <i class="blink-icon">🧾</i><b>Histórico</b><span>Auditoria completa de todas as movimentações.</span>
-            </div>
-            <div class="menu-item" onclick="nav('tabVenda')">
-                <i class="blink-icon">💰</i><b>PDV Móvel</b><span>Faturamento rápido direto no balcão.</span>
-            </div>
-            <div class="menu-item" onclick="nav('tabRequisicao')">
-                <i class="blink-icon">📝</i><b>Requisição</b><span>Baixa de insumos e materiais internos.</span>
-            </div>
-            <div class="menu-item" onclick="nav('tabEstoque')">
-                <i class="blink-icon">📦</i><b>Inventário</b><span>Saldo atual e alertas de reposição.</span>
-            </div>
-            <div class="menu-item" onclick="nav('tabIA')">
-                <i class="blink-icon">🤖</i><b>IA Cotação</b><span>Busca automática de preços no Google.</span>
-            </div>
+            <div class="menu-item" onclick="nav('tabEntrada')"><i class="blink-icon">📥</i><b>Entrada NF</b></div>
+            <div class="menu-item" onclick="nav('tabRequisicao')"><i class="blink-icon">📝</i><b>Requisição</b></div>
+            <div class="menu-item" onclick="nav('tabVenda')"><i class="blink-icon">💰</i><b>PDV Vendas</b></div>
+            <div class="menu-item" onclick="nav('tabEstoque')"><i class="blink-icon">📦</i><b>Estoque</b></div>
+            <div class="menu-item" onclick="nav('tabCalc')"><i class="blink-icon">🧮</i><b>Calculadora</b></div>
+            <div class="menu-item" onclick="nav('tabHist')"><i class="blink-icon">🧾</i><b>Auditoria</b></div>
         </div>
         <div style="padding: 0 15px;">
-            <button class="btn btn-blue" onclick="gerarPDF()">📊 EXPORTAR RELATÓRIO PDF</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="logout()">🚪 SAIR DO APP</button>
+            <button class="btn btn-blue" onclick="exportPDF()">📊 EXPORTAR ESTOQUE PDF</button>
+            <button class="btn btn-outline" style="margin-top:10px;" onclick="location.reload()">🚪 ENCERRAR SESSÃO</button>
         </div>
     </div>
 
     <div id="tabEntrada" class="tab-content">
         <div class="app-card">
-            <h3>📥 NOVA ENTRADA</h3>
-            <label>Nota Fiscal</label><input type="text" id="inNF">
+            <h3>📥 ENTRADA DE NOTA FISCAL</h3>
+            <label>Nº Nota Fiscal</label><input type="text" id="inNF">
             <label>Fornecedor</label><input type="text" id="inForn">
-            <label>SKU / Código</label>
-            <div id="scanEntrada" class="hidden" style="margin-bottom: 10px; border-radius: 15px; overflow: hidden;"></div>
-            <button class="btn btn-outline" style="margin-bottom: 15px;" onclick="startScan('scanEntrada', 'inSku')">📷 BIPAR SKU</button>
-            <input type="text" id="inSku">
-            <label>Descrição do Material</label><input type="text" id="inNome">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div id="scanIn" class="hidden" style="border-radius:15px; overflow:hidden; margin-bottom:10px;"></div>
+            <button class="btn btn-outline" onclick="startScanner('scanIn', 'inSku')">📷 BIPAR CÓDIGO BARRAS</button>
+            <label style="margin-top:15px;">SKU / Código</label><input type="text" id="inSku">
+            <label>Descrição do Item</label><input type="text" id="inNome">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
                 <div><label>Qtd</label><input type="number" id="inQtd"></div>
                 <div><label>Mínimo</label><input type="number" id="inMin"></div>
             </div>
-            <button class="btn btn-green" onclick="salvarEntrada()">CONFIRMAR ENTRADA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">CANCELAR</button>
+            <button class="btn btn-green" onclick="saveIn()">EFETIVAR ENTRADA</button>
+            <button class="btn btn-outline" style="margin-top:10px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
     </div>
 
     <div id="tabRequisicao" class="tab-content">
         <div class="app-card">
-            <h3>📝 BAIXA DE MATERIAL</h3>
-            <label>Produto (Bipar ou Digitar)</label>
-            <div id="scanReq" class="hidden" style="margin-bottom: 10px; border-radius: 15px; overflow: hidden;"></div>
-            <button class="btn btn-outline" style="margin-bottom: 15px;" onclick="startScan('scanReq', 'rSku')">📷 SCANNER</button>
-            <input type="text" id="rSku" oninput="showStockPreview(this.value)">
+            <h3>📝 REQUISIÇÃO DE MATERIAIS</h3>
+            <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:10px;">
+                <div><label>Nome do Funcionário</label><input type="text" id="reqFunc"></div>
+                <div><label>Matrícula</label><input type="text" id="reqMatr"></div>
+            </div>
             
-            <div id="stockPreview" class="hidden" style="background: rgba(56, 189, 248, 0.1); padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 15px;">
-                <span style="font-size: 10px; opacity: 0.7;">SALDO EM ESTOQUE:</span><br>
-                <b id="pQty" style="font-size: 24px; color: var(--accent);">0</b>
+            <label>Item (Bipe para identificar)</label>
+            <div id="scanReq" class="hidden" style="border-radius:15px; overflow:hidden; margin-bottom:10px;"></div>
+            <button class="btn btn-outline" onclick="startScanner('scanReq', 'reqSku')">📷 BIPAR MATERIAL</button>
+            
+            <input type="text" id="reqSku" placeholder="SKU" oninput="syncItem(this.value, 'reqNome', 'reqSaldo')">
+            <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:15px; margin-bottom:15px; border:1px dashed var(--accent);">
+                <div style="font-size:11px; opacity:0.7;">MATERIAL IDENTIFICADO:</div>
+                <b id="reqNome" style="color:var(--accent); font-size:14px;">---</b><br>
+                <div style="font-size:11px; opacity:0.7; margin-top:5px;">SALDO ATUAL: <span id="reqSaldo" style="font-weight:bold; color:var(--neon-green);">0</span></div>
             </div>
 
-            <label>Motivo/Setor</label>
-            <textarea id="rMotivo" rows="2"></textarea>
-            <button class="btn btn-blue" onclick="execBaixa()">DAR BAIXA (1 UNID)</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
+            <label>Quantidade a Retirar</label>
+            <input type="number" id="reqQtd" value="1">
+            
+            <button class="btn btn-blue" onclick="processReq()">PROCESSAR BAIXA</button>
+            <button class="btn btn-outline" style="margin-top:10px;" onclick="nav('tabHome')">CANCELAR</button>
+        </div>
+    </div>
+
+    <div id="tabCalc" class="tab-content">
+        <div class="app-card">
+            <h3>🧮 CALCULADORA INTEGRADA</h3>
+            <div class="calc-display" id="calcDisp">0</div>
+            <div class="calc-grid">
+                <button class="calc-btn" onclick="calcClear()">C</button>
+                <button class="calc-btn op" onclick="calcOp('/')">/</button>
+                <button class="calc-btn op" onclick="calcOp('*')">×</button>
+                <button class="calc-btn op" onclick="calcBack()"><</button>
+                
+                <button class="calc-btn" onclick="calcNum('7')">7</button>
+                <button class="calc-btn" onclick="calcNum('8')">8</button>
+                <button class="calc-btn" onclick="calcNum('9')">9</button>
+                <button class="calc-btn op" onclick="calcOp('-')">-</button>
+                
+                <button class="calc-btn" onclick="calcNum('4')">4</button>
+                <button class="calc-btn" onclick="calcNum('5')">5</button>
+                <button class="calc-btn" onclick="calcNum('6')">6</button>
+                <button class="calc-btn op" onclick="calcOp('+')">+</button>
+                
+                <button class="calc-btn" onclick="calcNum('1')">1</button>
+                <button class="calc-btn" onclick="calcNum('2')">2</button>
+                <button class="calc-btn" onclick="calcNum('3')">3</button>
+                <button class="calc-btn op" style="grid-row: span 2; background:var(--neon-green);" onclick="calcExec()">=</button>
+                
+                <button class="calc-btn" style="grid-column: span 2;" onclick="calcNum('0')">0</button>
+                <button class="calc-btn" onclick="calcNum('.')">.</button>
+            </div>
+            <button class="btn btn-outline" style="margin-top:20px;" onclick="nav('tabHome')">FECHAR</button>
         </div>
     </div>
 
     <div id="tabEstoque" class="tab-content">
-        <div class="app-card" style="padding: 10px;">
-            <h3 style="padding-left: 10px;">📦 INVENTÁRIO ATUAL</h3>
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
-                    <thead style="background: var(--accent); color: #000;">
-                        <tr><th style="padding: 8px;">SKU</th><th style="padding: 8px;">PRODUTO</th><th style="padding: 8px;">SALDO</th><th style="padding: 8px;">STATUS</th></tr>
-                    </thead>
-                    <tbody id="listaEstoque"></tbody>
+        <div class="app-card">
+            <h3>📦 STATUS DE INVENTÁRIO</h3>
+            <div style="overflow-x:auto;">
+                <table id="tblEstoque">
+                    <thead><tr><th>SKU</th><th>NOME</th><th>QTD</th><th>STATUS</th></tr></thead>
+                    <tbody></tbody>
                 </table>
             </div>
-            <button class="btn btn-outline" style="margin-top: 20px;" onclick="nav('tabHome')">VOLTAR AO MENU</button>
+            <button class="btn btn-outline" style="margin-top:10px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
     </div>
 
     <div id="tabVenda" class="tab-content">
         <div class="app-card">
-            <h3>💰 PDV RÁPIDO</h3>
-            <input type="text" id="vSku" placeholder="Bipar SKU" onchange="vendaLookup()">
-            <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:15px; margin-bottom:15px;">
-                <b id="vProdNome" style="color:var(--accent);">Aguardando...</b>
-                <div style="display:flex; gap:10px; margin-top:10px;">
-                    <input type="number" id="vPreco" placeholder="R$ Unit" oninput="vCalc()">
-                    <input type="number" id="vQtd" value="1" oninput="vCalc()">
-                </div>
-                <h2 style="text-align:right; color:var(--neon-green); margin:0;">TOTAL: R$ <span id="vTotal">0.00</span></h2>
+            <h3>💰 PDV MÓVEL</h3>
+            <div id="scanSale" class="hidden"></div>
+            <button class="btn btn-outline" onclick="startScanner('scanSale', 'vSku')">📷 BIPAR ITEM</button>
+            <input type="text" id="vSku" style="margin-top:10px;" oninput="syncItem(this.value, 'vNome', 'vSaldo')">
+            <div style="background:rgba(0,0,0,0.1); padding:10px; border-radius:10px; margin-bottom:10px;">
+                <b id="vNome">---</b> | Saldo: <b id="vSaldo">0</b>
             </div>
-            <button class="btn btn-green" onclick="finalizarVenda()">FINALIZAR VENDA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <input type="number" id="vPrice" placeholder="Preço R$">
+                <input type="number" id="vQtd" value="1">
+            </div>
+            <button class="btn btn-green" onclick="processSale()">FINALIZAR VENDA</button>
+            <button class="btn btn-outline" style="margin-top:10px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
     </div>
 
-    <div id="tabHistorico" class="tab-content">
+    <div id="tabHist" class="tab-content">
         <div class="app-card">
-            <h3>🧾 HISTÓRICO DE ENTRADAS</h3>
-            <div id="histLista" style="font-size: 10px;"></div>
-            <button class="btn btn-outline" style="margin-top: 20px;" onclick="nav('tabHome')">VOLTAR</button>
-        </div>
-    </div>
-
-    <div id="tabIA" class="tab-content">
-        <div class="app-card">
-            <h3>🤖 COTAÇÃO IA</h3>
-            <input type="text" id="iaTermo" placeholder="Nome do produto">
-            <button class="btn btn-blue" onclick="cotarIA()">PESQUISAR NO GOOGLE 2026</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
+            <h3>🧾 AUDITORIA DE MOVIMENTAÇÃO</h3>
+            <div id="histContent" style="font-size:10px;"></div>
+            <button class="btn btn-outline" style="margin-top:10px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
     </div>
 </main>
 
-<footer>
-    Criado por ©Italo N. Dos Anjos em 2026.<br>Todos os direitos reservados.
-</footer>
-
-<div id="payModal" class="modal-overlay">
-    <div class="modal-body" style="text-align: center;">
-        <h1 style="font-size: 40px;">💳</h1>
-        <h2>Aguardando Pagamento</h2>
-        <p style="font-size: 13px;">Estamos processando sua licença vitalícia de <b>R$ 99,90</b> no Mercado Pago.</p>
-        <div style="margin: 20px 0; border: 2px dashed var(--accent); padding: 15px;">
-            <p style="font-size: 10px;">Após o pagamento, anexe o comprovante abaixo:</p>
-            <input type="file" id="payFile" onchange="validarPay()">
+<div class="modal" id="modalConfig">
+    <div class="modal-content">
+        <h3 style="margin-top:0; text-align:center;">CONFIGURAÇÕES</h3>
+        <div class="setting-row">
+            <span>🌙 Modo Escuro / Claro</span>
+            <input type="checkbox" class="switch" id="cfgTheme" onchange="applyCfg()">
         </div>
-        <button class="btn btn-blue" id="btnAtivar" disabled onclick="ativarContaFinal()">CONCLUIR ATIVAÇÃO</button>
+        <div class="setting-row">
+            <span>🎵 Música Ambiente</span>
+            <input type="checkbox" class="switch" id="cfgMusic" onchange="applyCfg()">
+        </div>
+        <div class="setting-row">
+            <span>🔊 Bip de Confirmação</span>
+            <input type="checkbox" class="switch" id="cfgBeep" checked onchange="applyCfg()">
+        </div>
+        <button class="btn btn-blue" style="margin-top:20px;" onclick="toggleModal('modalConfig', false)">SALVAR</button>
     </div>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('erp_master_2026_pro')) || {
-        users: [], current: null, estoque: [], historico: []
+    let db = JSON.parse(localStorage.getItem('erp_pro_final_2026')) || {
+        users: [], current: null, estoque: [], logs: [], config: { dark: true, music: false, beep: true }
     };
     let scanner = null;
 
-    function initSystem() {
-        setInterval(() => {
-            const n = new Date();
-            document.getElementById('hTime').innerText = n.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-            document.getElementById('hDate').innerText = n.toLocaleDateString('pt-BR');
-        }, 1000);
+    function init() {
+        updateClock();
+        setInterval(updateClock, 1000);
         if(db.current) showDashboard();
+        applyCfg(true);
     }
 
-    // --- AUTH LOGIC ---
-    function toggleAuth(isReg) {
-        document.getElementById('loginForm').classList.toggle('hidden', isReg);
-        document.getElementById('registerForm').classList.toggle('hidden', !isReg);
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString('pt-BR');
+        document.getElementById('date').innerText = now.toLocaleDateString('pt-BR');
     }
 
-    function handleRegister() {
-        const u = document.getElementById('rUser').value;
-        const p = document.getElementById('rPass').value;
-        const n = document.getElementById('rNome').value;
-        if(!u || !p || !n) return alert("Preencha todos os campos!");
-        
-        window.open('https://mpago.li/1Qt8hoV', '_blank'); // Abre link real de pagamento
-        document.getElementById('payModal').style.display = 'flex';
+    // --- SISTEMA DE AUDIO & CONFIG ---
+    function applyCfg(isInit = false) {
+        if(!isInit) {
+            db.config.dark = document.getElementById('cfgTheme').checked;
+            db.config.music = document.getElementById('cfgMusic').checked;
+            db.config.beep = document.getElementById('cfgBeep').checked;
+            persist();
+        } else {
+            document.getElementById('cfgTheme').checked = db.config.dark;
+            document.getElementById('cfgMusic').checked = db.config.music;
+            document.getElementById('cfgBeep').checked = db.config.beep;
+        }
+
+        document.body.classList.toggle('light-theme', !db.config.dark);
+        const bgMusic = document.getElementById('audioBg');
+        db.config.music ? bgMusic.play() : bgMusic.pause();
     }
 
-    function validarPay() {
-        alert("Comprovante recebido! A IA está validando...");
-        setTimeout(() => {
-            document.getElementById('btnAtivar').disabled = false;
-            document.getElementById('btnAtivar').innerText = "LICENÇA VALIDADA! ATIVAR AGORA";
-        }, 2500);
+    function playBeep() {
+        if(db.config.beep) document.getElementById('audioBeep').play();
     }
 
-    function ativarContaFinal() {
-        const newUser = {
-            user: document.getElementById('rUser').value,
-            pass: document.getElementById('rPass').value,
-            nome: document.getElementById('rNome').value
+    // --- AUTH ---
+    function toggleLogin(isLogin) {
+        document.getElementById('loginBox').classList.toggle('hidden', !isLogin);
+        document.getElementById('registerBox').classList.toggle('hidden', isLogin);
+    }
+
+    function goPay() {
+        window.open('https://mpago.li/1Qt8hoV', '_blank');
+        const user = { 
+            login: document.getElementById('rUser').value, 
+            pass: document.getElementById('rPass').value, 
+            nome: document.getElementById('rNome').value 
         };
-        db.users.push(newUser);
-        db.current = newUser;
+        if(!user.login || !user.pass) return alert("Preencha os dados!");
+        db.users.push(user);
+        db.current = user;
         persist();
-        document.getElementById('payModal').style.display = 'none';
+        alert("Licença Vitalícia Ativada!");
         showDashboard();
     }
 
-    function handleLogin() {
+    function doLogin() {
         const u = document.getElementById('lUser').value;
         const p = document.getElementById('lPass').value;
-        const found = db.users.find(x => x.user === u && x.pass === p);
-        if(found) {
-            db.current = found;
-            persist();
-            showDashboard();
-        } else alert("Usuário ou senha inválidos.");
+        const found = db.users.find(x => x.login === u && x.pass === p);
+        if(found) { db.current = found; showDashboard(); }
+        else alert("Acesso Negado.");
     }
 
     function showDashboard() {
-        document.getElementById('authArea').classList.add('hidden');
-        document.getElementById('appBody').classList.remove('hidden');
-        document.getElementById('userTag').classList.remove('hidden');
-        document.getElementById('curUser').innerText = db.current.nome.split(' ')[0];
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        document.getElementById('userDisplay').innerText = db.current.nome.toUpperCase();
         renderEstoque();
-        renderHist();
+        renderLogs();
     }
 
-    function logout() {
-        db.current = null; persist(); location.reload();
+    // --- LOGICA ERP & SCANNER SINCRONIZADO ---
+    function startScanner(divId, inputId) {
+        const area = document.getElementById(divId);
+        area.classList.remove('hidden');
+        if(scanner) scanner.stop();
+        scanner = new Html5Qrcode(divId);
+        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+            playBeep();
+            document.getElementById(inputId).value = txt;
+            document.getElementById(inputId).dispatchEvent(new Event('input')); // Força a busca
+            scanner.stop().then(() => area.classList.add('hidden'));
+        });
     }
 
-    // --- ERP FUNCTIONS ---
-    function salvarEntrada() {
+    function syncItem(sku, labelId, saldoId) {
+        const item = db.estoque.find(x => x.sku === sku);
+        if(item) {
+            document.getElementById(labelId).innerText = item.nome;
+            document.getElementById(saldoId).innerText = item.qtd;
+        } else {
+            document.getElementById(labelId).innerText = "NÃO CADASTRADO";
+            document.getElementById(saldoId).innerText = "0";
+        }
+    }
+
+    function saveIn() {
         const sku = document.getElementById('inSku').value;
         const nome = document.getElementById('inNome').value;
         const qtd = parseInt(document.getElementById('inQtd').value);
-        const min = parseInt(document.getElementById('inMin').value) || 0;
-        
-        if(!sku || !qtd) return alert("SKU e Qtd obrigatórios.");
+        if(!sku || !qtd) return alert("Dados insuficientes!");
 
         let item = db.estoque.find(x => x.sku === sku);
-        if(item) {
-            item.qtd += qtd;
-            item.min = min;
-        } else {
-            db.estoque.push({ sku, nome, qtd, min });
-        }
+        if(item) { item.qtd += qtd; }
+        else { db.estoque.push({ sku, nome, qtd, min: document.getElementById('inMin').value }); }
 
-        db.historico.unshift({
-            data: new Date().toLocaleString(),
-            nf: document.getElementById('inNF').value,
-            item: nome, qtd: qtd, user: db.current.user
-        });
-
-        persist(); alert("Entrada Salva!"); nav('tabHome');
+        log(`ENTRADA: NF ${document.getElementById('inNF').value} - ${nome} (+${qtd})`);
+        persist(); nav('tabHome');
     }
 
-    function showStockPreview(sku) {
+    function processReq() {
+        const sku = document.getElementById('reqSku').value;
+        const q = parseInt(document.getElementById('reqQtd').value);
+        const func = document.getElementById('reqFunc').value;
         const item = db.estoque.find(x => x.sku === sku);
-        if(item) {
-            document.getElementById('stockPreview').classList.remove('hidden');
-            document.getElementById('pQty').innerText = item.qtd;
-            document.getElementById('pQty').style.color = item.qtd <= item.min ? 'var(--neon-pink)' : 'var(--accent)';
-        } else {
-            document.getElementById('stockPreview').classList.add('hidden');
-        }
-    }
 
-    function execBaixa() {
-        const sku = document.getElementById('rSku').value;
-        let item = db.estoque.find(x => x.sku === sku);
-        if(item && item.qtd > 0) {
-            item.qtd--;
-            document.getElementById('beep').play();
-            showStockPreview(sku);
+        if(item && item.qtd >= q) {
+            item.qtd -= q;
+            log(`REQUISIÇÃO: ${item.nome} (-${q}) | Func: ${func} | Matr: ${document.getElementById('reqMatr').value}`);
             persist();
-            if(item.qtd <= item.min) alert("ATENÇÃO: Estoque atingiu o nível crítico!");
-        } else alert("Saldo insuficiente ou SKU não cadastrado.");
+            alert("Baixa processada com sucesso!");
+            nav('tabHome');
+        } else alert("Estoque insuficiente!");
     }
 
-    function renderEstoque() {
-        const body = document.getElementById('listaEstoque');
-        body.innerHTML = db.estoque.map(i => `
-            <tr style="border-bottom: 1px solid var(--border)">
-                <td style="padding:10px;">${i.sku}</td>
-                <td>${i.nome}</td>
-                <td style="font-weight:bold">${i.qtd}</td>
-                <td>${i.qtd <= i.min ? '<b style="color:var(--neon-pink)">REPÔR</b>' : '<b style="color:var(--neon-green)">OK</b>'}</td>
-            </tr>
-        `).join('');
-    }
-
-    function renderHist() {
-        document.getElementById('histLista').innerHTML = db.historico.map(h => `
-            <div style="border-bottom:1px solid var(--border); padding:8px;">
-                <b>NF: ${h.nf}</b> | ${h.data}<br>
-                <span>Item: ${h.item} (+${h.qtd}) - Por: ${h.user}</span>
-            </div>
-        `).join('');
-    }
-
-    // --- PDV ---
-    function vendaLookup() {
-        const item = db.estoque.find(x => x.sku === document.getElementById('vSku').value);
-        if(item) { document.getElementById('vProdNome').innerText = item.nome; vCalc(); }
-        else { document.getElementById('vProdNome').innerText = "PRODUTO NÃO ENCONTRADO"; }
-    }
-    function vCalc() {
-        const p = parseFloat(document.getElementById('vPreco').value) || 0;
-        const q = parseInt(document.getElementById('vQtd').value) || 0;
-        document.getElementById('vTotal').innerText = (p * q).toFixed(2);
-    }
-    function finalizarVenda() {
+    function processSale() {
         const sku = document.getElementById('vSku').value;
         const q = parseInt(document.getElementById('vQtd').value);
-        let item = db.estoque.find(x => x.sku === sku);
+        const item = db.estoque.find(x => x.sku === sku);
         if(item && item.qtd >= q) {
-            item.qtd -= q; persist(); alert("Venda Finalizada!"); nav('tabHome');
-        } else alert("Erro no estoque!");
+            item.qtd -= q;
+            log(`VENDA: ${item.nome} (-${q}) | Valor: R$ ${document.getElementById('vPrice').value}`);
+            persist(); nav('tabHome');
+        } else alert("Falha na venda.");
     }
 
-    function cotarIA() {
-        const t = document.getElementById('iaTermo').value;
-        if(t) window.open(`https://www.google.com/search?q=${t}+preço+2026&tbm=shop`, '_blank');
+    // --- CALCULADORA ---
+    let calcVal = "";
+    function calcNum(n) { calcVal += n; updateCalc(); }
+    function calcOp(op) { calcVal += " " + op + " "; updateCalc(); }
+    function calcClear() { calcVal = ""; updateCalc(); }
+    function calcBack() { calcVal = calcVal.trim().slice(0, -1); updateCalc(); }
+    function updateCalc() { document.getElementById('calcDisp').innerText = calcVal || "0"; }
+    function calcExec() { 
+        try { calcVal = eval(calcVal).toString(); updateCalc(); } 
+        catch { calcVal = "Erro"; updateCalc(); calcVal = ""; } 
     }
 
-    // --- UTILS ---
-    function startScan(div, inp) {
-        document.getElementById(div).classList.remove('hidden');
-        if(scanner) scanner.stop();
-        scanner = new Html5Qrcode(div);
-        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
-            document.getElementById('beep').play();
-            document.getElementById(inp).value = txt;
-            if(inp === 'rSku') showStockPreview(txt);
-            if(inp === 'vSku') vendaLookup();
-            scanner.stop().then(() => document.getElementById(div).classList.add('hidden'));
-        });
-    }
-
+    // --- UTILITARIOS ---
     function nav(id) {
         document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active-tab'));
         document.getElementById(id).classList.add('active-tab');
         if(scanner) scanner.stop();
-        renderEstoque(); renderHist();
+        renderEstoque(); renderLogs();
     }
 
-    function persist() { localStorage.setItem('erp_master_2026_pro', JSON.stringify(db)); }
+    function toggleModal(id, show) { document.getElementById(id).style.display = show ? 'flex' : 'none'; }
 
-    function gerarPDF() {
+    function log(msg) {
+        db.logs.unshift(`${new Date().toLocaleString()} | ${msg}`);
+    }
+
+    function renderEstoque() {
+        const b = document.querySelector('#tblEstoque tbody');
+        b.innerHTML = db.estoque.map(i => `
+            <tr>
+                <td>${i.sku}</td><td>${i.nome}</td><td>${i.qtd}</td>
+                <td style="color:${i.qtd <= i.min ? 'var(--neon-pink)' : 'var(--neon-green)'}">${i.qtd <= i.min ? 'REPÔR' : 'OK'}</td>
+            </tr>
+        `).join('');
+    }
+
+    function renderLogs() {
+        document.getElementById('histContent').innerHTML = db.logs.map(l => `<div>${l}</div>`).join('');
+    }
+
+    function persist() { localStorage.setItem('erp_pro_final_2026', JSON.stringify(db)); }
+
+    function exportPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.text("INVENTÁRIO ERP MASTER 2026", 15, 15);
-        doc.autoTable({ head: [['SKU', 'NOME', 'SALDO']], body: db.estoque.map(x => [x.sku, x.nome, x.qtd]) });
-        doc.save("estoque_2026.pdf");
+        doc.text("RELATÓRIO DE ESTOQUE - ERP MASTER 2026", 15, 15);
+        doc.autoTable({ 
+            head: [['SKU', 'NOME', 'QUANTIDADE']], 
+            body: db.estoque.map(x => [x.sku, x.nome, x.qtd]),
+            startY: 20
+        });
+        doc.save("inventario_master_2026.pdf");
     }
 </script>
 </body>
