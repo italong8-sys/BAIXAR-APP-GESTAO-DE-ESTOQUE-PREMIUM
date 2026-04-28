@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>ERP MASTER ENTERPRISE v12</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <style>
+        :root {
+            --bg: #0f172a; --card: #1e293b; --accent: #38bdf8;
+            --text: #f1f5f9; --border: #334155; --danger: #ef4444; 
+            --success: #22c55e; --warning: #f59e0b;
+        }
+
+        .light-theme {
+            --bg: #f8fafc; --card: #ffffff; --accent: #0284c7;
+            --text: #1e293b; --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { 
+            margin: 0; background: var(--bg); color: var(--text); 
+            font-family: 'Segoe UI', system-ui, sans-serif; transition: 0.3s;
+            min-height: 100vh; display: flex; flex-direction: column;
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- LOGIN --- */
+        #screenAuth {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #020617 0%, #1e293b 100%);
+        }
+        .auth-card { background: var(--card); padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; border: 1px solid var(--border); box-shadow: 0 25px 60px rgba(0,0,0,0.7); }
+        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.3); color: var(--text); font-size: 16px; }
+
+        /* --- DASHBOARD --- */
+        header { padding: 15px 20px; background: var(--card); border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .config-btn { font-size: 24px; cursor: pointer; }
+
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+        .menu-item { 
+            background: var(--card); padding: 20px 10px; border-radius: 20px; text-align: center;
+            border: 1px solid var(--border); cursor: pointer; transition: 0.2s;
+        }
+        .menu-item:active { transform: scale(0.95); }
+        .menu-item i { font-size: 32px; display: block; margin-bottom: 8px; font-style: normal; }
+
+        /* --- BOTÕES --- */
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; text-transform: uppercase; }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-success { background: var(--success); color: #000; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-secondary { background: var(--border); color: var(--text); }
+        .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+
+        /* --- ALERTAS --- */
+        .stock-alert { border: 2px solid var(--danger) !important; animation: blink 2s infinite; }
+        @keyframes blink { 50% { opacity: 0.6; } }
+
+        /* --- MODAIS --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
+        .modal-content { background: var(--card); width: 100%; max-width: 500px; padding: 25px; border-radius: 20px; border: 1px solid var(--border); max-height: 90vh; overflow-y: auto; }
+
+        .legal-text { font-size: 11px; color: #94a3b8; line-height: 1.4; text-align: justify; margin: 15px 0; }
+        .highlight-box { background: rgba(56, 189, 248, 0.1); padding: 15px; border-radius: 10px; border-left: 4px solid var(--accent); margin: 10px 0; }
+
+        #reader { width: 100%; border-radius: 15px; overflow: hidden; background: #000; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--border); }
+        td { padding: 12px; border-bottom: 1px solid var(--border); }
+
+        footer { padding: 30px; text-align: center; font-size: 12px; opacity: 0.6; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+<div id="screenAuth">
+    <div class="auth-card">
+        <h2 style="text-align: center; color: var(--accent);">ERP v12 ENTERPRISE</h2>
+        <input type="text" id="loginUser" placeholder="Usuário">
+        <div style="position: relative;">
+            <input type="password" id="loginPass" placeholder="Senha">
+            <span style="position: absolute; right: 15px; top: 22px; cursor: pointer;" onclick="togglePass()">👁️</span>
+        </div>
+        <button class="btn btn-primary" onclick="doLogin()">🔓 ENTRAR</button>
+        <button class="btn btn-outline" style="margin-top: 10px;" onclick="startDemo()">⏱️ TESTAR 10 MINUTOS</button>
+        
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+        
+        <button class="btn btn-success" onclick="toggleModal('modalPayment', true)">💳 VALIDAR ACESSO VITALÍCIO</button>
+        <p style="font-size: 10px; text-align: center; margin-top: 10px; opacity: 0.7;">Liberação imediata após aprovação admin.</p>
+    </div>
+</div>
+
+<div id="screenMain" class="hidden">
+    <div id="demoHeader" class="hidden" style="background: var(--danger); text-align: center; padding: 6px; font-weight: bold; font-size: 12px;">
+        CONTA TESTE | EXPIRA EM: <span id="demoTimer">10:00</span>
+    </div>
+
+    <header>
+        <div><b id="displayUser">Admin</b><br><small id="clockDisplay">28/04/2026 - 12:00</small></div>
+        <div class="config-btn" onclick="toggleModal('modalSettings', true)">⚙️</div>
+    </header>
+
+    <div id="viewHome" class="view">
+        <div class="menu-grid">
+            <div class="menu-item" onclick="openView('viewReg')"><i>🏷️</i>Cadastro</div>
+            <div class="menu-item" onclick="openView('viewNF')"><i>📥</i>Entrada NF</div>
+            <div class="menu-item" onclick="openView('viewReq')"><i>📋</i>Requisição</div>
+            <div class="menu-item" onclick="openView('viewStock')"><i>📦</i>Estoque</div>
+            <div class="menu-item" onclick="openView('viewLoc')"><i>📍</i>Localização</div>
+            <div class="menu-item" onclick="openView('viewQuotes')"><i>🔍</i>Cotações</div>
+        </div>
+        
+        <div style="padding: 0 20px;" id="adminTools" class="hidden">
+            <button class="btn btn-primary" onclick="openView('viewAccess')">👥 CONTROLE DE ACESSOS</button>
+            <button class="btn btn-secondary" style="margin-top: 10px;" onclick="window.open('https://github.com')">🐙 INTRANET GITHUB</button>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-item" onclick="generateInventoryPDF()"><i>📝</i>Inventário</div>
+            <div class="menu-item" onclick="generateReportPDF()"><i>📊</i>Relatório</div>
+        </div>
+        <button class="btn btn-danger" style="width: 90%; margin: 10px auto;" onclick="location.reload()">SAIR DO SISTEMA</button>
+    </div>
+
+    <div id="viewAccess" class="view hidden" style="padding: 20px;">
+        <h3>👥 Gestão de Logins</h3>
+        <p style="font-size: 12px; color: var(--accent);">Libere novos usuários após confirmação do pagamento de R$99,90.</p>
+        <div id="accessList">
+            <table id="tableAccess">
+                <thead><tr><th>Usuário</th><th>Status</th><th>Ação</th></tr></thead>
+                <tbody id="accessRows"></tbody>
+            </table>
+        </div>
+        <button class="btn btn-secondary" onclick="openView('viewHome')" style="margin-top: 20px;">VOLTAR</button>
+    </div>
+
+    <div id="viewReg" class="view hidden" style="padding: 20px;">
+        <h3>🏷️ Novo Material</h3>
+        <button class="btn btn-secondary" onclick="openScanner('regSku')">📷 BIPAR CÓDIGO</button>
+        <input type="text" id="regSku" placeholder="Código SKU">
+        <input type="text" id="regName" placeholder="Nome do Material">
+        <textarea id="regDesc" placeholder="Descrição"></textarea>
+        <input type="number" id="regMin" placeholder="Qtd. Mínima">
+        <button class="btn btn-primary" onclick="saveNewMaterial()">SALVAR NOVO MATERIAL</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
+    </div>
+
+    <div id="viewNF" class="view hidden" style="padding: 20px;">
+        <h3>📥 Entrada NF</h3>
+        <button class="btn btn-secondary" onclick="openScanner('nfSku')">📷 BIPAR SKU</button>
+        <input type="text" id="nfSku" placeholder="SKU" oninput="showFastInfo(this.value, 'nfPreview')">
+        <div id="nfPreview" style="font-size: 12px; padding: 5px;"></div>
+        <input type="text" id="nfDoc" placeholder="Nº Nota Fiscal">
+        <input type="number" id="nfQty" placeholder="Quantidade">
+        <button class="btn btn-primary" onclick="confirmNF()">CONFIRMAR ENTRADA</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
+    </div>
+
+    <div id="viewReq" class="view hidden" style="padding: 20px;">
+        <h3>📋 Baixa Requisição</h3>
+        <input type="text" id="reqFunc" placeholder="Funcionário">
+        <input type="text" id="reqMatri" placeholder="Matrícula">
+        <button class="btn btn-secondary" onclick="openScanner('reqSku')">📷 BIPAR ITEM</button>
+        <input type="text" id="reqSku" placeholder="SKU" oninput="showFastInfo(this.value, 'reqPreview')">
+        <div id="reqPreview" style="font-size: 12px; font-weight: bold; color: var(--accent);"></div>
+        <input type="number" id="reqQty" placeholder="Quantidade">
+        <button class="btn btn-danger" onclick="confirmReq()">BAIXAR E GERAR PDF</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
+    </div>
+
+    <div id="viewStock" class="view hidden" style="padding: 20px;">
+        <h3>📦 Estoque Atualizado</h3>
+        <div id="stockContainer"></div>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
+    </div>
+
+    <div id="viewLoc" class="view hidden" style="padding: 20px;">
+        <h3>📍 Localização</h3>
+        <button class="btn btn-secondary" onclick="openScanner('locSku')">📷 BIPAR SKU</button>
+        <input type="text" id="locSku" placeholder="SKU">
+        <select id="locRua"><option value="">Rua (A-Z)</option></select>
+        <input type="number" id="locMod" placeholder="Módulo">
+        <select id="locPrat">
+            <option value="">Prateleira (1-6)</option>
+            <option value="1">P1</option><option value="2">P2</option><option value="3">P3</option>
+            <option value="4">P4</option><option value="5">P5</option><option value="6">P6</option>
+        </select>
+        <button class="btn btn-primary" onclick="updateLoc()">DEFINIR LOCALIZAÇÃO</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
+    </div>
+
+    <div id="viewQuotes" class="view hidden" style="padding: 20px;">
+        <h3>🔍 Cotação Google</h3>
+        <input type="text" id="qSearch" placeholder="Material...">
+        <button class="btn btn-primary" onclick="runQuote()">PESQUISAR PREÇOS</button>
+        <button class="btn btn-secondary" onclick="openView('viewHome')">VOLTAR</button>
+    </div>
+</div>
+
+<div id="modalPayment" class="modal hidden">
+    <div class="modal-content">
+        <h2 style="color: var(--success); text-align: center;">🛡️ Pagamento Seguro</h2>
+        <p style="text-align: center;">O pagamento de <b>R$99,90</b> para acesso vitalício é processado totalmente pelo <b>Mercado Pago</b>.</p>
+        
+        <div class="highlight-box">
+            <b>Suporte ao Cliente:</b><br>
+            📧 <a href="mailto:italong8@gmail.com" style="color: var(--accent);">italong8@gmail.com</a>
+        </div>
+
+        <div class="legal-text">
+            <b>Lei do Consumidor (Art. 49 do CDC):</b> O consumidor pode desistir do contrato, no prazo de 7 dias a contar de sua assinatura ou do ato de recebimento do produto ou serviço. Caso haja desistência dentro deste prazo, o valor será reembolsado 100% e o login será permanentemente excluído.
+        </div>
+
+        <button class="btn btn-success" onclick="window.open('https://mpago.li/1Qt8hoV', '_blank')">🛒 PAGAR NO MERCADO PAGO</button>
+        <button class="btn btn-secondary" style="margin-top: 10px;" onclick="toggleModal('modalPayment', false)">FECHAR</button>
+    </div>
+</div>
+
+<div id="modalSettings" class="modal hidden">
+    <div class="modal-content">
+        <h3>⚙️ Configurações</h3>
+        <label><input type="checkbox" id="setTheme" onchange="applyTheme()"> Modo Claro</label><br><br>
+        <label><input type="checkbox" id="setBip" checked> Som de Bip</label><br><br>
+        <label><input type="checkbox" id="setMusic" onchange="applyMusic()"> Música Ambiente</label>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--border);">
+        <input type="password" id="newPass" placeholder="Nova Senha">
+        <button class="btn btn-primary" onclick="alert('Solicitação de troca enviada para email/SMS.')">MUDAR SENHA</button>
+        <button class="btn btn-danger" style="margin-top: 10px;" onclick="toggleModal('modalSettings', false)">FECHAR</button>
+    </div>
+</div>
+
+<div id="modalScanner" class="modal hidden">
+    <div class="modal-content">
+        <div id="reader"></div>
+        <button class="btn btn-danger" onclick="stopScanner()">FECHAR CÂMERA</button>
+    </div>
+</div>
+
+<audio id="audioBip" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+<audio id="audioMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"></audio>
+
+<footer>
+    ERP Master Enterprise © 2026 | Desenvolvido por Italo N. Dos Anjos
+</footer>
+
+<script>
+    // --- ESTADO INICIAL ---
+    let db = JSON.parse(localStorage.getItem('erp_v12_db')) || { items: [], logs: [], users: [{user: 'operador_teste', status: 'pendente'}] };
+    let session = null;
+    let scanner = null;
+
+    function init() {
+        const rua = document.getElementById('locRua');
+        for(let i=65; i<=90; i++) rua.innerHTML += `<option value="${String.fromCharCode(i)}">Rua ${String.fromCharCode(i)}</option>`;
+        setInterval(() => { document.getElementById('clockDisplay').innerText = new Date().toLocaleString(); }, 1000);
+    }
+    init();
+
+    // --- AUTENTICAÇÃO ---
+    function togglePass() {
+        const p = document.getElementById('loginPass');
+        p.type = p.type === 'password' ? 'text' : 'password';
+    }
+
+    function doLogin() {
+        const u = document.getElementById('loginUser').value;
+        const p = document.getElementById('loginPass').value;
+        
+        if(u === "admin" && p === "adm2026@aB") {
+            session = { user: "Admin", role: "admin" };
+            document.getElementById('adminTools').classList.remove('hidden');
+            loginSuccess();
+        } else {
+            // Verifica se o usuário existe e está liberado
+            const userInDB = db.users.find(x => x.user === u && x.status === 'liberado');
+            if(userInDB) {
+                session = { user: u, role: "user" };
+                loginSuccess();
+            } else {
+                alert("Login inexistente ou pendente de liberação admin (R$99,90).");
+            }
+        }
+    }
+
+    function startDemo() {
+        if(localStorage.getItem('erp_demo_v12')) return alert("Teste já realizado neste dispositivo.");
+        session = { user: "Conta Teste", role: "demo" };
+        localStorage.setItem('erp_demo_v12', 'true');
+        document.getElementById('demoHeader').classList.remove('hidden');
+        loginSuccess();
+        let t = 600;
+        const interval = setInterval(() => {
+            t--;
+            let m = Math.floor(t/60), s = t%60;
+            document.getElementById('demoTimer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+            if(t <= 0) { clearInterval(interval); alert("Sessão expirada."); location.reload(); }
+        }, 1000);
+    }
+
+    function loginSuccess() {
+        document.getElementById('screenAuth').classList.add('hidden');
+        document.getElementById('screenMain').classList.remove('hidden');
+        document.getElementById('displayUser').innerText = session.user;
+    }
+
+    // --- CONTROLE DE ACESSOS (ADMIN) ---
+    function renderAccessList() {
+        const rows = document.getElementById('accessRows');
+        rows.innerHTML = db.users.map((u, i) => `
+            <tr>
+                <td>${u.user}</td>
+                <td style="color: ${u.status === 'liberado' ? 'var(--success)' : 'var(--warning)'}">${u.status.toUpperCase()}</td>
+                <td>
+                    ${u.status === 'pendente' ? 
+                    `<button onclick="releaseUser(${i})" style="background:var(--success); border:none; padding:5px; border-radius:5px;">Liberar</button>` : 
+                    `<button onclick="deleteUser(${i})" style="background:var(--danger); border:none; color:white; padding:5px; border-radius:5px;">Remover</button>`}
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function releaseUser(idx) {
+        db.users[idx].status = 'liberado';
+        saveDB();
+        renderAccessList();
+        alert("Usuário liberado com sucesso!");
+    }
+
+    function deleteUser(idx) {
+        if(confirm("Remover este acesso?")) {
+            db.users.splice(idx, 1);
+            saveDB();
+            renderAccessList();
+        }
+    }
+
+    // --- LOGÍSTICA ---
+    function openView(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        if(id === 'viewStock') renderStock();
+        if(id === 'viewAccess') renderAccessList();
+    }
+
+    function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
+
+    function openScanner(target) {
+        toggleModal('modalScanner', true);
+        scanner = new Html5Qrcode("reader");
+        scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: 250 }, (txt) => {
+            document.getElementById(target).value = txt;
+            if(document.getElementById('setBip').checked) document.getElementById('audioBip').play();
+            stopScanner();
+        });
+    }
+
+    function stopScanner() { if(scanner) scanner.stop().then(() => toggleModal('modalScanner', false)); }
+
+    function saveNewMaterial() {
+        const sku = document.getElementById('regSku').value;
+        const name = document.getElementById('regName').value;
+        if(!sku || !name) return alert("Preencha SKU e Nome.");
+        db.items.push({ sku, name, desc: document.getElementById('regDesc').value, min: parseInt(document.getElementById('regMin').value)||0, balance: 0, loc: "Não Definida" });
+        saveDB(); alert("Cadastrado!"); openView('viewHome');
+    }
+
+    function showFastInfo(sku, divId) {
+        const item = db.items.find(i => i.sku === sku);
+        document.getElementById(divId).innerHTML = item ? `📦 ${item.name} | Saldo: ${item.balance}` : "❌ SKU não cadastrado.";
+    }
+
+    function confirmNF() {
+        const sku = document.getElementById('nfSku').value;
+        const qty = parseInt(document.getElementById('nfQty').value);
+        const item = db.items.find(i => i.sku === sku);
+        if(!item || isNaN(qty)) return alert("Dados inválidos.");
+        item.balance += qty;
+        db.logs.push({ date: new Date().toLocaleString(), type: "ENTRADA", sku, qty, doc: document.getElementById('nfDoc').value });
+        saveDB(); alert("Estoque atualizado!"); openView('viewHome');
+    }
+
+    function confirmReq() {
+        const sku = document.getElementById('reqSku').value;
+        const qty = parseInt(document.getElementById('reqQty').value);
+        const item = db.items.find(i => i.sku === sku);
+        if(!item || item.balance < qty) return alert("Saldo insuficiente.");
+        item.balance -= qty;
+        const log = { date: new Date().toLocaleString(), type: "SAÍDA", sku, qty, func: document.getElementById('reqFunc').value, matri: document.getElementById('reqMatri').value };
+        db.logs.push(log);
+        saveDB(); generateReqPDF(item, log); openView('viewHome');
+    }
+
+    function renderStock() {
+        const cont = document.getElementById('stockContainer');
+        db.items.sort((a,b) => a.name.localeCompare(b.name));
+        cont.innerHTML = db.items.map(m => `
+            <div class="menu-item ${m.balance <= m.min ? 'stock-alert' : ''}" style="text-align:left; display:block; margin-bottom:10px;">
+                <b>${m.name}</b> <small>(${m.sku})</small><br>
+                <small>📍 ${m.loc}</small><br>
+                Saldo: ${m.balance} / Mín: ${m.min}
+            </div>
+        `).join('');
+    }
+
+    function generateReqPDF(item, log) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("COMPROVANTE DE REQUISIÇÃO", 105, 20, {align:'center'});
+        doc.text(`Funcionário: ${log.func} | Matrícula: ${log.matri}`, 20, 40);
+        doc.text(`Material: ${item.name} | Qtd: ${log.qty}`, 20, 50);
+        doc.text(`Assinatura Funcionário: _____________________`, 20, 100);
+        doc.text(`Assinatura Almoxarife: _____________________`, 20, 120);
+        doc.save(`Requisição_${Date.now()}.pdf`);
+    }
+
+    // --- CONFIGS ---
+    function applyTheme() { document.body.classList.toggle('light-theme', document.getElementById('setTheme').checked); }
+    function applyMusic() { const m = document.getElementById('audioMusic'); document.getElementById('setMusic').checked ? m.play() : m.pause(); }
+    function saveDB() { localStorage.setItem('erp_v12_db', JSON.stringify(db)); }
+    function runQuote() { const s = document.getElementById('qSearch').value; if(s) window.open(`https://www.google.com/search?q=preço+${encodeURIComponent(s)}`, '_blank'); }
+</script>
+</body>
+</html>
