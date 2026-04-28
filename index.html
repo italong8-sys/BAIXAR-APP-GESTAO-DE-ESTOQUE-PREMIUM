@@ -28,7 +28,7 @@
         body { 
             margin: 0; background: var(--bg); color: var(--text); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            min-height: 100vh; transition: 0.3s; overflow-x: hidden;
+            min-height: 100vh; transition: 0.3s; display: flex; flex-direction: column;
         }
 
         .hidden { display: none !important; }
@@ -46,8 +46,8 @@
         .blink-icon { animation: blink 2s infinite; display: inline-block; margin-bottom: 8px; font-size: 28px; }
 
         /* AUTH SCREENS */
-        .auth-container { height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .app-card { background: var(--card); width: 100%; max-width: 400px; padding: 25px; border-radius: 25px; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+        .auth-container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .app-card { background: var(--card); width: 100%; max-width: 450px; padding: 25px; border-radius: 25px; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
 
         label { display: block; font-size: 10px; font-weight: 800; color: var(--accent); margin-bottom: 5px; text-transform: uppercase; }
         input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.1); color: var(--text); font-size: 15px; margin-bottom: 12px; }
@@ -63,7 +63,7 @@
 
         /* MENU GRID */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
-        .menu-item { background: var(--card); padding: 25px 10px; border-radius: 22px; border: 1px solid var(--border); text-align: center; transition: 0.2s; }
+        .menu-item { background: var(--card); padding: 25px 10px; border-radius: 22px; border: 1px solid var(--border); text-align: center; transition: 0.2s; cursor: pointer; }
         .menu-item:active { background: var(--accent); color: #000; }
         .menu-item b { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
 
@@ -73,18 +73,26 @@
         .calc-btn { padding: 18px; border: none; border-radius: 12px; background: #334155; color: white; font-weight: bold; font-size: 18px; }
         .calc-btn.op { background: var(--accent); color: #000; }
 
-        /* TABELAS */
-        table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
-        th { text-align: left; color: var(--accent); padding: 10px; border-bottom: 1px solid var(--accent); }
-        td { padding: 10px; border-bottom: 1px solid var(--border); }
+        /* TABELAS E ROBUSTEZ */
+        .table-container { overflow-x: auto; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th { text-align: left; color: var(--accent); padding: 12px 8px; border-bottom: 1px solid var(--accent); background: rgba(56, 189, 248, 0.05); }
+        td { padding: 12px 8px; border-bottom: 1px solid var(--border); }
+        .badge { padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; }
 
         /* MODAIS */
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--card); width: 100%; max-width: 360px; padding: 25px; border-radius: 30px; border: 1px solid var(--accent); }
+        .modal-content { background: var(--card); width: 100%; max-width: 380px; padding: 25px; border-radius: 30px; border: 1px solid var(--accent); }
 
         .tab-content { display: none; animation: slideUp 0.3s ease; padding-bottom: 40px; }
         .active-tab { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* FOOTER CRÉDITOS */
+        footer { 
+            padding: 20px; text-align: center; font-size: 10px; color: var(--text); opacity: 0.6; 
+            border-top: 1px solid var(--border); margin-top: auto;
+        }
     </style>
 </head>
 <body onload="initApp()">
@@ -96,7 +104,7 @@
     <div>
         <div style="font-size: 10px; opacity: 0.7;">Seja Bem Vindo(a),</div>
         <div style="display: flex; align-items: center;">
-            <b id="userNameLabel">Usuário</b>
+            <b id="userNameLabel">USUÁRIO</b>
             <span id="adminBadge" class="admin-badge hidden">ADMINISTRADOR</span>
         </div>
     </div>
@@ -108,11 +116,11 @@
 
 <div id="screenAuth" class="auth-container">
     <div class="app-card" id="boxLogin">
-        <h2 style="text-align: center; margin-bottom: 25px;">🔒 ACESSO</h2>
+        <h2 style="text-align: center; margin-bottom: 25px;">🔒 ACESSO ERP</h2>
         <label>Usuário</label>
-        <input type="text" id="lUser" placeholder="Seu usuário">
+        <input type="text" id="lUser" placeholder="admin ou seu usuário">
         <label>Senha</label>
-        <input type="password" id="lPass" placeholder="Sua senha">
+        <input type="password" id="lPass" placeholder="••••••••">
         
         <div class="check-row">
             <input type="checkbox" onchange="toggleVisible('lPass')"> Mostrar Senha
@@ -123,22 +131,17 @@
     </div>
 
     <div class="app-card hidden" id="boxReg">
-        <h2 style="text-align: center;">💎 PREMIUM</h2>
+        <h2 style="text-align: center;">💎 REGISTRO MASTER</h2>
         <div style="max-height: 45vh; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;">
             <label>Nome Completo</label><input type="text" id="rNome">
-            <label>E-mail (Recuperação)</label><input type="email" id="rEmail">
-            <label>Usuário</label><input type="text" id="rUser">
-            <label>Senha</label><input type="password" id="rPass">
-            
-            <div style="background:rgba(56, 189, 248, 0.1); padding:15px; border-radius:15px; font-size:11px; border:1px solid var(--accent);">
-                <b style="color:var(--accent);">CONDIÇÕES:</b><br>
-                • Valor: <b>R$ 99,90</b> (Vitalício)<br>
-                • Suporte: italong8@gmail.com<br>
-                • 7 dias para cancelamento via WhatsApp (11) 99374-7623<br><br>
-                <center><b>🛡️ COMPRA SEGURA VIA MERCADO PAGO</b></center>
+            <label>E-mail de Recuperação</label><input type="email" id="rEmail">
+            <label>Crie um Usuário</label><input type="text" id="rUser">
+            <label>Defina uma Senha</label><input type="password" id="rPass">
+            <div style="background:rgba(56, 189, 248, 0.1); padding:15px; border-radius:15px; font-size:10px; border:1px solid var(--accent);">
+                <b>TERMOS:</b> Ativação vitalícia por R$ 99,90. Suporte direto e atualizações inclusas.
             </div>
         </div>
-        <button class="btn btn-green" onclick="processPremium()">PAGAR E ATIVAR</button>
+        <button class="btn btn-green" onclick="processPremium()">PAGAR E ATIVAR AGORA</button>
         <button class="btn btn-outline" style="margin-top: 10px;" onclick="switchAuth(true)">VOLTAR</button>
     </div>
 </div>
@@ -153,64 +156,66 @@
             <div class="menu-item" onclick="nav('tabCalc')"><i class="blink-icon">🧮</i><br><b>Calculadora</b></div>
             <div class="menu-item" onclick="nav('tabHist')"><i class="blink-icon">🧾</i><br><b>Auditoria</b></div>
         </div>
-        <div style="padding: 15px;">
-            <button class="btn btn-blue" onclick="exportStockPDF()">📊 EXPORTAR RELATÓRIO PDF</button>
-            <button class="btn btn-outline" style="margin-top: 10px; border-color: #f87171; color: #f87171;" onclick="logout()">ENCERRAR SESSÃO</button>
+        <div style="padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="btn btn-blue" onclick="exportStockPDF()">📊 PDF ESTOQUE</button>
+            <button class="btn btn-blue" onclick="exportNFPDF()">📄 PDF NOTAS</button>
+        </div>
+        <div style="padding: 0 15px;">
+            <button class="btn btn-outline" style="margin-top: 5px; border-color: #f87171; color: #f87171;" onclick="logout()">ENCERRAR SESSÃO</button>
         </div>
     </div>
 
     <div id="tabEntrada" class="tab-content" style="padding: 15px;">
-        <div class="app-card">
-            <h3>📥 ENTRADA DE MATERIAL</h3>
-            <label>SKU / Código de Barras</label>
-            <div id="readerIn" style="width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 10px;"></div>
-            <button class="btn btn-outline" onclick="startScan('readerIn', 'inSku')">📷 ESCANEAR CÓDIGO</button>
-            <input type="text" id="inSku" style="margin-top: 12px;" placeholder="Digite ou Bipe">
-            <label>Nome do Produto</label><input type="text" id="inNome">
-            <label>Quantidade</label><input type="number" id="inQtd">
-            <button class="btn btn-green" onclick="saveStock()">EFETIVAR ENTRADA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">CANCELAR</button>
+        <div class="app-card" style="max-width: 100%;">
+            <h3>📥 LANÇAMENTO DE NOTA FISCAL</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div><label>Nº NF</label><input type="text" id="inNF"></div>
+                <div><label>Data Emissão</label><input type="date" id="inDataNF"></div>
+            </div>
+            <label>Fornecedor</label><input type="text" id="inForn">
+            <hr style="opacity: 0.1; margin-bottom: 15px;">
+            <label>Bipar Item</label>
+            <div id="readerIn" style="width: 100%; border-radius: 12px; overflow: hidden;"></div>
+            <button class="btn btn-outline" onclick="startScan('readerIn', 'inSku')">📷 ABRIR CÂMERA</button>
+            <input type="text" id="inSku" style="margin-top: 10px;" placeholder="SKU">
+            <label>Nome / Descrição</label><input type="text" id="inNome">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div><label>Qtd Entrada</label><input type="number" id="inQtd"></div>
+                <div><label>Estoque Mín.</label><input type="number" id="inMin" value="5"></div>
+            </div>
+            <button class="btn btn-green" onclick="saveStock()">REGISTRAR ENTRADA</button>
+            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
     </div>
 
     <div id="tabRequisicao" class="tab-content" style="padding: 15px;">
-        <div class="app-card">
-            <h3>📝 REQUISIÇÃO</h3>
-            <label>Funcionário</label><input type="text" id="reqFunc">
-            <label>Matrícula</label><input type="text" id="reqMatr">
-            <label>Bipar Material</label>
-            <input type="text" id="reqSku" oninput="syncProduct(this.value, 'reqInfo')" placeholder="SKU">
-            <div id="reqInfo" style="padding: 15px; background: rgba(0,0,0,0.1); border-radius: 10px; margin-bottom: 12px; font-size: 13px; color: var(--accent);">Aguardando...</div>
-            <button class="btn btn-blue" onclick="doRequisicao()">REALIZAR BAIXA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
-        </div>
-    </div>
-
-    <div id="tabVenda" class="tab-content" style="padding: 15px;">
-        <div class="app-card">
-            <h3>💰 PDV MÓVEL</h3>
-            <label>Produto (SKU)</label>
-            <input type="text" id="vSku" oninput="syncProduct(this.value, 'vInfo')">
-            <div id="vInfo" style="margin-bottom: 12px; font-weight: bold;">---</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div><label>Preço R$</label><input type="number" id="vPrice"></div>
-                <div><label>Qtd</label><input type="number" id="vQtd" value="1"></div>
+        <div class="app-card" style="max-width: 100%;">
+            <h3>📝 REQUISIÇÃO DETALHADA</h3>
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap:10px;">
+                <div><label>Solicitante</label><input type="text" id="reqFunc"></div>
+                <div><label>Matrícula</label><input type="text" id="reqMatr"></div>
             </div>
-            <button class="btn btn-green" onclick="doVenda()">FINALIZAR VENDA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
+            <label>Material (Bipe o SKU)</label>
+            <input type="text" id="reqSku" oninput="syncProduct(this.value, 'reqInfo')" placeholder="Bipe aqui...">
+            <div id="reqInfo" style="padding: 15px; background: rgba(56, 189, 248, 0.1); border-radius: 15px; margin-bottom: 15px; font-size: 13px;">
+                Aguardando identificação do material...
+            </div>
+            <label>Quantidade de Saída</label><input type="number" id="reqQtd" value="1">
+            <button class="btn btn-blue" onclick="doRequisicao()">CONFIRMAR BAIXA</button>
+            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">CANCELAR</button>
         </div>
     </div>
 
     <div id="tabEstoque" class="tab-content" style="padding: 15px;">
-        <div class="app-card">
-            <h3>📦 INVENTÁRIO ATUAL</h3>
-            <div style="overflow-x: auto;">
+        <div class="app-card" style="max-width: 100%;">
+            <h3>📦 GESTÃO DE INVENTÁRIO</h3>
+            <div class="table-container">
                 <table id="tblStock">
-                    <thead><tr><th>SKU</th><th>PRODUTO</th><th>SALDO</th><th>STATUS</th></tr></thead>
+                    <thead><tr><th>SKU</th><th>PRODUTO</th><th>SALDO</th><th>MÍN.</th><th>STATUS</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
-            <button class="btn btn-outline" style="margin-top: 15px;" onclick="nav('tabHome')">VOLTAR AO MENU</button>
+            <button class="btn btn-outline" style="margin-top: 20px;" onclick="nav('tabHome')">VOLTAR AO MENU</button>
         </div>
     </div>
 
@@ -222,17 +227,11 @@
                 <button class="calc-btn op" onclick="calcAction('/')">/</button>
                 <button class="calc-btn op" onclick="calcAction('*')">×</button>
                 <button class="calc-btn op" onclick="calcAction('del')">←</button>
-                <button class="calc-btn" onclick="calcAction('7')">7</button>
-                <button class="calc-btn" onclick="calcAction('8')">8</button>
-                <button class="calc-btn" onclick="calcAction('9')">9</button>
+                <button class="calc-btn" onclick="calcAction('7')">7</button><button class="calc-btn" onclick="calcAction('8')">8</button><button class="calc-btn" onclick="calcAction('9')">9</button>
                 <button class="calc-btn op" onclick="calcAction('-')">-</button>
-                <button class="calc-btn" onclick="calcAction('4')">4</button>
-                <button class="calc-btn" onclick="calcAction('5')">5</button>
-                <button class="calc-btn" onclick="calcAction('6')">6</button>
+                <button class="calc-btn" onclick="calcAction('4')">4</button><button class="calc-btn" onclick="calcAction('5')">5</button><button class="calc-btn" onclick="calcAction('6')">6</button>
                 <button class="calc-btn op" onclick="calcAction('+')">+</button>
-                <button class="calc-btn" onclick="calcAction('1')">1</button>
-                <button class="calc-btn" onclick="calcAction('2')">2</button>
-                <button class="calc-btn" onclick="calcAction('3')">3</button>
+                <button class="calc-btn" onclick="calcAction('1')">1</button><button class="calc-btn" onclick="calcAction('2')">2</button><button class="calc-btn" onclick="calcAction('3')">3</button>
                 <button class="calc-btn op" style="grid-row: span 2; background: var(--neon-green);" onclick="calcAction('=')">=</button>
                 <button class="calc-btn" style="grid-column: span 2;" onclick="calcAction('0')">0</button>
                 <button class="calc-btn" onclick="calcAction('.')">.</button>
@@ -242,185 +241,172 @@
     </div>
 
     <div id="tabHist" class="tab-content" style="padding: 15px;">
-        <div class="app-card">
-            <h3>🧾 AUDITORIA</h3>
-            <div id="logsArea" style="font-size: 10px; line-height: 1.6;"></div>
-            <button class="btn btn-outline" style="margin-top: 15px;" onclick="nav('tabHome')">VOLTAR</button>
+        <div class="app-card" style="max-width: 100%;">
+            <h3>🧾 AUDITORIA DE MOVIMENTAÇÕES</h3>
+            <div class="table-container">
+                <table id="tblLogs">
+                    <thead><tr><th>DATA/HORA</th><th>TIPO</th><th>DETALHE</th><th>USUÁRIO</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <button class="btn btn-outline" style="margin-top: 20px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
     </div>
 </main>
 
 <div class="modal" id="modalConfig">
     <div class="modal-content">
-        <h3 style="margin-top: 0; text-align: center;">⚙️ AJUSTES</h3>
-        <hr style="opacity: 0.1; margin-bottom: 20px;">
-        
-        <button class="btn btn-outline" onclick="toggleTheme()">🌓 ALTERAR TEMA (CLARO/ESCURO)</button>
-        
+        <h3>⚙️ CONFIGURAÇÕES</h3>
+        <button class="btn btn-outline" onclick="toggleTheme()">🌓 TEMA CLARO / ESCURO</button>
         <div style="margin: 20px 0;">
-            <label>Sons e Feedback</label>
-            <div class="check-row"><input type="checkbox" id="cfgBeep" checked> Bip ao Escanear</div>
-            <div class="check-row"><input type="checkbox" id="cfgMusic" onchange="controlMusic()"> Música Ambiente</div>
+            <div class="check-row"><input type="checkbox" id="cfgBeep" checked> Bip de confirmação</div>
+            <div class="check-row"><input type="checkbox" id="cfgMusic" onchange="controlMusic()"> Música de Fundo</div>
         </div>
-
-        <div style="border-top: 1px solid var(--border); padding-top: 15px;">
-            <label>Redefinição de Senha</label>
-            <p style="font-size: 10px; opacity: 0.6;">Insira o e-mail cadastrado:</p>
-            <input type="email" id="resetEmail" placeholder="seu@email.com">
-            <button class="btn btn-blue" onclick="recoverPassword()">REDEFINIR VIA E-MAIL</button>
-        </div>
-
-        <button class="btn btn-outline" style="margin-top: 25px; border-color: var(--neon-pink); color: var(--neon-pink);" onclick="toggleModal('modalConfig', false)">FECHAR</button>
+        <label>Redefinir Senha</label>
+        <input type="email" id="resetEmail" placeholder="e-mail cadastrado">
+        <button class="btn btn-blue" onclick="recoverPassword()">REDEFINIR SENHA</button>
+        <button class="btn btn-outline" style="margin-top: 20px; border-color: var(--neon-pink); color: var(--neon-pink);" onclick="toggleModal('modalConfig', false)">FECHAR</button>
     </div>
 </div>
 
+<footer id="mainFooter">
+    Aplicativo criado por ©Italo N. Dos Anjos em 2026. Todos os direitos reservados.
+</footer>
+
 <script>
-    let db = JSON.parse(localStorage.getItem('erp_master_2026_final')) || { users: [], estoque: [], logs: [] };
+    let db = JSON.parse(localStorage.getItem('erp_final_gold_2026')) || { 
+        users: [], estoque: [], logs: [], nfs: [] 
+    };
     let session = null;
     let scanner = null;
 
-    function save() { localStorage.setItem('erp_master_2026_final', JSON.stringify(db)); }
+    function save() { localStorage.setItem('erp_final_gold_2026', JSON.stringify(db)); }
 
     function initApp() {
         setInterval(() => {
-            document.getElementById('mainClock').innerText = new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+            document.getElementById('mainClock').innerText = new Date().toLocaleTimeString('pt-BR');
         }, 1000);
     }
 
-    // --- AUTENTICAÇÃO ---
-    function switchAuth(toLogin) {
-        document.getElementById('boxLogin').classList.toggle('hidden', !toLogin);
-        document.getElementById('boxReg').classList.toggle('hidden', toLogin);
-    }
-
-    function toggleVisible(id) {
-        const x = document.getElementById(id);
-        x.type = x.type === "password" ? "text" : "password";
-    }
-
+    // --- AUTH ---
     function handleLogin() {
         const u = document.getElementById('lUser').value;
         const p = document.getElementById('lPass').value;
 
-        // LOGIN ADMIN DIRETO
         if(u === "admin" && p === "adm2026@aB") {
-            session = { nome: "Admin (Italo)", user: "admin", isAdmin: true };
-            return startSession();
+            session = { nome: "Admin Italo", user: "admin", isAdmin: true };
+            return startApp();
         }
 
         const found = db.users.find(x => x.user === u && x.pass === p);
         if(found) {
             session = { ...found, isAdmin: false };
-            startSession();
-        } else {
-            alert("Usuário ou Senha incorretos.");
-        }
+            startApp();
+        } else alert("Acesso negado.");
     }
 
-    function startSession() {
+    function startApp() {
         document.getElementById('screenAuth').classList.add('hidden');
         document.getElementById('appHeader').classList.remove('hidden');
         document.getElementById('screenDash').classList.remove('hidden');
-        document.getElementById('userNameLabel').innerText = session.nome;
-        
+        document.getElementById('userNameLabel').innerText = session.nome.toUpperCase();
         if(session.isAdmin) document.getElementById('adminBadge').classList.remove('hidden');
         nav('tabHome');
     }
 
-    function processPremium() {
-        const user = document.getElementById('rUser').value;
-        const pass = document.getElementById('rPass').value;
-        const email = document.getElementById('rEmail').value;
-        const nome = document.getElementById('rNome').value;
-
-        if(!user || !pass || !email || !nome) return alert("Preencha todos os dados.");
-
-        window.open('https://mpago.li/1Qt8hoV', '_blank');
-        
-        // Simulação de confirmação
-        setTimeout(() => {
-            db.users.push({ user, pass, email, nome });
-            save();
-            alert("Cadastro Premium Ativado!");
-            switchAuth(true);
-        }, 1500);
-    }
-
     // --- ERP CORE ---
-    function syncProduct(sku, infoId) {
-        const item = db.estoque.find(x => x.sku === sku);
-        const target = document.getElementById(infoId);
-        if(item) {
-            target.innerHTML = `<b style="color:var(--neon-green)">${item.nome}</b><br>Saldo: ${item.qtd}`;
-            if(infoId === 'vInfo') document.getElementById('vPrice').value = "0.00";
-        } else {
-            target.innerText = "Item não cadastrado.";
-        }
-    }
-
     function saveStock() {
         const sku = document.getElementById('inSku').value;
         const nome = document.getElementById('inNome').value;
         const qtd = parseInt(document.getElementById('inQtd').value);
-        if(!sku || !qtd) return alert("Dados inválidos");
+        const nf = document.getElementById('inNF').value;
+
+        if(!sku || !qtd) return alert("Preencha SKU e Quantidade");
 
         let item = db.estoque.find(x => x.sku === sku);
-        if(item) item.qtd += qtd;
-        else db.estoque.push({ sku, nome, qtd });
+        if(item) {
+            item.qtd += qtd;
+            item.min = document.getElementById('inMin').value;
+        } else {
+            db.estoque.push({ sku, nome, qtd, min: document.getElementById('inMin').value });
+        }
 
-        addLog(`ENTRADA: ${nome} (+${qtd})`);
-        save(); alert("Estoque Atualizado!"); nav('tabHome');
+        db.nfs.push({ nf, fornecedor: document.getElementById('inForn').value, data: document.getElementById('inDataNF').value, item: nome, qtd });
+        addLog("ENTRADA", `NF: ${nf} | Item: ${nome} (+${qtd})`);
+        save(); alert("Lançamento concluído!"); nav('tabHome');
+    }
+
+    function syncProduct(sku, divId) {
+        const item = db.estoque.find(x => x.sku === sku);
+        const target = document.getElementById(divId);
+        if(item) {
+            target.innerHTML = `<b style="color:var(--neon-green)">${item.nome}</b><br>Saldo Disponível: <b>${item.qtd}</b>`;
+        } else target.innerText = "Produto não localizado.";
     }
 
     function doRequisicao() {
         const sku = document.getElementById('reqSku').value;
-        const q = 1; // Baixa padrão de 1 unidade
+        const q = parseInt(document.getElementById('reqQtd').value);
         const item = db.estoque.find(x => x.sku === sku);
+
         if(item && item.qtd >= q) {
             item.qtd -= q;
-            playBeep();
-            addLog(`REQUIS: ${item.nome} (-${q}) | Func: ${document.getElementById('reqFunc').value}`);
-            save(); alert("Baixa Concluída!"); nav('tabHome');
-        } else alert("Estoque insuficiente ou item inexistente.");
+            addLog("SAÍDA", `Req: ${item.nome} (-${q}) | Destino: ${document.getElementById('reqFunc').value}`);
+            playBeep(); save(); alert("Baixa realizada!"); nav('tabHome');
+        } else alert("Saldo insuficiente.");
     }
 
-    function doVenda() {
-        const sku = document.getElementById('vSku').value;
-        const q = parseInt(document.getElementById('vQtd').value);
-        const item = db.estoque.find(x => x.sku === sku);
-        if(item && item.qtd >= q) {
-            item.qtd -= q;
-            addLog(`VENDA: ${item.nome} (-${q}) | Valor: R$ ${document.getElementById('vPrice').value}`);
-            save(); alert("Venda Realizada!"); nav('tabHome');
-        } else alert("Erro no estoque.");
+    // --- TABELAS ---
+    function renderStock() {
+        const b = document.querySelector('#tblStock tbody');
+        b.innerHTML = db.estoque.map(i => `
+            <tr>
+                <td>${i.sku}</td><td>${i.nome}</td><td>${i.qtd}</td><td>${i.min}</td>
+                <td><span class="badge" style="background:${i.qtd <= i.min ? 'var(--neon-pink)' : 'var(--neon-green)'}">${i.qtd <= i.min ? 'REPÔR' : 'OK'}</span></td>
+            </tr>
+        `).join('');
+    }
+
+    function renderLogs() {
+        const b = document.querySelector('#tblLogs tbody');
+        b.innerHTML = db.logs.map(l => `
+            <tr>
+                <td>${l.data}</td>
+                <td><b style="color:${l.tipo === 'ENTRADA' ? 'var(--neon-green)' : 'var(--neon-pink)'}">${l.tipo}</b></td>
+                <td>${l.msg}</td><td>${l.user}</td>
+            </tr>
+        `).join('');
+    }
+
+    // --- EXPORTAÇÃO ---
+    function exportStockPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(18); doc.text("RELATÓRIO DE INVENTÁRIO - ERP MASTER", 15, 20);
+        doc.setFontSize(10); doc.text(`Gerado em: ${new Date().toLocaleString()}`, 15, 28);
+        doc.autoTable({ head: [['SKU', 'PRODUTO', 'SALDO', 'MIN']], body: db.estoque.map(x => [x.sku, x.nome, x.qtd, x.min]), startY: 35 });
+        doc.save("estoque.pdf");
+    }
+
+    function exportNFPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("HISTÓRICO DE ENTRADAS NF", 15, 20);
+        doc.autoTable({ head: [['NF', 'FORNECEDOR', 'DATA', 'ITEM', 'QTD']], body: db.nfs.map(x => [x.nf, x.fornecedor, x.data, x.item, x.qtd]), startY: 30 });
+        doc.save("notas_fiscais.pdf");
     }
 
     // --- UTILS ---
+    function addLog(tipo, msg) {
+        db.logs.unshift({ data: new Date().toLocaleString(), tipo, msg, user: session.user });
+    }
+
     function nav(id) {
         document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active-tab'));
         document.getElementById(id).classList.add('active-tab');
         if(id === 'tabEstoque') renderStock();
         if(id === 'tabHist') renderLogs();
         if(scanner) scanner.stop();
-    }
-
-    function renderStock() {
-        const body = document.querySelector('#tblStock tbody');
-        body.innerHTML = db.estoque.map(i => `
-            <tr>
-                <td>${i.sku}</td><td>${i.nome}</td><td>${i.qtd}</td>
-                <td style="color:${i.qtd < 5 ? 'var(--neon-pink)' : 'var(--neon-green)'}">${i.qtd < 5 ? 'REPÔR' : 'OK'}</td>
-            </tr>
-        `).join('');
-    }
-
-    function addLog(msg) {
-        const entry = `${new Date().toLocaleString('pt-BR')} - ${msg} (Por: ${session.user})`;
-        db.logs.unshift(entry);
-    }
-
-    function renderLogs() {
-        document.getElementById('logsArea').innerHTML = db.logs.map(l => `<div>${l}</div>`).join('');
     }
 
     function startScan(div, target) {
@@ -433,47 +419,45 @@
         });
     }
 
-    function playBeep() {
-        if(document.getElementById('cfgBeep').checked) document.getElementById('audioBeep').play();
-    }
-
-    function controlMusic() {
-        const m = document.getElementById('audioBg');
-        document.getElementById('cfgMusic').checked ? m.play() : m.pause();
-    }
-
+    function playBeep() { if(document.getElementById('cfgBeep').checked) document.getElementById('audioBeep').play(); }
+    function controlMusic() { const m = document.getElementById('audioBg'); document.getElementById('cfgMusic').checked ? m.play() : m.pause(); }
     function toggleTheme() { document.body.classList.toggle('light-theme'); }
-
     function toggleModal(id, open) { document.getElementById(id).style.display = open ? 'flex' : 'none'; }
+    function toggleVisible(id) { const x = document.getElementById(id); x.type = x.type === "password" ? "text" : "password"; }
+    function switchAuth(toLogin) { document.getElementById('boxLogin').classList.toggle('hidden', !toLogin); document.getElementById('boxReg').classList.toggle('hidden', toLogin); }
+    function logout() { location.reload(); }
 
     function recoverPassword() {
         const mail = document.getElementById('resetEmail').value;
         const u = db.users.find(x => x.email === mail);
         if(u) {
-            const nova = prompt("Um código de redefinição foi enviado para seu e-mail. Digite a nova senha:");
-            if(nova) { u.pass = nova; save(); alert("Senha alterada!"); }
-        } else alert("E-mail não localizado.");
+            const n = prompt("Digite a nova senha para o e-mail " + mail);
+            if(n) { u.pass = n; save(); alert("Senha alterada!"); }
+        } else alert("E-mail não encontrado.");
     }
 
-    function exportStockPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("ERP MASTER 2026 - RELATÓRIO DE INVENTÁRIO", 15, 15);
-        doc.autoTable({ head: [['SKU', 'PRODUTO', 'SALDO']], body: db.estoque.map(x => [x.sku, x.nome, x.qtd]), startY: 20 });
-        doc.save("estoque_master.pdf");
+    function processPremium() {
+        window.open('https://mpago.li/1Qt8hoV', '_blank');
+        setTimeout(() => {
+            db.users.push({ 
+                user: document.getElementById('rUser').value, 
+                pass: document.getElementById('rPass').value, 
+                email: document.getElementById('rEmail').value,
+                nome: document.getElementById('rNome').value
+            });
+            save(); alert("Conta Premium Criada!"); switchAuth(true);
+        }, 2000);
     }
-
-    function logout() { location.reload(); }
 
     // --- CALCULADORA ---
-    let calcVal = "";
+    let cV = "";
     function calcAction(a) {
-        const disp = document.getElementById('calcDisp');
-        if(a === 'C') calcVal = "";
-        else if(a === 'del') calcVal = calcVal.slice(0, -1);
-        else if(a === '=') { try { calcVal = eval(calcVal).toString(); } catch { calcVal = "Erro"; } }
-        else calcVal += a;
-        disp.innerText = calcVal || "0";
+        const d = document.getElementById('calcDisp');
+        if(a === 'C') cV = "";
+        else if(a === 'del') cV = cV.slice(0, -1);
+        else if(a === '=') { try { cV = eval(cV).toString(); } catch { cV = "Erro"; } }
+        else cV += a;
+        d.innerText = cV || "0";
     }
 </script>
 </body>
