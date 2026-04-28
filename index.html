@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>ERP MASTER PRO 2026 - GOLDEN EDITION</title>
+    <title>ERP MASTER PRO 2026 - FULL EDITION</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -13,462 +13,355 @@
 
     <style>
         :root {
-            --bg: #020617; --card: #0f172a; --accent: #38bdf8;
+            --bg: #020617; --card: rgba(15, 23, 42, 0.95); --accent: #38bdf8;
             --text: #f1f5f9; --neon-pink: #f472b6; --neon-green: #22c55e;
-            --border: rgba(255,255,255,0.1); --glass: rgba(15, 23, 42, 0.8);
-        }
-
-        .light-theme {
-            --bg: #f8fafc; --card: #ffffff; --accent: #0284c7;
-            --text: #0f172a; --border: rgba(0,0,0,0.1); --glass: rgba(255, 255, 255, 0.9);
+            --border: rgba(255,255,255,0.1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         
         body { 
             margin: 0; background: var(--bg); color: var(--text); 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            min-height: 100vh; transition: 0.3s; display: flex; flex-direction: column;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
         }
 
         .hidden { display: none !important; }
 
-        /* HEADER (Oculto até o login) */
-        header { 
-            padding: 15px 20px; background: var(--glass); border-bottom: 1px solid var(--accent);
-            display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(15px);
+        /* FUNDO DA TELA DE LOGIN (LOGÍSTICA) */
+        #screenAuth {
+            background: linear-gradient(rgba(2, 6, 23, 0.7), rgba(2, 6, 23, 0.85)), 
+                        url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1600');
+            background-size: cover; background-position: center; flex: 1; display: flex; flex-direction: column;
         }
 
-        .admin-badge { background: var(--neon-pink); color: white; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: 900; margin-left: 8px; letter-spacing: 1px; }
+        /* RELÓGIO NEON DIGITAL */
+        .neon-container { text-align: center; padding: 50px 20px 20px; }
+        #neonClock { 
+            font-size: 60px; font-weight: 900; font-family: 'Courier New', monospace;
+            color: var(--accent); text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+            margin: 0;
+        }
+        #neonDate { font-size: 14px; text-transform: uppercase; letter-spacing: 3px; color: #fff; margin-top: 10px; }
 
-        /* ANIMAÇÃO DOS ÍCONES */
-        @keyframes pulse { 50% { opacity: 0.5; transform: scale(1.05); } }
-        .blink-icon { animation: pulse 2s infinite; font-size: 32px; margin-bottom: 10px; display: inline-block; }
+        /* MODO DEMONSTRAÇÃO HEADER */
+        .demo-bar { background: var(--neon-pink); color: #000; text-align: center; padding: 10px; font-size: 11px; font-weight: 900; position: sticky; top: 0; z-index: 2000; }
 
-        /* TELAS DE AUTENTICAÇÃO */
-        .auth-container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .app-card { background: var(--card); width: 100%; max-width: 420px; padding: 30px; border-radius: 25px; border: 1px solid var(--border); box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
+        /* UI GERAL */
+        header { 
+            padding: 15px 20px; background: rgba(15, 23, 42, 0.9); border-bottom: 1px solid var(--accent);
+            display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px);
+        }
 
-        label { display: block; font-size: 11px; font-weight: 800; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; }
-        input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: var(--text); font-size: 16px; margin-bottom: 15px; }
+        .app-card { background: var(--card); width: 100%; max-width: 400px; padding: 30px; border-radius: 25px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         
-        .check-area { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 13px; opacity: 0.9; }
-        .check-area input { width: auto; margin: 0; cursor: pointer; }
+        input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.4); color: #fff; margin-bottom: 15px; font-size: 16px; }
+        label { display: block; font-size: 10px; font-weight: 800; color: var(--accent); margin-bottom: 5px; text-transform: uppercase; }
 
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 15px; font-weight: 900; font-size: 13px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
-        .btn:active { transform: scale(0.97); }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 15px; font-weight: 800; font-size: 13px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
         .btn-blue { background: var(--accent); color: #000; }
         .btn-green { background: var(--neon-green); color: #000; }
         .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+        .btn-forgot { background: none; border: none; color: var(--accent); font-size: 12px; text-decoration: underline; margin-bottom: 15px; cursor: pointer; display: block; text-align: center; width: 100%; }
 
-        /* MENU GRID PRINCIPAL */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .menu-item { background: var(--card); padding: 30px 15px; border-radius: 25px; border: 1px solid var(--border); text-align: center; transition: 0.3s; cursor: pointer; }
-        .menu-item:active { background: var(--accent); color: #000; }
-        .menu-item b { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        /* MENU GRID */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+        .menu-item { background: var(--card); padding: 30px 10px; border-radius: 25px; border: 1px solid var(--border); text-align: center; }
+        .menu-item i { font-size: 32px; display: block; margin-bottom: 10px; }
 
         /* CALCULADORA */
-        .calc-display { background: #000; color: var(--neon-green); padding: 30px; text-align: right; font-size: 32px; border-radius: 20px; margin-bottom: 15px; font-family: 'Courier New', monospace; box-shadow: inset 0 0 10px rgba(34, 197, 94, 0.2); }
+        .calc-display { background: #000; color: var(--neon-green); padding: 25px; text-align: right; font-size: 28px; border-radius: 15px; margin-bottom: 10px; font-family: monospace; border: 1px solid var(--border); }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .calc-btn { padding: 20px; border: none; border-radius: 12px; background: #1e293b; color: white; font-weight: bold; font-size: 20px; }
-        .calc-btn.op { background: var(--accent); color: #000; }
+        .calc-btn { padding: 18px; border: none; border-radius: 12px; background: #1e293b; color: #fff; font-weight: bold; font-size: 18px; }
 
-        /* TABELAS ROBUSTAS */
-        .table-wrap { overflow-x: auto; border-radius: 15px; border: 1px solid var(--border); margin-top: 15px; }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { background: rgba(56, 189, 248, 0.1); color: var(--accent); padding: 15px; text-align: left; text-transform: uppercase; }
+        /* TABLES */
+        .table-wrap { overflow-x: auto; width: 100%; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+        th { text-align: left; padding: 15px; color: var(--accent); border-bottom: 2px solid var(--accent); }
         td { padding: 15px; border-bottom: 1px solid var(--border); }
-        .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; }
 
-        /* MODAL */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--card); width: 100%; max-width: 400px; padding: 30px; border-radius: 30px; border: 1px solid var(--accent); }
+        /* FOOTER & INTRANET */
+        footer { padding: 25px; text-align: center; font-size: 11px; opacity: 0.6; border-top: 1px solid var(--border); margin-top: auto; }
+        .intranet-box { padding: 20px; background: rgba(56, 189, 248, 0.05); text-align: center; border-top: 1px solid var(--border); }
 
-        .tab-content { display: none; animation: fadeInUp 0.4s ease; padding-bottom: 50px; }
-        .active-tab { display: block; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* FOOTER CRÉDITOS */
-        footer { 
-            padding: 25px; text-align: center; font-size: 11px; color: var(--text); opacity: 0.5; 
-            border-top: 1px solid var(--border); margin-top: auto; letter-spacing: 0.5px;
-        }
+        .tab-content { display: none; animation: slideUp 0.3s ease; }
+        .active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body onload="checkInit()">
+<body onload="initApp()">
 
-<audio id="audioBeep" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
-<audio id="audioAmbient" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"></audio>
-
-<header id="mainHeader" class="hidden">
-    <div>
-        <div style="font-size: 10px; opacity: 0.6; font-weight: 800;">SISTEMA ERP CONECTADO</div>
-        <div style="display: flex; align-items: center;">
-            <b id="displayUserName" style="font-size: 16px;">USUÁRIO</b>
-            <span id="tagAdmin" class="admin-badge hidden">ADMINISTRADOR</span>
-        </div>
-    </div>
-    <div style="display: flex; align-items: center; gap: 20px;">
-        <div id="liveClock" style="font-size: 16px; font-weight: 900; color: var(--neon-green); font-family: monospace;">00:00:00</div>
-        <button onclick="toggleModal('modalConfig', true)" style="background:none; border:none; font-size:26px; cursor:pointer; filter: drop-shadow(0 0 5px var(--accent));">⚙️</button>
-    </div>
-</header>
-
-<div id="authLayout" class="auth-container">
-    <div class="app-card" id="loginBox">
-        <h2 style="text-align: center; margin-bottom: 30px; letter-spacing: 2px;">LOGIN SEGURO</h2>
-        <label>Usuário ou Admin</label>
-        <input type="text" id="userInput" placeholder="Digite seu usuário">
-        <label>Senha de Acesso</label>
-        <input type="password" id="passInput" placeholder="••••••••">
-        
-        <div class="check-area">
-            <input type="checkbox" onchange="viewPass('passInput')"> Mostrar Senha
-        </div>
-
-        <button class="btn btn-blue" onclick="processLogin()">ACESSAR SISTEMA</button>
-        <button class="btn btn-outline" style="margin-top: 12px;" onclick="toggleAuth(false)">SOLICITAR ACESSO PREMIUM</button>
+<div id="screenAuth">
+    <div class="neon-container">
+        <h1 id="neonClock">00:00:00</h1>
+        <div id="neonDate">CARREGANDO...</div>
     </div>
 
-    <div class="app-card hidden" id="registerBox">
-        <h2 style="text-align: center; color: var(--neon-green);">REGISTRO 2026</h2>
-        <div style="max-height: 40vh; overflow-y: auto; margin-bottom: 20px; padding-right: 10px;">
-            <label>Nome Completo</label><input type="text" id="regNome">
-            <label>E-mail de Segurança</label><input type="email" id="regEmail">
-            <label>Definir Usuário</label><input type="text" id="regUser">
-            <label>Definir Senha</label><input type="password" id="regPass">
-            <div style="background:rgba(34, 197, 94, 0.1); padding:15px; border-radius:15px; font-size:11px; border:1px solid var(--neon-green); line-height: 1.4;">
-                <b>SISTEMA PREMIUM:</b> Ativação vitalícia vinculada ao CPF. Pagamento único de R$ 99,90 via Mercado Pago.
-            </div>
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div class="app-card" id="loginBox">
+            <h2 style="text-align: center; margin-bottom: 25px; letter-spacing: 2px;">LOGIN ERP</h2>
+            <input type="text" id="lUser" placeholder="Usuário">
+            <input type="password" id="lPass" placeholder="Senha">
+            
+            <button class="btn-forgot" onclick="forgotPass()">Esqueci minha senha</button>
+            
+            <button class="btn btn-blue" onclick="handleLogin()">ENTRAR NO SISTEMA</button>
+            <button class="btn btn-green" style="margin-top: 10px;" onclick="startDemo()">MODO TESTE (10 MINUTOS)</button>
+            <button class="btn btn-outline" style="margin-top: 10px;" onclick="toggleAuth(false)">ADQUIRIR ACESSO VITALÍCIO</button>
         </div>
-        <button class="btn btn-green" onclick="handlePremium()">PAGAR E CADASTRAR</button>
-        <button class="btn btn-outline" style="margin-top: 12px;" onclick="toggleAuth(true)">VOLTAR AO LOGIN</button>
+
+        <div class="app-card hidden" id="regBox">
+            <h2 style="text-align: center;">CADASTRO PREMIUM</h2>
+            <input type="text" id="rNome" placeholder="Nome Completo">
+            <input type="email" id="rEmail" placeholder="E-mail">
+            <input type="text" id="rUser" placeholder="Usuário">
+            <input type="password" id="rPass" placeholder="Senha">
+            <button class="btn btn-green" onclick="buyPremium()">PAGAR E ATIVAR AGORA</button>
+            <button class="btn btn-outline" style="margin-top: 10px;" onclick="toggleAuth(true)">VOLTAR</button>
+        </div>
     </div>
 </div>
 
-<main id="dashboardLayout" class="hidden">
-    <div id="tabHome" class="tab-content">
+<main id="screenDash" class="hidden" style="flex: 1; display: flex; flex-direction: column;">
+    <div id="demoBar" class="demo-bar hidden">MODO DEMONSTRAÇÃO TESTE - <span id="timerDemo">10:00</span> RESTANTES</div>
+    
+    <header>
+        <div>
+            <div style="font-size: 9px; opacity: 0.6; font-weight: 800;">OPERADOR:</div>
+            <b id="userLabel" style="font-size: 14px;">USUÁRIO</b>
+        </div>
+        <div id="headerTime" style="font-family: monospace; color: var(--neon-green); font-weight: bold; font-size: 18px;">00:00</div>
+    </header>
+
+    <div id="tabHome" class="tab-content active">
         <div class="menu-grid">
-            <div class="menu-item" onclick="nav('tabNF')"><span class="blink-icon">🚚</span><br><b>Entrada NF</b></div>
-            <div class="menu-item" onclick="nav('tabBaixa')"><span class="blink-icon">📋</span><br><b>Requisição</b></div>
-            <div class="menu-item" onclick="nav('tabVendas')"><span class="blink-icon">💎</span><br><b>PDV Venda</b></div>
-            <div class="menu-item" onclick="nav('tabEstoque')"><span class="blink-icon">📦</span><br><b>Estoque</b></div>
-            <div class="menu-item" onclick="nav('tabCalculadora')"><span class="blink-icon">🧮</span><br><b>Calculadora</b></div>
-            <div class="menu-item" onclick="nav('tabAuditoria')"><span class="blink-icon">🔍</span><br><b>Auditoria</b></div>
+            <div class="menu-item" onclick="nav('tabEntrada')"><i>📥</i><b>Entrada NF</b></div>
+            <div class="menu-item" onclick="nav('tabSaida')"><i>📋</i><b>Requisição</b></div>
+            <div class="menu-item" onclick="nav('tabEstoque')"><i>📦</i><b>Estoque</b></div>
+            <div class="menu-item" onclick="nav('tabCalc')"><i>🧮</i><b>Calculadora</b></div>
+            <div class="menu-item" onclick="nav('tabHist')"><i>🔍</i><b>Auditoria</b></div>
+            <div class="menu-item" onclick="exitApp()"><i>🚪</i><b>Sair</b></div>
         </div>
-        <div style="padding: 0 20px 20px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                <button class="btn btn-blue" onclick="genPDF('stock')">📄 PDF ESTOQUE</button>
-                <button class="btn btn-blue" onclick="genPDF('nf')">📊 PDF ENTRADAS</button>
-            </div>
-            <button class="btn btn-outline" style="border-color: #ef4444; color: #ef4444;" onclick="exitApp()">SAIR DO SISTEMA</button>
+        <div style="padding: 10px 20px;">
+            <button class="btn btn-outline" onclick="exportPDF('stock')">📄 EXPORTAR ESTOQUE (PDF)</button>
         </div>
     </div>
 
-    <div id="tabNF" class="tab-content" style="padding: 20px;">
+    <div id="tabEntrada" class="tab-content" style="padding: 15px;">
         <div class="app-card" style="max-width: 100%;">
-            <h3>🚚 RECEBIMENTO DE MERCADORIA (NF)</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div><label>Nº Nota Fiscal</label><input type="text" id="nfNum"></div>
-                <div><label>Data Receb.</label><input type="date" id="nfData"></div>
-            </div>
-            <label>Fornecedor / Origem</label><input type="text" id="nfForn">
-            <hr style="opacity: 0.1; margin: 15px 0;">
-            <label>SKU / Código de Barras</label>
-            <div id="scannerIn" style="width: 100%; border-radius: 15px; overflow: hidden; margin-bottom: 10px;"></div>
-            <button class="btn btn-outline" onclick="openScanner('scannerIn', 'nfSku')">📸 BIPAR PRODUTO</button>
-            <input type="text" id="nfSku" style="margin-top: 15px;" placeholder="SKU Detectado">
-            <label>Nome do Item</label><input type="text" id="nfNome">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div><label>Quantidade</label><input type="number" id="nfQtd"></div>
-                <div><label>Estoque Mín.</label><input type="number" id="nfMin" value="10"></div>
-            </div>
-            <button class="btn btn-green" onclick="executeNF()">CONFIRMAR ENTRADA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
+            <h3>🚚 ENTRADA DE MATERIAL</h3>
+            <input type="text" id="inSku" placeholder="SKU / Código">
+            <input type="text" id="inNome" placeholder="Descrição do Produto">
+            <input type="number" id="inQtd" placeholder="Quantidade">
+            <button class="btn btn-blue" onclick="doIn()">REGISTRAR ENTRADA</button>
+            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">CANCELAR</button>
         </div>
     </div>
 
-    <div id="tabBaixa" class="tab-content" style="padding: 20px;">
+    <div id="tabSaida" class="tab-content" style="padding: 15px;">
         <div class="app-card" style="max-width: 100%;">
-            <h3>📋 REQUISIÇÃO DE MATERIAL</h3>
-            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px;">
-                <div><label>Funcionário Destino</label><input type="text" id="reqUser"></div>
-                <div><label>Setor</label><input type="text" id="reqSetor"></div>
-            </div>
-            <label>Bipar SKU</label>
-            <input type="text" id="reqSku" oninput="findProduct(this.value, 'reqPreview')" placeholder="Aguardando Bip...">
-            <div id="reqPreview" style="padding: 20px; background: rgba(56, 189, 248, 0.1); border-radius: 15px; margin-bottom: 15px; font-size: 14px; border-left: 5px solid var(--accent);">
-                Aguardando leitura do produto...
-            </div>
-            <label>Qtd para Saída</label><input type="number" id="reqQtd" value="1">
-            <button class="btn btn-blue" onclick="executeBaixa()">EFETUAR BAIXA</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">VOLTAR</button>
+            <h3>📋 SAÍDA / BAIXA</h3>
+            <input type="text" id="outSku" oninput="sync(this.value)" placeholder="Bipar SKU">
+            <div id="outPre" style="padding: 10px; background: rgba(56, 189, 248, 0.1); border-radius: 10px; margin-bottom: 10px; font-size: 12px;">Aguardando SKU...</div>
+            <input type="number" id="outQtd" placeholder="Qtd para Baixa">
+            <button class="btn btn-blue" onclick="doOut()">CONFIRMAR BAIXA</button>
+            <button class="btn btn-outline" style="margin-top: 10px;" onclick="nav('tabHome')">CANCELAR</button>
         </div>
     </div>
 
-    <div id="tabEstoque" class="tab-content" style="padding: 20px;">
+    <div id="tabEstoque" class="tab-content" style="padding: 15px;">
         <div class="app-card" style="max-width: 100%;">
-            <h3>📦 INVENTÁRIO COMPLETO</h3>
+            <h3>📦 POSIÇÃO DE ESTOQUE</h3>
             <div class="table-wrap">
-                <table id="stockTable">
-                    <thead><tr><th>SKU</th><th>DESCRIÇÃO</th><th>SALDO</th><th>MÍN</th><th>STATUS</th></tr></thead>
+                <table id="tblS">
+                    <thead><tr><th>SKU</th><th>PRODUTO</th><th>SALDO</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
-            <button class="btn btn-outline" style="margin-top: 20px;" onclick="nav('tabHome')">MENU PRINCIPAL</button>
+            <button class="btn btn-outline" style="margin-top: 15px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
     </div>
 
-    <div id="tabCalculadora" class="tab-content" style="padding: 20px;">
+    <div id="tabCalc" class="tab-content" style="padding: 15px;">
         <div class="app-card">
-            <div class="calc-display" id="cScreen">0</div>
+            <div class="calc-display" id="disp">0</div>
             <div class="calc-grid">
-                <button class="calc-btn op" onclick="cAct('C')">C</button>
-                <button class="calc-btn op" onclick="cAct('/')">/</button>
-                <button class="calc-btn op" onclick="cAct('*')">×</button>
-                <button class="calc-btn op" onclick="cAct('del')">←</button>
-                <button class="calc-btn" onclick="cAct('7')">7</button><button class="calc-btn" onclick="cAct('8')">8</button><button class="calc-btn" onclick="cAct('9')">9</button>
-                <button class="calc-btn op" onclick="cAct('-')">-</button>
-                <button class="calc-btn" onclick="cAct('4')">4</button><button class="calc-btn" onclick="cAct('5')">5</button><button class="calc-btn" onclick="cAct('6')">6</button>
-                <button class="calc-btn op" onclick="cAct('+')">+</button>
-                <button class="calc-btn" onclick="cAct('1')">1</button><button class="calc-btn" onclick="cAct('2')">2</button><button class="calc-btn" onclick="cAct('3')">3</button>
-                <button class="calc-btn op" style="grid-row: span 2; background: var(--neon-green);" onclick="cAct('=')">=</button>
-                <button class="calc-btn" style="grid-column: span 2;" onclick="cAct('0')">0</button>
-                <button class="calc-btn" onclick="cAct('.')">.</button>
+                <button class="calc-btn" onclick="c('7')">7</button><button class="calc-btn" onclick="c('8')">8</button><button class="calc-btn" onclick="c('9')">9</button><button class="calc-btn" style="background:var(--accent);color:#000" onclick="c('/')">/</button>
+                <button class="calc-btn" onclick="c('4')">4</button><button class="calc-btn" onclick="c('5')">5</button><button class="calc-btn" onclick="c('6')">6</button><button class="calc-btn" style="background:var(--accent);color:#000" onclick="c('*')">x</button>
+                <button class="calc-btn" onclick="c('1')">1</button><button class="calc-btn" onclick="c('2')">2</button><button class="calc-btn" onclick="c('3')">3</button><button class="calc-btn" style="background:var(--accent);color:#000" onclick="c('-')">-</button>
+                <button class="calc-btn" style="background:#ef4444" onclick="cc()">C</button><button class="calc-btn" onclick="c('0')">0</button><button class="calc-btn" onclick="ce()">=</button><button class="calc-btn" style="background:var(--accent);color:#000" onclick="c('+')">+</button>
             </div>
-            <button class="btn btn-outline" style="margin-top: 20px;" onclick="nav('tabHome')">FECHAR</button>
+            <button class="btn btn-outline" style="margin-top: 15px;" onclick="nav('tabHome')">FECHAR</button>
         </div>
     </div>
 
-    <div id="tabAuditoria" class="tab-content" style="padding: 20px;">
+    <div id="tabHist" class="tab-content" style="padding: 15px;">
         <div class="app-card" style="max-width: 100%;">
-            <h3>🔍 LOGS DE MOVIMENTAÇÃO</h3>
-            <div class="table-wrap">
-                <table id="logTable">
-                    <thead><tr><th>HORÁRIO</th><th>OPERAÇÃO</th><th>DETALHES</th><th>RESP.</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <button class="btn btn-outline" style="margin-top: 20px;" onclick="nav('tabHome')">VOLTAR</button>
+            <h3>🔍 AUDITORIA</h3>
+            <div id="logArea" style="font-size: 11px; max-height: 300px; overflow-y: auto;"></div>
+            <button class="btn btn-outline" style="margin-top: 15px;" onclick="nav('tabHome')">VOLTAR</button>
         </div>
+    </div>
+
+    <div id="intraBox" class="intranet-box hidden">
+        <button class="btn btn-outline" onclick="window.open('https://github.com/', '_blank')">🌐 ACESSAR INTRANET (GITHUB)</button>
     </div>
 </main>
 
-<div class="modal" id="modalConfig">
-    <div class="modal-content">
-        <h3 style="text-align: center; margin-top: 0;">⚙️ CONFIGURAÇÕES</h3>
-        <button class="btn btn-outline" onclick="changeTheme()">🌓 ALTERAR TEMA (LIGHT/DARK)</button>
-        
-        <div style="margin: 20px 0; border-top: 1px solid var(--border); padding-top: 15px;">
-            <div class="check-area"><input type="checkbox" id="setBeep" checked> Som de Feedback (Bip)</div>
-            <div class="check-area"><input type="checkbox" id="setMusic" onchange="toggleMusic()"> Música de Fundo</div>
-        </div>
-
-        <div style="background: rgba(56, 189, 248, 0.05); padding: 15px; border-radius: 15px;">
-            <label>Redefinição de Senha</label>
-            <p style="font-size: 11px; opacity: 0.7;">Informe o e-mail cadastrado para recuperar:</p>
-            <input type="email" id="emailRecovery" placeholder="seu@email.com">
-            <button class="btn btn-blue" onclick="recoveryLogic()">ENVIAR SOLICITAÇÃO</button>
-        </div>
-
-        <button class="btn btn-outline" style="margin-top: 25px; border-color: var(--neon-pink); color: var(--neon-pink);" onclick="toggleModal('modalConfig', false)">FECHAR AJUSTES</button>
-    </div>
-</div>
-
-<footer id="footerTag">
+<footer>
     Aplicativo criado por ©Italo N. Dos Anjos em 2026. Todos os direitos reservados.
 </footer>
 
 <script>
-    // --- DATABASE & STORAGE ---
-    let storage = JSON.parse(localStorage.getItem('erp_ultra_2026_db')) || { 
-        users: [], inventory: [], logs: [], nfs: [] 
-    };
-    let currentUser = null;
-    let qrReader = null;
+    let db = JSON.parse(localStorage.getItem('erp_gold_2026')) || { users: [], stock: [], logs: [], usedDemo: false };
+    let user = null;
+    let timer = 600;
+    let tInt;
 
-    function persist() { localStorage.setItem('erp_ultra_2026_db', JSON.stringify(storage)); }
+    function save() { localStorage.setItem('erp_gold_2026', JSON.stringify(db)); }
 
-    function checkInit() {
+    function initApp() {
         setInterval(() => {
-            document.getElementById('liveClock').innerText = new Date().toLocaleTimeString('pt-BR');
+            const now = new Date();
+            const time = now.toLocaleTimeString('pt-BR');
+            const date = now.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+            if(document.getElementById('neonClock')) document.getElementById('neonClock').innerText = time;
+            if(document.getElementById('neonDate')) document.getElementById('neonDate').innerText = date.toUpperCase();
+            document.getElementById('headerTime').innerText = time.substring(0, 5);
         }, 1000);
     }
 
-    // --- AUTENTICAÇÃO ---
-    function processLogin() {
-        const u = document.getElementById('userInput').value;
-        const p = document.getElementById('passInput').value;
+    // --- AUTH & DEMO ---
+    function handleLogin() {
+        const u = document.getElementById('lUser').value;
+        const p = document.getElementById('lPass').value;
 
-        // Login Administrativo Especial
         if(u === "admin" && p === "adm2026@aB") {
-            currentUser = { nome: "Italo (Administrador)", user: "admin", isAdmin: true };
-            return launchApp();
+            user = { nome: "ADMINISTRADOR", role: "admin" };
+            return start();
         }
 
-        // Login de Usuários Comuns
-        const match = storage.users.find(x => x.user === u && x.pass === p);
-        if(match) {
-            currentUser = { ...match, isAdmin: false };
-            launchApp();
-        } else {
-            alert("Credenciais Inválidas ou Conta não paga.");
-        }
+        const found = db.users.find(x => x.user === u && x.pass === p);
+        if(found) {
+            user = { ...found, role: "user" };
+            start();
+        } else alert("Acesso negado.");
     }
 
-    function launchApp() {
-        document.getElementById('authLayout').classList.add('hidden');
-        document.getElementById('mainHeader').classList.remove('hidden');
-        document.getElementById('dashboardLayout').classList.remove('hidden');
-        document.getElementById('displayUserName').innerText = currentUser.nome.toUpperCase();
-        
-        if(currentUser.isAdmin) document.getElementById('tagAdmin').classList.remove('hidden');
+    function startDemo() {
+        if(db.usedDemo) {
+            alert("Você já testou o aplicativo, para continuar clique em voltar e realize a compra do aplicativo e tenha acesso total e vitalício!");
+            return;
+        }
+        user = { nome: "VISITANTE (TESTE)", role: "demo" };
+        db.usedDemo = true; save();
+        start();
+        document.getElementById('demoBar').classList.remove('hidden');
+        tInt = setInterval(() => {
+            timer--;
+            let m = Math.floor(timer / 60);
+            let s = timer % 60;
+            document.getElementById('timerDemo').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            if(timer <= 0) { clearInterval(tInt); alert("Tempo esgotado!"); exitApp(); }
+        }, 1000);
+    }
+
+    function start() {
+        document.getElementById('screenAuth').classList.add('hidden');
+        document.getElementById('screenDash').classList.remove('hidden');
+        document.getElementById('userLabel').innerText = user.nome;
+        if(user.role === 'admin') document.getElementById('intraBox').classList.remove('hidden');
         nav('tabHome');
     }
 
-    function handlePremium() {
-        window.open('https://mpago.li/1Qt8hoV', '_blank');
-        setTimeout(() => {
-            storage.users.push({ 
-                user: document.getElementById('regUser').value, 
-                pass: document.getElementById('regPass').value, 
-                email: document.getElementById('regEmail').value,
-                nome: document.getElementById('regNome').value
-            });
-            persist();
-            alert("Pagamento Confirmado! Conta criada com sucesso.");
-            toggleAuth(true);
-        }, 2500);
+    // --- ERP FUNCTIONS ---
+    function nav(id) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'tabEstoque') renderStock();
+        if(id === 'tabHist') renderLogs();
     }
 
-    // --- ERP CORE (LOGIC) ---
-    function executeNF() {
-        const sku = document.getElementById('nfSku').value;
-        const nome = document.getElementById('nfNome').value;
-        const qtd = parseInt(document.getElementById('nfQtd').value);
-        const nf = document.getElementById('nfNum').value;
-
-        if(!sku || !qtd) return alert("Erro: SKU e Quantidade são obrigatórios.");
-
-        let prod = storage.inventory.find(x => x.sku === sku);
-        if(prod) {
-            prod.qtd += qtd;
-            prod.min = document.getElementById('nfMin').value;
-        } else {
-            storage.inventory.push({ sku, nome, qtd, min: document.getElementById('nfMin').value });
-        }
-
-        storage.nfs.push({ nf, fornecedor: document.getElementById('nfForn').value, data: document.getElementById('nfData').value, item: nome, qtd });
-        registerLog("ENTRADA NF", `NF: ${nf} | Item: ${nome} (+${qtd})`);
-        persist(); alert("Lançamento de NF realizado com sucesso!"); nav('tabHome');
+    function doIn() {
+        const sku = document.getElementById('inSku').value;
+        const qtd = parseInt(document.getElementById('inQtd').value);
+        let item = db.stock.find(x => x.sku === sku);
+        if(item) item.qtd += qtd;
+        else db.stock.push({ sku, nome: document.getElementById('inNome').value, qtd });
+        addLog(`ENTRADA: ${sku} (+${qtd})`);
+        save(); alert("Sucesso!"); nav('tabHome');
     }
 
-    function findProduct(sku, targetId) {
-        const item = storage.inventory.find(x => x.sku === sku);
-        const div = document.getElementById(targetId);
-        if(item) {
-            div.innerHTML = `<b style="color:var(--neon-green)">PRODUTO: ${item.nome}</b><br>Saldo em Estoque: <b>${item.qtd}</b>`;
-        } else div.innerText = "Produto não cadastrado no inventário.";
+    function sync(sku) {
+        const item = db.stock.find(x => x.sku === sku);
+        document.getElementById('outPre').innerText = item ? `${item.nome} | Saldo: ${item.qtd}` : "Não encontrado";
     }
 
-    function executeBaixa() {
-        const sku = document.getElementById('reqSku').value;
-        const q = parseInt(document.getElementById('reqQtd').value);
-        const item = storage.inventory.find(x => x.sku === sku);
-
-        if(item && item.qtd >= q) {
-            item.qtd -= q;
-            registerLog("SAÍDA/BAIXA", `Item: ${item.nome} (-${q}) | Destino: ${document.getElementById('reqUser').value}`);
-            playBeep(); persist(); alert("Requisição processada com sucesso!"); nav('tabHome');
-        } else alert("Estoque Insuficiente!");
+    function doOut() {
+        const sku = document.getElementById('outSku').value;
+        const qtd = parseInt(document.getElementById('outQtd').value);
+        let item = db.stock.find(x => x.sku === sku);
+        if(item && item.qtd >= qtd) {
+            item.qtd -= qtd;
+            addLog(`SAÍDA: ${sku} (-${qtd})`);
+            save(); alert("Baixa realizada!"); nav('tabHome');
+        } else alert("Estoque insuficiente!");
     }
 
-    // --- INTERFACE & TABELAS ---
     function renderStock() {
-        const body = document.querySelector('#stockTable tbody');
-        body.innerHTML = storage.inventory.map(i => `
-            <tr>
-                <td>${i.sku}</td><td>${i.nome}</td><td>${i.qtd}</td><td>${i.min}</td>
-                <td><span class="status-badge" style="background:${i.qtd <= i.min ? 'var(--neon-pink)' : 'var(--neon-green)'}; color:#000">${i.qtd <= i.min ? 'REPÔR' : 'OK'}</span></td>
-            </tr>
-        `).join('');
+        const b = document.querySelector('#tblS tbody');
+        b.innerHTML = db.stock.map(i => `<tr><td>${i.sku}</td><td>${i.nome}</td><td>${i.qtd}</td></tr>`).join('');
     }
+
+    function addLog(m) { db.logs.unshift(`${new Date().toLocaleString()} - ${m} por ${user.nome}`); }
 
     function renderLogs() {
-        const body = document.querySelector('#logTable tbody');
-        body.innerHTML = storage.logs.map(l => `
-            <tr>
-                <td>${l.time}</td>
-                <td><b style="color:${l.type.includes('ENTRADA') ? 'var(--neon-green)' : 'var(--neon-pink)'}">${l.type}</b></td>
-                <td>${l.msg}</td><td>${l.user}</td>
-            </tr>
-        `).join('');
+        document.getElementById('logArea').innerHTML = db.logs.map(l => `<div style="padding:5px; border-bottom:1px solid #334155">${l}</div>`).join('');
     }
 
-    function registerLog(type, msg) {
-        storage.logs.unshift({ time: new Date().toLocaleString(), type, msg, user: currentUser.user });
+    // --- PASSWORD RECOVERY ---
+    function forgotPass() {
+        const email = prompt("Digite seu e-mail cadastrado:");
+        const u = db.users.find(x => x.email === email);
+        if(u) {
+            const nova = prompt("Verificação enviada! Digite sua nova senha:");
+            if(nova) { u.pass = nova; save(); alert("Senha alterada com sucesso!"); }
+        } else alert("E-mail não localizado.");
     }
 
-    function nav(id) {
-        document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active-tab'));
-        document.getElementById(id).classList.add('active-tab');
-        if(id === 'tabEstoque') renderStock();
-        if(id === 'tabAuditoria') renderLogs();
-        if(qrReader) qrReader.stop();
+    // --- CALC ---
+    let cv = "";
+    function c(v) { cv += v; document.getElementById('disp').innerText = cv; }
+    function cc() { cv = ""; document.getElementById('disp').innerText = "0"; }
+    function ce() { try { cv = eval(cv).toString(); document.getElementById('disp').innerText = cv; } catch { cc(); } }
+
+    function toggleAuth(show) {
+        document.getElementById('loginBox').classList.toggle('hidden', !show);
+        document.getElementById('regBox').classList.toggle('hidden', show);
     }
 
-    // --- UTILITÁRIOS ---
-    function openScanner(div, target) {
-        qrReader = new Html5Qrcode(div);
-        qrReader.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
-            document.getElementById(target).value = text;
-            playBeep();
-            if(target === 'reqSku') findProduct(text, 'reqPreview');
-            qrReader.stop();
-        });
+    function buyPremium() {
+        window.open('https://mpago.li/1Qt8hoV', '_blank');
+        setTimeout(() => {
+            db.users.push({ 
+                user: document.getElementById('rUser').value, 
+                pass: document.getElementById('rPass').value, 
+                email: document.getElementById('rEmail').value,
+                nome: document.getElementById('rNome').value
+            });
+            save(); alert("Pagamento Confirmado!"); toggleAuth(true);
+        }, 2000);
     }
 
-    function genPDF(type) {
+    function exportPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.text("ERP MASTER 2026 - RELATÓRIO OFICIAL", 14, 15);
-        if(type === 'stock') {
-            doc.autoTable({ head: [['SKU', 'NOME', 'SALDO']], body: storage.inventory.map(x => [x.sku, x.nome, x.qtd]), startY: 25 });
-            doc.save("Relatorio_Estoque.pdf");
-        } else {
-            doc.autoTable({ head: [['NF', 'FORNECEDOR', 'ITEM', 'QTD']], body: storage.nfs.map(x => [x.nf, x.fornecedor, x.item, x.qtd]), startY: 25 });
-            doc.save("Relatorio_Entradas_NF.pdf");
-        }
+        doc.text("RELATÓRIO DE ESTOQUE - ERP 2026", 15, 15);
+        doc.autoTable({ head: [['SKU', 'ITEM', 'QTD']], body: db.stock.map(i => [i.sku, i.nome, i.qtd]), startY: 25 });
+        doc.save("Estoque.pdf");
     }
 
-    function playBeep() { if(document.getElementById('setBeep').checked) document.getElementById('audioBeep').play(); }
-    function toggleMusic() { const m = document.getElementById('audioAmbient'); document.getElementById('setMusic').checked ? m.play() : m.pause(); }
-    function changeTheme() { document.body.classList.toggle('light-theme'); }
-    function toggleModal(id, show) { document.getElementById(id).style.display = show ? 'flex' : 'none'; }
-    function viewPass(id) { const x = document.getElementById(id); x.type = x.type === "password" ? "text" : "password"; }
-    function toggleAuth(login) { document.getElementById('loginBox').classList.toggle('hidden', !login); document.getElementById('registerBox').classList.toggle('hidden', login); }
     function exitApp() { location.reload(); }
-
-    function recoveryLogic() {
-        const mail = document.getElementById('emailRecovery').value;
-        const user = storage.users.find(x => x.email === mail);
-        if(user) {
-            const nova = prompt("Protocolo de segurança aceito. Digite sua nova senha:");
-            if(nova) { user.pass = nova; persist(); alert("Senha redefinida com sucesso!"); }
-        } else alert("E-mail não localizado na base Premium.");
-    }
-
-    // --- CALCULADORA ---
-    let cVal = "";
-    function cAct(key) {
-        const screen = document.getElementById('cScreen');
-        if(key === 'C') cVal = "";
-        else if(key === 'del') cVal = cVal.slice(0, -1);
-        else if(key === '=') { try { cVal = eval(cVal).toString(); } catch { cVal = "Erro"; } }
-        else cVal += key;
-        screen.innerText = cVal || "0";
-    }
 </script>
 </body>
 </html>
